@@ -1,28 +1,16 @@
-// src/lib/auth-helpers.ts
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
+// src/app/layout.tsx
+import type { Metadata } from "next";
+import "./globals.css";
 
-export async function requireUser() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) {
-    throw new Error("UNAUTHORIZED");
-  }
-  return session.user;
-}
+export const metadata: Metadata = {
+  title: "Routiva",
+  description: "Habit tracking app",
+};
 
-export async function requireUserOrRedirect(to: string = "/signin") {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) {
-    redirect(to);
-  }
-  return session.user;
-}
-
-export async function requireSession() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) {
-    throw new Error("UNAUTHORIZED");
-  }
-  return session;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>{children}</body>
+    </html>
+  );
 }

@@ -8,7 +8,7 @@ export default function SignInPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // This handles CSRF + correct POST under the hood
+
     await signIn("email", { email, callbackUrl: "/" });
     alert("Check your email (or terminal for Ethereal preview link).");
   }
