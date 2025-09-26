@@ -1,53 +1,35 @@
-// src/app/api/habits/route.ts
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { habitCreate } from "@/lib/validators";
+// src/app/(app)/habits/page.tsx
 import { requireUser } from "@/lib/auth-helpers";
-import { z } from "zod";
+import { prisma } from "@/lib/db";
 
-type HabitInput = z.infer<typeof habitCreate>;
-
-function formToHabitInput(fd: FormData): HabitInput {
-  const name = String(fd.get("name") ?? "");
-  const description = fd.get("description");
-  const targetDaysRaw = fd.get("targetDays");
-  return {
-    name,
-    description: typeof description === "string" ? description : undefined,
-    targetDays:
-      typeof targetDaysRaw === "string" && targetDaysRaw !== ""
-        ? Number(targetDaysRaw)
-        : undefined,
-  };
-}
-
-export async function POST(req: Request) {
+export default async function HabitsPage() {
   const user = await requireUser();
-  const ct = req.headers.get("content-type") ?? "";
+  const habits = await prisma.habit.findMany({ where: { userId: user.id } });
 
-  let candidate: unknown;
-  if (ct.includes("application/json")) {
-    candidate = await req.json();
-  } else if (
-    ct.includes("application/x-www-form-urlencoded") ||
-    ct.includes("multipart/form-data")
-  ) {
-    const fd = await req.formData();
-    candidate = formToHabitInput(fd);
-  } else {
-    return NextResponse.json(
-      { error: "Unsupported content type" },
-      { status: 415 }
-    );
-  }
+  return (
+    <div className="space-y-6">
+      <form
+        action="/api/habits"
+        method="post"
+        className="flex gap-2 items-center"
+      >
+        <input
+          name="name"
+          placeholder="New habit name"
+          className="border rounded px-3 py-2"
+          required
+        />
+        <button className="border rounded px-3 py-2">Add</button>
+      </form>
 
-  const parsed = habitCreate.safeParse(candidate);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.format(), { status: 400 });
-  }
-
-  const row = await prisma.habit.create({
-    data: { ...parsed.data, userId: user.id },
-  });
-  return NextResponse.json(row, { status: 201 });
+      <h1 className="text-xl font-semibold">Your habits</h1>
+      <ul className="space-y-2">
+        {habits.map((h) => (
+          <li key={h.id} className="border p-3 rounded">
+            {h.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
