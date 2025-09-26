@@ -4,20 +4,8 @@ import { prisma } from "@/lib/db";
 import { logCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
 
-type Candidate = { date: unknown; status: unknown; note?: unknown };
-
-function formToCandidate(fd: FormData): Candidate {
-  return {
-    date: String(fd.get("date") ?? ""),
-    status: String(fd.get("status") ?? ""),
-    note: fd.get("note") ?? undefined,
-  };
-}
-
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: Request, context: { params: { id: string } }) {
+  const { params } = context;
   const user = await requireUser();
   const ct = req.headers.get("content-type") ?? "";
 
@@ -26,7 +14,11 @@ export async function POST(
     candidate = await req.json();
   } else {
     const fd = await req.formData();
-    candidate = formToCandidate(fd);
+    candidate = {
+      date: fd.get("date"),
+      status: fd.get("status"),
+      note: fd.get("note") ?? undefined,
+    };
   }
 
   const parsed = logCreate.safeParse(candidate);
@@ -39,7 +31,6 @@ export async function POST(
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // parsed.data.date is a Date (thanks to z.coerce.date)
   const date = new Date(parsed.data.date);
   date.setUTCHours(0, 0, 0, 0);
 
