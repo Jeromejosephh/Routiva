@@ -1,4 +1,3 @@
-// src/app/api/habits/[id]/logs/route.ts
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
@@ -7,8 +6,9 @@ import { requireUser } from "@/lib/auth-helpers";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Record<string, string> }
 ) {
+  const { params } = context;
   const user = await requireUser();
   const ct = req.headers.get("content-type") ?? "";
 
