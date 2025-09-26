@@ -1,11 +1,14 @@
 // src/app/api/habits/[id]/logs/route.ts
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { logCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
 
-export async function POST(req: Request, context: { params: { id: string } }) {
-  const { params } = context;
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const user = await requireUser();
   const ct = req.headers.get("content-type") ?? "";
 

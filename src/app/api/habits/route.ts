@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { habitCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
+import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 type HabitInput = z.infer<typeof habitCreate>;
@@ -22,7 +23,7 @@ function formToHabitInput(fd: FormData): HabitInput {
   };
 }
 
-export async function GET() {
+export async function GET(_req: NextRequest) {
   const user = await requireUser();
   const rows = await prisma.habit.findMany({
     where: { userId: user.id, isArchived: false },
@@ -30,7 +31,7 @@ export async function GET() {
   return NextResponse.json(rows);
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const user = await requireUser();
   const ct = req.headers.get("content-type") ?? "";
 
