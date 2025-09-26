@@ -1,17 +1,20 @@
+// src/app/api/habits/[id]/logs/route.ts
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { logCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
 
-export async function POST(
-  req: NextRequest,
-  context: { params: Record<string, string> }
-) {
-  const { params } = context;
+export async function POST(req: NextRequest) {
   const user = await requireUser();
-  const ct = req.headers.get("content-type") ?? "";
 
+  const match = new URL(req.url).pathname.match(/\/api\/habits\/([^/]+)\/logs/);
+  const habitId = match?.[1];
+  if (!habitId) {
+    return NextResponse.json({ error: "Invalid habit id" }, { status: 400 });
+  }
+
+  const ct = req.headers.get("content-type") ?? "";
   let candidate: unknown;
   if (ct.includes("application/json")) {
     candidate = await req.json();
@@ -30,7 +33,7 @@ export async function POST(
   }
 
   const habit = await prisma.habit.findFirst({
-    where: { id: params.id, userId: user.id },
+    where: { id: habitId, userId: user.id },
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
