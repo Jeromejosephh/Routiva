@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Routiva
 
-## Getting Started
+Routiva is a habit-tracking web app built with **Next.js (App Router)**, **TypeScript**, **Tailwind**, **Prisma**, **Neon (Postgres)**, and **NextAuth (Email via Resend)**.  
+It helps users create habits, check them off daily, and track progress with streaks and charts.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Tech Stack
+- [Next.js](https://nextjs.org) (App Router)
+- TypeScript
+- TailwindCSS + shadcn/ui
+- Prisma ORM
+- Neon (Postgres DB)
+- NextAuth (Email login via Resend)
+- Vercel (Deployment)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Clone & Install
+git clone <your-repo-url>  
+cd routiva  
+npm install  
 
-## Learn More
+### 2. Environment Variables
+Create a `.env` file at the project root (or copy `.env.example`):
 
-To learn more about Next.js, take a look at the following resources:
+# .env.example  
+DATABASE_URL=postgresql://...  
+NEXTAUTH_SECRET=your-secret  
+NEXTAUTH_URL=http://localhost:3000  
+RESEND_API_KEY=your-resend-key  
+EMAIL_FROM="Routiva <login@yourdomain.com>"  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Database Setup
+npx prisma generate  
+npx prisma migrate dev  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Run Dev Server
+pnpm dev  
 
-## Deploy on Vercel
+Visit [http://localhost:3000](http://localhost:3000).  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚢 Deployment
+1. Push to GitHub/GitLab  
+2. Connect repo to [Vercel](https://vercel.com/)  
+3. Add the same environment variables in the Vercel dashboard  
+
+(Optional) Add a custom domain and set:  
+NEXTAUTH_URL=https://yourdomain.com  
+
+Deploy 🎉
