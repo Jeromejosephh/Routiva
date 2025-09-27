@@ -5,14 +5,18 @@ import { prisma } from "@/lib/db";
 import { logCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
 
+function redirectIfNavigation(req: NextRequest) {
+  const mode = req.headers.get("sec-fetch-mode");
+  const accept = req.headers.get("accept") || "";
+  return mode === "navigate" || accept.includes("text/html");
+}
+
 export async function POST(req: NextRequest) {
   const user = await requireUser();
-
   const match = new URL(req.url).pathname.match(/\/api\/habits\/([^/]+)\/logs/);
   const habitId = match?.[1];
-  if (!habitId) {
+  if (!habitId)
     return NextResponse.json({ error: "Invalid habit id" }, { status: 400 });
-  }
 
   const ct = req.headers.get("content-type") ?? "";
   let candidate: unknown;
@@ -28,9 +32,8 @@ export async function POST(req: NextRequest) {
   }
 
   const parsed = logCreate.safeParse(candidate);
-  if (!parsed.success) {
+  if (!parsed.success)
     return NextResponse.json(parsed.error.format(), { status: 400 });
-  }
 
   const habit = await prisma.habit.findFirst({
     where: { id: habitId, userId: user.id },
@@ -51,23 +54,22 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  if (redirectIfNavigation(req))
+    return NextResponse.redirect(new URL("/habits", req.url), 303);
   return NextResponse.json(log, { status: 201 });
 }
 
 export async function DELETE(req: NextRequest) {
   const user = await requireUser();
-
   const url = new URL(req.url);
   const match = url.pathname.match(/\/api\/habits\/([^/]+)\/logs/);
   const habitId = match?.[1];
-  if (!habitId) {
+  if (!habitId)
     return NextResponse.json({ error: "Invalid habit id" }, { status: 400 });
-  }
 
   const dateParam = url.searchParams.get("date");
-  if (!dateParam) {
+  if (!dateParam)
     return NextResponse.json({ error: "Missing date" }, { status: 400 });
-  }
 
   const habit = await prisma.habit.findFirst({
     where: { id: habitId, userId: user.id },
@@ -78,10 +80,11 @@ export async function DELETE(req: NextRequest) {
   const date = new Date(dateParam);
   date.setUTCHours(0, 0, 0, 0);
 
-  // Delete if present; ignore if not.
   await prisma.habitLog
     .delete({ where: { habitId_date: { habitId: habit.id, date } } })
     .catch(() => {});
 
+  if (redirectIfNavigation(req))
+    return NextResponse.redirect(new URL("/habits", req.url), 303);
   return NextResponse.json({ deleted: true }, { status: 200 });
 }

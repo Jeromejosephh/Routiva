@@ -1,14 +1,13 @@
-//src/components/HabitRow.tsx
 "use client";
+
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-function ymdUtc() {
-  const d = new Date();
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(
-    2,
-    "0"
-  )}-${String(d.getUTCDate()).padStart(2, "0")}`;
+function yyyymmddUtc(d = new Date()) {
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 export default function HabitRow({
@@ -19,35 +18,34 @@ export default function HabitRow({
   initialChecked: boolean;
 }) {
   const [checked, setChecked] = useState(initialChecked);
-  const [isPending, start] = useTransition();
+  const [pending, start] = useTransition();
   const router = useRouter();
 
   async function toggle() {
-    const date = ymdUtc();
-    const res = await fetch(
-      checked
-        ? `/api/habits/${habitId}/logs?date=${date}`
-        : `/api/habits/${habitId}/logs`,
-      checked
-        ? { method: "DELETE" }
-        : {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ date, status: "done" }),
-          }
-    );
-    if (res.ok) {
-      setChecked(!checked);
-      router.refresh();
+    const today = yyyymmddUtc();
+    if (!checked) {
+      const r = await fetch(`/api/habits/${habitId}/logs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date: today, status: "done" }),
+      });
+      if (r.ok) setChecked(true);
+    } else {
+      const r = await fetch(`/api/habits/${habitId}/logs?date=${today}`, {
+        method: "DELETE",
+      });
+      if (r.ok) setChecked(false);
     }
+    start(() => router.refresh());
   }
 
   return (
     <button
       type="button"
       onClick={() => start(toggle)}
-      disabled={isPending}
-      className="rounded px-3 py-1 border"
+      disabled={pending}
+      className="rounded px-3 py-1 border disabled:opacity-50"
+      aria-pressed={checked}
     >
       {checked ? "✓ Done" : "Mark done"}
     </button>
