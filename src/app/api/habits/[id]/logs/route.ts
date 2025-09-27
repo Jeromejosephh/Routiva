@@ -53,3 +53,35 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json(log, { status: 201 });
 }
+
+export async function DELETE(req: NextRequest) {
+  const user = await requireUser();
+
+  const url = new URL(req.url);
+  const match = url.pathname.match(/\/api\/habits\/([^/]+)\/logs/);
+  const habitId = match?.[1];
+  if (!habitId) {
+    return NextResponse.json({ error: "Invalid habit id" }, { status: 400 });
+  }
+
+  const dateParam = url.searchParams.get("date");
+  if (!dateParam) {
+    return NextResponse.json({ error: "Missing date" }, { status: 400 });
+  }
+
+  const habit = await prisma.habit.findFirst({
+    where: { id: habitId, userId: user.id },
+    select: { id: true },
+  });
+  if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  const date = new Date(dateParam);
+  date.setUTCHours(0, 0, 0, 0);
+
+  // Delete if present; ignore if not.
+  await prisma.habitLog
+    .delete({ where: { habitId_date: { habitId: habit.id, date } } })
+    .catch(() => {});
+
+  return NextResponse.json({ deleted: true }, { status: 200 });
+}
