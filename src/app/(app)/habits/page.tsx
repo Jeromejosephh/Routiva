@@ -10,7 +10,7 @@ export default async function HabitsPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  // Compute "checked today" on the server (UTC midnight)
+  //compute "checked today" on the server (UTC midnight)
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
 
