@@ -2,6 +2,18 @@
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
+import { revalidatePath } from "next/cache";
+
+async function createHabit(formData: FormData) {
+  "use server";
+  const user = await requireUser();
+  const name = String(formData.get("name") ?? "").trim();
+  if (!name) return;
+  try {
+    await prisma.habit.create({ data: { name, userId: user.id } });
+  } catch {}
+  revalidatePath("/habits");
+}
 
 export default async function HabitsPage() {
   const user = await requireUser();
@@ -10,7 +22,6 @@ export default async function HabitsPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  //compute "checked today" on the server (UTC midnight)
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
 
@@ -22,18 +33,16 @@ export default async function HabitsPage() {
 
   return (
     <div className="space-y-6">
-      <form
-        action="/api/habits"
-        method="post"
-        className="flex gap-2 items-center"
-      >
+      <form action={createHabit} className="flex gap-2 items-center">
         <input
           name="name"
           placeholder="New habit name"
           className="border rounded px-3 py-2"
           required
         />
-        <button className="border rounded px-3 py-2">Add</button>
+        <button type="submit" className="border rounded px-3 py-2">
+          Add
+        </button>
       </form>
 
       <h1 className="text-xl font-semibold">Your habits</h1>
