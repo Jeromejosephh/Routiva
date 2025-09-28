@@ -12,7 +12,7 @@ const toUtcMidnight = (s: string) => {
 };
 
 export async function POST(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   const user = await requireUser();
@@ -22,8 +22,26 @@ export async function POST(
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const body = await req.json().catch(() => ({}));
-  const parsed = logCreate.safeParse(body);
+  // Accept JSON or form data
+  const ct = req.headers.get("content-type") ?? "";
+  let candidate: unknown;
+  if (ct.includes("application/json")) {
+    candidate = await req.json();
+  } else if (
+    ct.includes("application/x-www-form-urlencoded") ||
+    ct.includes("multipart/form-data")
+  ) {
+    const fd = await req.formData();
+    candidate = {
+      date: fd.get("date"),
+      status: fd.get("status"),
+      note: fd.get("note") ?? undefined,
+    };
+  } else {
+    candidate = await req.json().catch(() => ({}));
+  }
+
+  const parsed = logCreate.safeParse(candidate);
   if (!parsed.success)
     return NextResponse.json(parsed.error.format(), { status: 400 });
 
@@ -44,7 +62,7 @@ export async function POST(
 }
 
 export async function DELETE(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   const user = await requireUser();
@@ -56,12 +74,12 @@ export async function DELETE(
 
   const url = new URL(req.url);
   const dateParam = url.searchParams.get("date");
-  const date = dateParam && toUtcMidnight(dateParam);
+  if (!dateParam)
+    return NextResponse.json({ error: "Missing date" }, { status: 400 });
+
+  const date = toUtcMidnight(dateParam);
   if (!date)
-    return NextResponse.json(
-      { error: "Missing/invalid date" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid date" }, { status: 400 });
 
   await prisma.habitLog
     .delete({ where: { habitId_date: { habitId: habit.id, date } } })
@@ -70,7 +88,7 @@ export async function DELETE(
 }
 
 export async function GET(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   const user = await requireUser();
@@ -85,10 +103,12 @@ export async function GET(
   const fromParam = url.searchParams.get("from");
   const toParam = url.searchParams.get("to");
 
+  // Single-day check (?date=YYYY-MM-DD)
   if (dateParam) {
     const date = toUtcMidnight(dateParam);
     if (!date)
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
+
     const log = await prisma.habitLog.findUnique({
       where: { habitId_date: { habitId: habit.id, date } },
       select: {
@@ -99,6 +119,7 @@ export async function GET(
         createdAt: true,
       },
     });
+
     return NextResponse.json({ exists: !!log, log });
   }
 
