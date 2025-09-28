@@ -23,18 +23,18 @@ export default function HabitActions({
   const router = useRouter();
   const [pending, start] = useTransition();
   const detailsRef = useRef<HTMLDetailsElement>(null);
-
   const closeMenu = () => detailsRef.current?.removeAttribute("open");
 
   const rename = () => {
     const next = window.prompt("Rename habit", name);
     if (!next || next.trim() === name) return;
     start(async () => {
-      await fetch(`/api/habits/${habitId}`, {
+      const r = await fetch(`/api/habits/${habitId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: next.trim() }),
       });
+      if (!r.ok) alert("Rename failed");
       closeMenu();
       router.refresh();
     });
@@ -42,11 +42,12 @@ export default function HabitActions({
 
   const toggleArchive = () => {
     start(async () => {
-      await fetch(`/api/habits/${habitId}`, {
+      const r = await fetch(`/api/habits/${habitId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isArchived: !isArchived }),
       });
+      if (!r.ok) alert("Archive toggle failed");
       closeMenu();
       router.refresh();
     });
@@ -55,7 +56,8 @@ export default function HabitActions({
   const del = () => {
     if (!window.confirm("Delete this habit? This removes its logs.")) return;
     start(async () => {
-      await fetch(`/api/habits/${habitId}`, { method: "DELETE" });
+      const r = await fetch(`/api/habits/${habitId}`, { method: "DELETE" });
+      if (!r.ok) alert("Delete failed");
       closeMenu();
       router.refresh();
     });
@@ -66,7 +68,6 @@ export default function HabitActions({
       <summary
         className="flex h-9 w-9 items-center justify-center rounded border bg-background hover:bg-muted cursor-pointer list-none"
         aria-label="Actions"
-        role="button"
       >
         <MoreHorizontal className="h-4 w-4" />
       </summary>

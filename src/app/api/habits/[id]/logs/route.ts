@@ -1,54 +1,33 @@
 // src/app/api/habits/[id]/logs/route.ts
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { logCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
 
-function redirectIfNavigation(req: NextRequest) {
-  const mode = req.headers.get("sec-fetch-mode");
-  const accept = req.headers.get("accept") || "";
-  return mode === "navigate" || accept.includes("text/html");
-}
-
-function toUtcMidnight(s: string) {
+const toUtcMidnight = (s: string) => {
   const d = new Date(s);
   if (isNaN(d.getTime())) return null;
   d.setUTCHours(0, 0, 0, 0);
   return d;
-}
+};
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const user = await requireUser();
-  const match = new URL(req.url).pathname.match(/\/api\/habits\/([^/]+)\/logs/);
-  const habitId = match?.[1];
-  if (!habitId)
-    return NextResponse.json({ error: "Invalid habit id" }, { status: 400 });
-
-  const ct = req.headers.get("content-type") ?? "";
-  let candidate: unknown;
-  if (ct.includes("application/json")) {
-    candidate = await req.json();
-  } else {
-    const fd = await req.formData();
-    candidate = {
-      date: fd.get("date"),
-      status: fd.get("status"),
-      note: fd.get("note") ?? undefined,
-    };
-  }
-
-  const parsed = logCreate.safeParse(candidate);
-  if (!parsed.success)
-    return NextResponse.json(parsed.error.format(), { status: 400 });
-
   const habit = await prisma.habit.findFirst({
-    where: { id: habitId, userId: user.id },
+    where: { id: params.id, userId: user.id },
+    select: { id: true },
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const date = new Date(parsed.data.date);
-  date.setUTCHours(0, 0, 0, 0);
+  const body = await req.json().catch(() => ({}));
+  const parsed = logCreate.safeParse(body);
+  if (!parsed.success)
+    return NextResponse.json(parsed.error.format(), { status: 400 });
+
+  const date = toUtcMidnight(parsed.data.date as unknown as string)!;
 
   const log = await prisma.habitLog.upsert({
     where: { habitId_date: { habitId: habit.id, date } },
@@ -61,55 +40,47 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  if (redirectIfNavigation(req))
-    return NextResponse.redirect(new URL("/habits", req.url), 303);
   return NextResponse.json(log, { status: 201 });
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const user = await requireUser();
-  const url = new URL(req.url);
-  const match = url.pathname.match(/\/api\/habits\/([^/]+)\/logs/);
-  const habitId = match?.[1];
-  if (!habitId)
-    return NextResponse.json({ error: "Invalid habit id" }, { status: 400 });
-
-  const dateParam = url.searchParams.get("date");
-  if (!dateParam)
-    return NextResponse.json({ error: "Missing date" }, { status: 400 });
-
   const habit = await prisma.habit.findFirst({
-    where: { id: habitId, userId: user.id },
+    where: { id: params.id, userId: user.id },
     select: { id: true },
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const date = new Date(dateParam);
-  date.setUTCHours(0, 0, 0, 0);
+  const url = new URL(req.url);
+  const dateParam = url.searchParams.get("date");
+  const date = dateParam && toUtcMidnight(dateParam);
+  if (!date)
+    return NextResponse.json(
+      { error: "Missing/invalid date" },
+      { status: 400 }
+    );
 
   await prisma.habitLog
     .delete({ where: { habitId_date: { habitId: habit.id, date } } })
     .catch(() => {});
-
-  if (redirectIfNavigation(req))
-    return NextResponse.redirect(new URL("/habits", req.url), 303);
-  return NextResponse.json({ deleted: true }, { status: 200 });
+  return NextResponse.json({ deleted: true });
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const user = await requireUser();
-  const url = new URL(req.url);
-  const match = url.pathname.match(/\/api\/habits\/([^/]+)\/logs/);
-  const habitId = match?.[1];
-  if (!habitId)
-    return NextResponse.json({ error: "Invalid habit id" }, { status: 400 });
-
   const habit = await prisma.habit.findFirst({
-    where: { id: habitId, userId: user.id },
+    where: { id: params.id, userId: user.id },
     select: { id: true },
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+  const url = new URL(req.url);
   const dateParam = url.searchParams.get("date");
   const fromParam = url.searchParams.get("from");
   const toParam = url.searchParams.get("to");
@@ -118,9 +89,8 @@ export async function GET(req: NextRequest) {
     const date = toUtcMidnight(dateParam);
     if (!date)
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
-
     const log = await prisma.habitLog.findUnique({
-      where: { habitId_date: { habitId, date } },
+      where: { habitId_date: { habitId: habit.id, date } },
       select: {
         id: true,
         date: true,
@@ -129,15 +99,11 @@ export async function GET(req: NextRequest) {
         createdAt: true,
       },
     });
-
-    if (redirectIfNavigation(req))
-      return NextResponse.redirect(new URL("/habits", req.url), 303);
     return NextResponse.json({ exists: !!log, log });
   }
 
   let to = toParam ? toUtcMidnight(toParam) : null;
   let from = fromParam ? toUtcMidnight(fromParam) : null;
-
   if (!from || !to) {
     to = new Date();
     to.setUTCHours(0, 0, 0, 0);
@@ -146,7 +112,7 @@ export async function GET(req: NextRequest) {
   }
 
   const logs = await prisma.habitLog.findMany({
-    where: { habitId, date: { gte: from!, lte: to! } },
+    where: { habitId: habit.id, date: { gte: from!, lte: to! } },
     select: { date: true, status: true, note: true },
     orderBy: { date: "asc" },
   });
@@ -159,11 +125,9 @@ export async function GET(req: NextRequest) {
     ).padStart(2, "0")}-${String(cursor.getUTCDate()).padStart(2, "0")}`;
     const has = logs.some((l) => l.date.getTime() === cursor.getTime());
     series.push({ date: key, done: has ? 1 : 0 });
-    cursor.setUTCDate(cursor.getUTCDate() - 0 + 1);
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
 
-  if (redirectIfNavigation(req))
-    return NextResponse.redirect(new URL("/habits", req.url), 303);
   return NextResponse.json({
     from: from!.toISOString(),
     to: to!.toISOString(),
