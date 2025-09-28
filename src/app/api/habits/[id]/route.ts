@@ -1,5 +1,5 @@
 // src/app/api/habits/[id]/route.ts
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth-helpers";
 import { z } from "zod";
@@ -12,13 +12,14 @@ const patchSchema = z
   .strict();
 
 export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const user = await requireUser();
 
   const owned = await prisma.habit.findFirst({
-    where: { id: params.id, userId: user.id },
+    where: { id, userId: user.id },
     select: { id: true },
   });
   if (!owned) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -40,13 +41,14 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const user = await requireUser();
 
   const owned = await prisma.habit.findFirst({
-    where: { id: params.id, userId: user.id },
+    where: { id, userId: user.id },
     select: { id: true },
   });
   if (!owned) return NextResponse.json({ error: "Not found" }, { status: 404 });

@@ -24,7 +24,6 @@ export async function POST(
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // accept JSON or form data
   const ct = req.headers.get("content-type") ?? "";
   let candidate: unknown;
   if (ct.includes("application/json")) {
@@ -111,12 +110,10 @@ export async function GET(
   const fromParam = url.searchParams.get("from");
   const toParam = url.searchParams.get("to");
 
-  // Single-day
   if (dateParam) {
     const date = toUtcMidnight(dateParam);
     if (!date)
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
-
     const log = await prisma.habitLog.findUnique({
       where: { habitId_date: { habitId: habit.id, date } },
       select: {
@@ -130,7 +127,6 @@ export async function GET(
     return NextResponse.json({ exists: !!log, log });
   }
 
-  // Range (default last 30 days)
   let to = toParam ? toUtcMidnight(toParam) : null;
   let from = fromParam ? toUtcMidnight(fromParam) : null;
   if (!from || !to) {
