@@ -2,26 +2,40 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth-helpers";
+import { z } from "zod";
+
+const patchSchema = z
+  .object({
+    name: z.string().trim().min(1).optional(),
+    isArchived: z.boolean().optional(),
+  })
+  .strict();
 
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const user = await requireUser();
+
   const owned = await prisma.habit.findFirst({
     where: { id: params.id, userId: user.id },
     select: { id: true },
   });
   if (!owned) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const { name, isArchived } = await req.json().catch(() => ({} as any));
-  const data: Record<string, any> = {};
-  if (typeof name === "string" && name.trim()) data.name = name.trim();
-  if (typeof isArchived === "boolean") data.isArchived = isArchived;
-  if (!Object.keys(data).length)
+  const body = await req.json().catch(() => ({}));
+  const parsed = patchSchema.safeParse(body);
+  if (!parsed.success)
+    return NextResponse.json(parsed.error.format(), { status: 400 });
+  if (!parsed.data.name && parsed.data.isArchived === undefined) {
     return NextResponse.json({ error: "No changes" }, { status: 400 });
+  }
 
-  const updated = await prisma.habit.update({ where: { id: owned.id }, data });
+  const updated = await prisma.habit.update({
+    where: { id: owned.id },
+    data: parsed.data,
+  });
+
   return NextResponse.json(updated);
 }
 
@@ -30,6 +44,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const user = await requireUser();
+
   const owned = await prisma.habit.findFirst({
     where: { id: params.id, userId: user.id },
     select: { id: true },

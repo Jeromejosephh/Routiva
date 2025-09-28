@@ -23,7 +23,7 @@ function formToHabitInput(fd: FormData): HabitInput {
   };
 }
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   const user = await requireUser();
   const rows = await prisma.habit.findMany({
     where: { userId: user.id, isArchived: false },
