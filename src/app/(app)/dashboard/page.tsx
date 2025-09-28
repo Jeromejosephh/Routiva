@@ -2,6 +2,7 @@
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
+import StreakBadge from "@/components/StreakBadge";
 
 export default async function DashboardPage() {
   const user = await requireUser();
@@ -30,7 +31,10 @@ export default async function DashboardPage() {
             className="border p-3 rounded flex items-center justify-between"
           >
             <span>{h.name}</span>
-            <HabitRow habitId={h.id} initialChecked={doneSet.has(h.id)} />
+            <div className="flex items-center gap-3">
+              <StreakBadge habitId={h.id} />
+              <HabitRow habitId={h.id} initialChecked={doneSet.has(h.id)} />
+            </div>
           </li>
         ))}
       </ul>

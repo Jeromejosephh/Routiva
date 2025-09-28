@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
 import HabitActions from "@/components/HabitActions";
+import StreakBadge from "@/components/StreakBadge";
 import { revalidatePath } from "next/cache";
 
 async function createHabit(formData: FormData) {
@@ -54,7 +55,8 @@ export default async function HabitsPage() {
               <span className={h.isArchived ? "opacity-60 line-through" : ""}>
                 {h.name}
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
+                <StreakBadge habitId={h.id} />
                 <HabitRow habitId={h.id} initialChecked={doneSet.has(h.id)} />
                 <HabitActions
                   habitId={h.id}
