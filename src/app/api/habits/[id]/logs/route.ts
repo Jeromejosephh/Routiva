@@ -1,5 +1,5 @@
 // src/app/api/habits/[id]/logs/route.ts
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { logCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
@@ -11,18 +11,14 @@ const toUtcMidnight = (s: string) => {
   return d;
 };
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: Request, ctx: { params: { id: string } }) {
   const user = await requireUser();
   const habit = await prisma.habit.findFirst({
-    where: { id: params.id, userId: user.id },
+    where: { id: ctx.params.id, userId: user.id },
     select: { id: true },
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // Accept JSON or form data
   const ct = req.headers.get("content-type") ?? "";
   let candidate: unknown;
   if (ct.includes("application/json")) {
@@ -45,7 +41,9 @@ export async function POST(
   if (!parsed.success)
     return NextResponse.json(parsed.error.format(), { status: 400 });
 
-  const date = toUtcMidnight(parsed.data.date as unknown as string)!;
+  const date = toUtcMidnight(String(parsed.data.date));
+  if (!date)
+    return NextResponse.json({ error: "Invalid date" }, { status: 400 });
 
   const log = await prisma.habitLog.upsert({
     where: { habitId_date: { habitId: habit.id, date } },
@@ -61,25 +59,22 @@ export async function POST(
   return NextResponse.json(log, { status: 201 });
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: Request, ctx: { params: { id: string } }) {
   const user = await requireUser();
   const habit = await prisma.habit.findFirst({
-    where: { id: params.id, userId: user.id },
+    where: { id: ctx.params.id, userId: user.id },
     select: { id: true },
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const url = new URL(req.url);
   const dateParam = url.searchParams.get("date");
-  if (!dateParam)
-    return NextResponse.json({ error: "Missing date" }, { status: 400 });
-
-  const date = toUtcMidnight(dateParam);
+  const date = dateParam && toUtcMidnight(dateParam);
   if (!date)
-    return NextResponse.json({ error: "Invalid date" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing/invalid date" },
+      { status: 400 }
+    );
 
   await prisma.habitLog
     .delete({ where: { habitId_date: { habitId: habit.id, date } } })
@@ -87,13 +82,10 @@ export async function DELETE(
   return NextResponse.json({ deleted: true });
 }
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, ctx: { params: { id: string } }) {
   const user = await requireUser();
   const habit = await prisma.habit.findFirst({
-    where: { id: params.id, userId: user.id },
+    where: { id: ctx.params.id, userId: user.id },
     select: { id: true },
   });
   if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -103,12 +95,10 @@ export async function GET(
   const fromParam = url.searchParams.get("from");
   const toParam = url.searchParams.get("to");
 
-  // Single-day check (?date=YYYY-MM-DD)
   if (dateParam) {
     const date = toUtcMidnight(dateParam);
     if (!date)
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
-
     const log = await prisma.habitLog.findUnique({
       where: { habitId_date: { habitId: habit.id, date } },
       select: {
@@ -119,7 +109,6 @@ export async function GET(
         createdAt: true,
       },
     });
-
     return NextResponse.json({ exists: !!log, log });
   }
 
