@@ -1,4 +1,7 @@
 // src/components/ActivityHeat30.tsx
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import { prisma } from "@/lib/db";
 
 function ymdUTC(d: Date) {
@@ -21,8 +24,8 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
 
   const counts = new Map<string, number>();
   for (const l of logs) {
-    const key = ymdUTC(new Date(l.date));
-    counts.set(key, (counts.get(key) ?? 0) + 1);
+    const k = ymdUTC(new Date(l.date));
+    counts.set(k, (counts.get(k) ?? 0) + 1);
   }
 
   const days: { key: string; label: string; count: number }[] = [];
@@ -37,8 +40,8 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
   const max = days.reduce((m, d) => Math.max(m, d.count), 0) || 1;
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
+    <div className="mt-6 rounded border p-4">
+      <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Last 30 days</h2>
         <div className="text-sm text-muted-foreground">Completions per day</div>
       </div>
@@ -46,12 +49,10 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
       <div className="flex flex-wrap gap-1">
         {days.map((d) => {
           const t = d.count / max;
-          const bg = t === 0 ? "bg-zinc-900 dark:bg-zinc-800" : "";
           const style =
             t === 0
               ? { backgroundColor: "#3f3f46" }
               : { backgroundColor: `rgba(16,185,129, ${0.25 + t * 0.6})` };
-
           return (
             <div
               key={d.key}
@@ -61,20 +62,6 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
             />
           );
         })}
-      </div>
-
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <span>Low</span>
-        <div className="h-3 w-6 rounded border border-zinc-600/40 bg-zinc-900 dark:bg-zinc-800" />
-        <div
-          className="h-3 w-6 rounded"
-          style={{ backgroundColor: "rgba(16,185,129,0.45)" }}
-        />
-        <div
-          className="h-3 w-6 rounded"
-          style={{ backgroundColor: "rgba(16,185,129,0.85)" }}
-        />
-        <span>High</span>
       </div>
     </div>
   );
