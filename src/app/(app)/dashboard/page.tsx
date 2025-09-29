@@ -3,6 +3,8 @@ import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
 import StreakBadge from "@/components/StreakBadge";
+//import ActivityHeat30 from "@/components/ActivityHeat30";
+import ActivityHeat30 from "../../../components/ActivityHeat30";
 
 export default async function DashboardPage() {
   const user = await requireUser();
@@ -24,6 +26,9 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Today</h1>
+      <ActivityHeat30 userId={user.id} />
+      <div className="text-amber-400 font-semibold">—— DEBUG BELOW ——</div>
+
       <ul className="space-y-2">
         {habits.map((h) => (
           <li
