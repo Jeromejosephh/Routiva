@@ -3,6 +3,7 @@
 
 import { useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "@/lib/toast";
 import {
   MoreHorizontal,
   Pencil,
@@ -23,43 +24,53 @@ export default function HabitActions({
   const router = useRouter();
   const [pending, start] = useTransition();
   const detailsRef = useRef<HTMLDetailsElement>(null);
-  const closeMenu = () => detailsRef.current?.removeAttribute("open");
+  const close = () => detailsRef.current?.removeAttribute("open");
+
+  const patch = async (body: any) => {
+    const res = await fetch(`/api/habits/${habitId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(await res.text());
+  };
 
   const rename = () => {
-    const next = window.prompt("Rename habit", name);
-    if (!next || next.trim() === name) return;
+    const next = window.prompt("Rename habit", name)?.trim();
+    if (!next || next === name) return;
     start(async () => {
-      const r = await fetch(`/api/habits/${habitId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: next.trim() }),
-      });
-      if (!r.ok) alert("Rename failed");
-      closeMenu();
-      router.refresh();
+      try {
+        await patch({ name: next });
+        close();
+        router.refresh();
+      } catch (e: any) {
+        toast(`Rename failed: ${e?.message ?? "error"}`);
+      }
     });
   };
 
-  const toggleArchive = () => {
+  const toggleArchive = () =>
     start(async () => {
-      const r = await fetch(`/api/habits/${habitId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isArchived: !isArchived }),
-      });
-      if (!r.ok) alert("Archive toggle failed");
-      closeMenu();
-      router.refresh();
+      try {
+        await patch({ isArchived: !isArchived });
+        close();
+        router.refresh();
+      } catch (e: any) {
+        toast(`Update failed: ${e?.message ?? "error"}`);
+      }
     });
-  };
 
   const del = () => {
     if (!window.confirm("Delete this habit? This removes its logs.")) return;
     start(async () => {
-      const r = await fetch(`/api/habits/${habitId}`, { method: "DELETE" });
-      if (!r.ok) alert("Delete failed");
-      closeMenu();
-      router.refresh();
+      try {
+        const res = await fetch(`/api/habits/${habitId}`, { method: "DELETE" });
+        if (!res.ok) throw new Error(await res.text());
+        close();
+        router.refresh();
+      } catch (e: any) {
+        toast(`Delete failed: ${e?.message ?? "error"}`);
+      }
     });
   };
 
@@ -68,6 +79,7 @@ export default function HabitActions({
       <summary
         className="flex h-9 w-9 items-center justify-center rounded border bg-background hover:bg-muted cursor-pointer list-none"
         aria-label="Actions"
+        role="button"
       >
         <MoreHorizontal className="h-4 w-4" />
       </summary>

@@ -1,14 +1,8 @@
+// src/lib/components/HabitRow.tsx
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-
-function yyyymmddUtc(d = new Date()) {
-  const y = d.getUTCFullYear();
-  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(d.getUTCDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
-}
+import { toast } from "@/lib/toast";
 
 export default function HabitRow({
   habitId,
@@ -19,35 +13,60 @@ export default function HabitRow({
 }) {
   const [checked, setChecked] = useState(initialChecked);
   const [pending, start] = useTransition();
-  const router = useRouter();
 
-  async function toggle() {
-    const today = yyyymmddUtc();
-    if (!checked) {
-      const r = await fetch(`/api/habits/${habitId}/logs`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date: today, status: "done" }),
-      });
-      if (r.ok) setChecked(true);
-    } else {
-      const r = await fetch(`/api/habits/${habitId}/logs?date=${today}`, {
-        method: "DELETE",
-      });
-      if (r.ok) setChecked(false);
-    }
-    start(() => router.refresh());
-  }
+  const onToggle = () => {
+    const next = !checked;
+    setChecked(next);
+
+    start(async () => {
+      const day = new Date();
+      day.setUTCHours(0, 0, 0, 0);
+      const date = day.toISOString();
+
+      try {
+        const res = next
+          ? await fetch(`/api/habits/${habitId}/logs`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ date, status: "done" }),
+            })
+          : await fetch(
+              `/api/habits/${habitId}/logs?date=${encodeURIComponent(date)}`,
+              { method: "DELETE" }
+            );
+
+        if (!res.ok) {
+          setChecked(!next);
+          throw new Error(await safeText(res));
+        }
+      } catch (e: any) {
+        toast(`Could not update: ${e?.message ?? "network error"}`);
+      }
+    });
+  };
 
   return (
     <button
       type="button"
-      onClick={() => start(toggle)}
+      onClick={onToggle}
       disabled={pending}
-      className="rounded px-3 py-1 border disabled:opacity-50"
       aria-pressed={checked}
+      className={`h-9 px-3 rounded border text-sm transition ${
+        checked
+          ? "bg-emerald-600 text-white border-emerald-500"
+          : "bg-transparent hover:bg-zinc-900/40"
+      } ${pending ? "opacity-70" : ""}`}
     >
       {checked ? "✓ Done" : "Mark done"}
     </button>
   );
+}
+
+async function safeText(r: Response) {
+  try {
+    const t = await r.text();
+    return t?.slice(0, 180) || r.statusText;
+  } catch {
+    return r.statusText;
+  }
 }

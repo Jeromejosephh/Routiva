@@ -3,7 +3,6 @@ import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
 import HabitActions from "@/components/HabitActions";
-import StreakBadge from "@/components/StreakBadge";
 import { revalidatePath } from "next/cache";
 
 async function createHabit(formData: FormData) {
@@ -15,6 +14,7 @@ async function createHabit(formData: FormData) {
     await prisma.habit.create({ data: { name, userId: user.id } });
   } catch {}
   revalidatePath("/habits");
+  revalidatePath("/dashboard");
 }
 
 export default async function HabitsPage() {
@@ -48,26 +48,32 @@ export default async function HabitsPage() {
       </form>
 
       <h1 className="text-xl font-semibold">Your habits</h1>
-      <ul className="space-y-2">
-        {habits.map((h) => (
-          <li key={h.id} className="border p-3 rounded">
-            <div className="flex items-center justify-between">
-              <span className={h.isArchived ? "opacity-60 line-through" : ""}>
-                {h.name}
-              </span>
-              <div className="flex items-center gap-3">
-                <StreakBadge habitId={h.id} />
-                <HabitRow habitId={h.id} initialChecked={doneSet.has(h.id)} />
-                <HabitActions
-                  habitId={h.id}
-                  name={h.name}
-                  isArchived={h.isArchived}
-                />
+
+      {habits.length === 0 ? (
+        <div className="rounded border p-4 text-sm text-muted-foreground">
+          No habits yet. Add one above to get started!
+        </div>
+      ) : (
+        <ul className="space-y-2">
+          {habits.map((h) => (
+            <li key={h.id} className="border p-3 rounded">
+              <div className="flex items-center justify-between">
+                <span className={h.isArchived ? "opacity-60 line-through" : ""}>
+                  {h.name}
+                </span>
+                <div className="flex items-center gap-2">
+                  <HabitRow habitId={h.id} initialChecked={doneSet.has(h.id)} />
+                  <HabitActions
+                    habitId={h.id}
+                    name={h.name}
+                    isArchived={h.isArchived}
+                  />
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

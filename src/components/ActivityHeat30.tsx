@@ -1,7 +1,6 @@
 // src/components/ActivityHeat30.tsx
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 import { prisma } from "@/lib/db";
 
@@ -18,17 +17,15 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
   const from = new Date(to);
   from.setUTCDate(to.getUTCDate() - 29);
 
-  const logs = await prisma.habitLog.findMany({
+  const grouped = await prisma.habitLog.groupBy({
+    by: ["date"],
     where: { date: { gte: from, lte: to }, habit: { userId } },
-    select: { date: true },
+    _count: { _all: true },
   });
 
-  const counts = new Map<string, number>();
-  for (const l of logs) {
-    const k = ymdUTC(new Date(l.date));
-    counts.set(k, (counts.get(k) ?? 0) + 1);
-  }
-
+  const counts = new Map(
+    grouped.map((g) => [ymdUTC(g.date), g._count._all as number])
+  );
   const days: { key: string; label: string; count: number }[] = [];
   const cursor = new Date(from);
   while (cursor <= to) {
@@ -37,7 +34,6 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
     days.push({ key, label, count: counts.get(key) ?? 0 });
     cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
-
   const max = days.reduce((m, d) => Math.max(m, d.count), 0) || 1;
 
   return (
@@ -45,10 +41,10 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Last 30 days</h2>
         <div className="text-sm text-muted-foreground">
-          {logs.length} completions
+          {grouped.reduce((n, g) => n + (g._count._all as number), 0)}{" "}
+          completions
         </div>
       </div>
-
       <div className="flex flex-wrap gap-1">
         {days.map((d) => {
           const t = d.count / max;

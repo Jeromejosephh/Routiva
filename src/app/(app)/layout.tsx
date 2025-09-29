@@ -1,5 +1,5 @@
-// src/app/(app)/layout.tsx
 import Link from "next/link";
+import Toaster from "@/components/Toaster";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,7 +23,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <button className="text-sm border px-3 py-1 rounded">Sign out</button>
         </form>
       </nav>
+
       <main className="p-4 max-w-5xl mx-auto w-full">{children}</main>
+      <Toaster />
     </div>
   );
 }
