@@ -43,24 +43,21 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
         <div className="text-sm text-muted-foreground">Completions per day</div>
       </div>
 
-      {/* 30 squares in a row; wraps on small screens */}
       <div className="flex flex-wrap gap-1">
         {days.map((d) => {
-          const t = d.count / max; // 0..1
-          const bg =
-            t === 0
-              ? "bg-zinc-900 dark:bg-zinc-800" // make zero-days visible with border
-              : "";
+          const t = d.count / max;
+          const bg = t === 0 ? "bg-zinc-900 dark:bg-zinc-800" : "";
           const style =
             t === 0
-              ? undefined
-              : { backgroundColor: `rgba(16,185,129, ${0.25 + t * 0.6})` }; // emerald tint
+              ? { backgroundColor: "#3f3f46" }
+              : { backgroundColor: `rgba(16,185,129, ${0.25 + t * 0.6})` };
+
           return (
             <div
               key={d.key}
-              title={`${d.label}: ${d.count} done`}
-              className={`h-6 w-6 rounded border border-zinc-600/40 ${bg}`}
+              className="h-6 w-6 rounded border border-zinc-600/40"
               style={style}
+              title={`${d.label}: ${d.count} done`}
             />
           );
         })}
