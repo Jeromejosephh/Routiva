@@ -1,4 +1,5 @@
 // src/components/ActivityHeat30.tsx
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -17,10 +18,22 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
   const from = new Date(to);
   from.setUTCDate(to.getUTCDate() - 29);
 
-  const logs = await prisma.habitLog.findMany({
-    where: { date: { gte: from, lte: to }, habit: { userId } },
-    select: { date: true },
-  });
+  let logs: { date: Date }[] = [];
+  try {
+    logs = await prisma.habitLog.findMany({
+      where: { date: { gte: from, lte: to }, habit: { userId } },
+      select: { date: true },
+    });
+  } catch (e) {
+    return (
+      <div className="mt-6 rounded border p-4">
+        <h2 className="text-lg font-semibold mb-2">Last 30 days</h2>
+        <p className="text-sm text-red-400">
+          Activity could not load (server runtime).{" "}
+        </p>
+      </div>
+    );
+  }
 
   const counts = new Map<string, number>();
   for (const l of logs) {
@@ -43,7 +56,9 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
     <div className="mt-6 rounded border p-4">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Last 30 days</h2>
-        <div className="text-sm text-muted-foreground">Completions per day</div>
+        <div className="text-sm text-muted-foreground">
+          {logs.length} completions in range
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-1">
