@@ -14,20 +14,17 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
   const from = new Date(to);
   from.setUTCDate(to.getUTCDate() - 29);
 
-  // Fetch all logs for the user's habits in range
   const logs = await prisma.habitLog.findMany({
     where: { date: { gte: from, lte: to }, habit: { userId } },
     select: { date: true },
   });
 
-  // Count per UTC day
   const counts = new Map<string, number>();
   for (const l of logs) {
-    const k = ymdUTC(new Date(l.date));
-    counts.set(k, (counts.get(k) ?? 0) + 1);
+    const key = ymdUTC(new Date(l.date));
+    counts.set(key, (counts.get(key) ?? 0) + 1);
   }
 
-  // Build day list
   const days: { key: string; label: string; count: number }[] = [];
   const cursor = new Date(from);
   while (cursor <= to) {
@@ -40,27 +37,30 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
   const max = days.reduce((m, d) => Math.max(m, d.count), 0) || 1;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Last 30 days</h2>
         <div className="text-sm text-muted-foreground">Completions per day</div>
       </div>
 
-      <div className="grid grid-cols-15 gap-1">
+      {/* 30 squares in a row; wraps on small screens */}
+      <div className="flex flex-wrap gap-1">
         {days.map((d) => {
-          // simple 0..1 intensity -> background
-          const t = d.count / max;
-          const bg = t === 0 ? "bg-zinc-200 dark:bg-zinc-800" : "";
+          const t = d.count / max; // 0..1
+          const bg =
+            t === 0
+              ? "bg-zinc-900 dark:bg-zinc-800" // make zero-days visible with border
+              : "";
           const style =
             t === 0
               ? undefined
-              : { backgroundColor: `rgba(16, 185, 129, ${0.25 + t * 0.6})` }; // emerald-ish
+              : { backgroundColor: `rgba(16,185,129, ${0.25 + t * 0.6})` }; // emerald tint
           return (
             <div
               key={d.key}
-              className={`h-6 w-6 rounded ${bg}`}
-              style={style}
               title={`${d.label}: ${d.count} done`}
+              className={`h-6 w-6 rounded border border-zinc-600/40 ${bg}`}
+              style={style}
             />
           );
         })}
@@ -68,7 +68,7 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <span>Low</span>
-        <div className="h-3 w-6 rounded bg-zinc-200 dark:bg-zinc-800" />
+        <div className="h-3 w-6 rounded border border-zinc-600/40 bg-zinc-900 dark:bg-zinc-800" />
         <div
           className="h-3 w-6 rounded"
           style={{ backgroundColor: "rgba(16,185,129,0.45)" }}

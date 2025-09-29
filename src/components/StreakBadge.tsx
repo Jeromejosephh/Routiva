@@ -42,7 +42,7 @@ export default function StreakBadge({ habitId }: { habitId: string }) {
 
   return (
     <span className="text-sm text-muted-foreground">
-      {streak ?? "—"} 🔥
+      {streak ?? "—"}  day streak 🔥
     </span>
   );
 }
