@@ -1,4 +1,4 @@
-// src/lib/components/HabitRow.tsx
+// src/components/HabitRow.tsx
 "use client";
 
 import { useState, useTransition } from "react";
@@ -11,10 +11,10 @@ export default function HabitRow({
   habitId: string;
   initialChecked: boolean;
 }) {
-  const [checked, setChecked] = useState(initialChecked);
+  const [checked, setChecked] = useState<boolean>(initialChecked);
   const [pending, start] = useTransition();
 
-  const onToggle = () => {
+  const onToggle = (): void => {
     const next = !checked;
     setChecked(next);
 
@@ -28,7 +28,7 @@ export default function HabitRow({
           ? await fetch(`/api/habits/${habitId}/logs`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ date, status: "done" }),
+              body: JSON.stringify({ date, status: "done" as const }),
             })
           : await fetch(
               `/api/habits/${habitId}/logs?date=${encodeURIComponent(date)}`,
@@ -39,8 +39,9 @@ export default function HabitRow({
           setChecked(!next);
           throw new Error(await safeText(res));
         }
-      } catch (e: any) {
-        toast(`Could not update: ${e?.message ?? "network error"}`);
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : "network error";
+        toast(`Could not update: ${msg}`);
       }
     });
   };
@@ -62,7 +63,7 @@ export default function HabitRow({
   );
 }
 
-async function safeText(r: Response) {
+async function safeText(r: Response): Promise<string> {
   try {
     const t = await r.text();
     return t?.slice(0, 180) || r.statusText;

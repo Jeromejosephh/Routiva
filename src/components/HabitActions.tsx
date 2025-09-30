@@ -12,6 +12,14 @@ import {
   Trash2,
 } from "lucide-react";
 
+type HabitPatchBody = {
+  name?: string;
+  isArchived?: boolean;
+  weeklyTarget?: number;
+  tags?: string[];
+  color?: string;
+};
+
 export default function HabitActions({
   habitId,
   name,
@@ -24,9 +32,9 @@ export default function HabitActions({
   const router = useRouter();
   const [pending, start] = useTransition();
   const detailsRef = useRef<HTMLDetailsElement>(null);
-  const close = () => detailsRef.current?.removeAttribute("open");
+  const close = (): void => detailsRef.current?.removeAttribute("open");
 
-  const patch = async (body: any) => {
+  const patch = async (body: HabitPatchBody): Promise<void> => {
     const res = await fetch(`/api/habits/${habitId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -35,7 +43,7 @@ export default function HabitActions({
     if (!res.ok) throw new Error(await res.text());
   };
 
-  const rename = () => {
+  const rename = (): void => {
     const next = window.prompt("Rename habit", name)?.trim();
     if (!next || next === name) return;
     start(async () => {
@@ -43,24 +51,26 @@ export default function HabitActions({
         await patch({ name: next });
         close();
         router.refresh();
-      } catch (e: any) {
-        toast(`Rename failed: ${e?.message ?? "error"}`);
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : "error";
+        toast(`Rename failed: ${msg}`);
       }
     });
   };
 
-  const toggleArchive = () =>
+  const toggleArchive = (): void =>
     start(async () => {
       try {
         await patch({ isArchived: !isArchived });
         close();
         router.refresh();
-      } catch (e: any) {
-        toast(`Update failed: ${e?.message ?? "error"}`);
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : "error";
+        toast(`Update failed: ${msg}`);
       }
     });
 
-  const del = () => {
+  const del = (): void => {
     if (!window.confirm("Delete this habit? This removes its logs.")) return;
     start(async () => {
       try {
@@ -68,8 +78,9 @@ export default function HabitActions({
         if (!res.ok) throw new Error(await res.text());
         close();
         router.refresh();
-      } catch (e: any) {
-        toast(`Delete failed: ${e?.message ?? "error"}`);
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : "error";
+        toast(`Delete failed: ${msg}`);
       }
     });
   };
