@@ -46,11 +46,23 @@ export default function HabitActions({
   const rename = (): void => {
     const next = window.prompt("Rename habit", name)?.trim();
     if (!next || next === name) return;
+    
+    // Basic client-side validation
+    if (next.length === 0) {
+      toast("Habit name cannot be empty");
+      return;
+    }
+    if (next.length > 60) {
+      toast("Habit name must be 60 characters or less");
+      return;
+    }
+    
     start(async () => {
       try {
         await patch({ name: next });
         close();
         router.refresh();
+        toast("Habit renamed successfully");
       } catch (e: unknown) {
         const msg = e instanceof Error ? e.message : "error";
         toast(`Rename failed: ${msg}`);

@@ -8,32 +8,61 @@ import { revalidatePath } from "next/cache";
 
 async function createHabit(formData: FormData) {
   "use server";
-  const user = await requireUser();
-  const name = String(formData.get("name") ?? "").trim();
-  if (!name) return;
   try {
-    await prisma.habit.create({ data: { name, userId: user.id } });
-  } catch {}
-  revalidatePath("/dashboard");
-  revalidatePath("/habits");
+    const user = await requireUser();
+    const name = String(formData.get("name") ?? "").trim();
+    
+    if (!name) {
+      throw new Error("Habit name is required");
+    }
+
+    // Sanitize input
+    const { sanitizeHabitName } = await import("@/lib/sanitize");
+    const sanitizedName = sanitizeHabitName(name);
+
+    await prisma.habit.create({ 
+      data: { 
+        name: sanitizedName, 
+        userId: user.id 
+      } 
+    });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/habits");
+  } catch (error) {
+    const { logger } = await import("@/lib/logger");
+    logger.error("Failed to create habit", { 
+      error: error instanceof Error ? error : new Error(String(error)),
+      metadata: { formData: Object.fromEntries(formData.entries()) }
+    });
+    
+    throw new Error("Failed to create habit. Please try again.");
+  }
 }
 
 export default async function DashboardPage() {
   const user = await requireUser();
 
-  const habits = await prisma.habit.findMany({
-    where: { userId: user.id, isArchived: false },
-    orderBy: { createdAt: "desc" },
-  });
-
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
 
-  const logsToday = await prisma.habitLog.findMany({
-    where: { habitId: { in: habits.map((h) => h.id) }, date: today },
-    select: { habitId: true },
+  // Optimized query: get habits with today's logs in a single query
+  const habits = await prisma.habit.findMany({
+    where: { userId: user.id, isArchived: false },
+    orderBy: { createdAt: "desc" },
+    include: {
+      logs: {
+        where: { date: today },
+        select: { status: true }
+      }
+    }
   });
-  const doneSet = new Set(logsToday.map((l) => l.habitId));
+
+  const doneSet = new Set(
+    habits
+      .filter(h => h.logs.some(log => log.status === 'done'))
+      .map(h => h.id)
+  );
 
   const isEmpty = habits.length === 0;
 

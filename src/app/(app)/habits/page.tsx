@@ -7,14 +7,36 @@ import { revalidatePath } from "next/cache";
 
 async function createHabit(formData: FormData) {
   "use server";
-  const user = await requireUser();
-  const name = String(formData.get("name") ?? "").trim();
-  if (!name) return;
   try {
-    await prisma.habit.create({ data: { name, userId: user.id } });
-  } catch {}
-  revalidatePath("/habits");
-  revalidatePath("/dashboard");
+    const user = await requireUser();
+    const name = String(formData.get("name") ?? "").trim();
+    
+    if (!name) {
+      throw new Error("Habit name is required");
+    }
+
+    // Sanitize input
+    const { sanitizeHabitName } = await import("@/lib/sanitize");
+    const sanitizedName = sanitizeHabitName(name);
+
+    await prisma.habit.create({ 
+      data: { 
+        name: sanitizedName, 
+        userId: user.id 
+      } 
+    });
+
+    revalidatePath("/habits");
+    revalidatePath("/dashboard");
+  } catch (error) {
+    const { logger } = await import("@/lib/logger");
+    logger.error("Failed to create habit", { 
+      error: error instanceof Error ? error : new Error(String(error)),
+      metadata: { formData: Object.fromEntries(formData.entries()) }
+    });
+    
+    throw new Error("Failed to create habit. Please try again.");
+  }
 }
 
 export default async function HabitsPage() {

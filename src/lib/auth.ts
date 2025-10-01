@@ -3,6 +3,7 @@ import type { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { prisma } from "@/lib/db";
+import { env } from "@/lib/env";
 import nodemailer from "nodemailer";
 
 export const authOptions: NextAuthOptions = {
@@ -10,51 +11,67 @@ export const authOptions: NextAuthOptions = {
 
   providers: [
     EmailProvider({
-      from: process.env.EMAIL_FROM,
+      from: env.EMAIL_FROM,
 
       async sendVerificationRequest({ identifier, url }) {
-        const from = process.env.EMAIL_FROM!;
+        const from = env.EMAIL_FROM;
 
-        if (process.env.RESEND_API_KEY) {
-          await fetch("https://api.resend.com/emails", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-            },
-            body: JSON.stringify({
-              from,
-              to: identifier,
-              subject: "Your Routiva sign-in link",
-              html: `<p>Click to sign in:</p><p><a href="${url}">${url}</a></p>`,
-            }),
+        try {
+          if (env.RESEND_API_KEY) {
+            const response = await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${env.RESEND_API_KEY}`,
+              },
+              body: JSON.stringify({
+                from,
+                to: identifier,
+                subject: "Your Routiva sign-in link",
+                html: `<p>Click to sign in:</p><p><a href="${url}">${url}</a></p>`,
+              }),
+            });
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error("Resend API error:", response.status, errorText);
+              throw new Error(`Resend API error: ${response.status}`);
+            }
+
+            console.log("Email sent successfully via Resend");
+            return;
+          }
+
+          // Fallback to Ethereal for development
+          console.log("Using Ethereal email for development...");
+          const test = await nodemailer.createTestAccount();
+          const transporter = nodemailer.createTransporter({
+            host: "smtp.ethereal.email",
+            port: 587,
+            auth: { user: test.user, pass: test.pass },
           });
-          return;
+          const info = await transporter.sendMail({
+            from,
+            to: identifier,
+            subject: "Your Routiva sign-in link",
+            html: `<p>Click to sign in:</p><p><a href="${url}">${url}</a></p>`,
+          });
+          console.log(
+            "Ethereal preview URL:",
+            nodemailer.getTestMessageUrl(info)
+          );
+        } catch (error) {
+          console.error("Failed to send verification email:", error);
+          // Don't throw the error to prevent the auth flow from breaking
+          // The user will see a generic error message
         }
-
-        const test = await nodemailer.createTestAccount();
-        const transporter = nodemailer.createTransport({
-          host: "smtp.ethereal.email",
-          port: 587,
-          auth: { user: test.user, pass: test.pass },
-        });
-        const info = await transporter.sendMail({
-          from,
-          to: identifier,
-          subject: "Your Routiva sign-in link",
-          html: `<p>Click to sign in:</p><p><a href="${url}">${url}</a></p>`,
-        });
-        console.log(
-          "Ethereal preview URL:",
-          nodemailer.getTestMessageUrl(info)
-        );
       },
     }),
   ],
 
   session: { strategy: "database" },
   // pages: { signIn: "/sign-in" },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: env.NEXTAUTH_SECRET,
 
   callbacks: {
     async session({ session, user }) {

@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { logCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
+import { rateLimitRequest } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
 
 const toUtcMidnight = (s: string) => {
   const d = new Date(s);
@@ -15,53 +17,98 @@ export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const user = await requireUser();
+  try {
+    // Rate limiting
+    const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'unknown';
+    await rateLimitRequest(ip);
 
-  const habit = await prisma.habit.findFirst({
-    where: { id, userId: user.id },
-    select: { id: true },
-  });
-  if (!habit) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const { id } = await params;
+    const user = await requireUser();
 
-  const ct = req.headers.get("content-type") ?? "";
-  let candidate: unknown;
-  if (ct.includes("application/json")) {
-    candidate = await req.json();
-  } else if (
-    ct.includes("application/x-www-form-urlencoded") ||
-    ct.includes("multipart/form-data")
-  ) {
-    const fd = await req.formData();
-    candidate = {
-      date: fd.get("date"),
-      status: fd.get("status"),
-      note: fd.get("note") ?? undefined,
-    };
-  } else {
-    candidate = await req.json().catch(() => ({}));
+    const habit = await prisma.habit.findFirst({
+      where: { id, userId: user.id },
+      select: { id: true },
+    });
+    if (!habit) {
+      logger.warn("Habit not found", { userId: user.id, habitId: id });
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    const ct = req.headers.get("content-type") ?? "";
+    let candidate: unknown;
+    if (ct.includes("application/json")) {
+      candidate = await req.json();
+    } else if (
+      ct.includes("application/x-www-form-urlencoded") ||
+      ct.includes("multipart/form-data")
+    ) {
+      const fd = await req.formData();
+      candidate = {
+        date: fd.get("date"),
+        status: fd.get("status"),
+        note: fd.get("note") ?? undefined,
+      };
+    } else {
+      candidate = await req.json().catch(() => ({}));
+    }
+
+    const parsed = logCreate.safeParse(candidate);
+    if (!parsed.success) {
+      logger.warn("Invalid log creation request", { 
+        userId: user.id, 
+        habitId: id,
+        errors: parsed.error.format() 
+      });
+      return NextResponse.json(parsed.error.format(), { status: 400 });
+    }
+
+    const date = toUtcMidnight(String(parsed.data.date));
+    if (!date) {
+      logger.warn("Invalid date provided", { 
+        userId: user.id, 
+        habitId: id,
+        date: parsed.data.date 
+      });
+      return NextResponse.json({ error: "Invalid date" }, { status: 400 });
+    }
+
+    // Sanitize note if provided
+    let sanitizedNote = parsed.data.note;
+    if (sanitizedNote) {
+      const { sanitizeText } = await import("@/lib/sanitize");
+      sanitizedNote = sanitizeText(sanitizedNote);
+    }
+
+    const log = await prisma.habitLog.upsert({
+      where: { habitId_date: { habitId: habit.id, date } },
+      update: { status: parsed.data.status, note: sanitizedNote },
+      create: {
+        habitId: habit.id,
+        date,
+        status: parsed.data.status,
+        note: sanitizedNote,
+      },
+    });
+
+    logger.info("Created/updated habit log", { 
+      userId: user.id, 
+      habitId: id, 
+      logId: log.id,
+      status: parsed.data.status 
+    });
+
+    return NextResponse.json(log, { status: 201 });
+  } catch (error) {
+    logger.error("Failed to create/update habit log", { 
+      error: error instanceof Error ? error : new Error(String(error))
+    });
+    
+    if (error instanceof Error && error.message.includes('Rate limit')) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+    
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  const parsed = logCreate.safeParse(candidate);
-  if (!parsed.success)
-    return NextResponse.json(parsed.error.format(), { status: 400 });
-
-  const date = toUtcMidnight(String(parsed.data.date));
-  if (!date)
-    return NextResponse.json({ error: "Invalid date" }, { status: 400 });
-
-  const log = await prisma.habitLog.upsert({
-    where: { habitId_date: { habitId: habit.id, date } },
-    update: { status: parsed.data.status, note: parsed.data.note },
-    create: {
-      habitId: habit.id,
-      date,
-      status: parsed.data.status,
-      note: parsed.data.note,
-    },
-  });
-
-  return NextResponse.json(log, { status: 201 });
 }
 
 export async function DELETE(

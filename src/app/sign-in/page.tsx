@@ -5,12 +5,33 @@ import { signIn } from "next-auth/react";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    if (isLoading) return;
+    setIsLoading(true);
 
-    await signIn("email", { email, callbackUrl: "/" });
-    alert("Check your email (or terminal for Ethereal preview link).");
+    try {
+      const result = await signIn("email", { 
+        email, 
+        callbackUrl: "/",
+        redirect: false 
+      });
+      
+      if (result?.error) {
+        console.error("Sign in error:", result.error);
+        alert("Failed to send email. Please try again.");
+      } else {
+        alert("Check your email (or terminal for Ethereal preview link).");
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+      alert("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -25,8 +46,12 @@ export default function SignInPage() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button className="w-full rounded bg-black text-white py-2">
-          Email me a link
+        <button 
+          type="submit"
+          disabled={isLoading}
+          className="w-full rounded bg-black text-white py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isLoading ? "Sending..." : "Email me a link"}
         </button>
       </form>
     </main>

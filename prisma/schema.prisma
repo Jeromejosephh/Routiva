@@ -8,26 +8,35 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?  @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  habits        Habit[]
-  tags          Tag[]    @relation("UserTags")
-  accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+
+  // 🔹 New settings/trust fields
+  timezone             String  @default("UTC")
+  theme                String?
+  reminderDailyTime    String?
+  reminderDailyEnabled Boolean @default(false)
+  summaryWeeklyEnabled Boolean @default(false)
+
+  habits    Habit[]
+  tags      Tag[]     @relation("UserTags")
+  accounts  Account[]
+  sessions  Session[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([provider, providerAccountId])
 }
 
@@ -43,51 +52,70 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
+
   @@unique([identifier, token])
 }
 
 model Habit {
-  id          String     @id @default(cuid())
+  id          String  @id @default(cuid())
   userId      String
   name        String
   description String?
-  targetDays  Int?
-  isArchived  Boolean    @default(false)
-  color       String?
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  logs        HabitLog[]
-  tags        HabitTag[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  @@index([userId])
+
+  // 🔹 Replaced/clarified targets
+  weeklyTarget Int @default(4) // target completions per week
+
+  isArchived Boolean @default(false)
+  color      String  @default("gray")
+
+  // 🔹 Sorting helpers (Soon features)
+  priority  Int     @default(2) // 1=high,2=med,3=low
+  timeOfDay String? // "morning" | "afternoon" | "evening"
+
+  user User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs HabitLog[]
+  tags HabitTag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 🔹 Fast queries & duplicate-name guard
+  @@unique([userId, name])
+  @@index([userId, isArchived])
 }
 
 model HabitLog {
-  id       String   @id @default(cuid())
-  habitId  String
-  date     DateTime
-  status   String
-  note     String?
-  habit    Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  id      String   @id @default(cuid())
+  habitId String
+  date    DateTime
+  status  String   @default("done") // "done" | "skipped"
+  note    String?
+
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
   @@unique([habitId, date])
   @@index([habitId, date])
 }
 
 model Tag {
-  id        String     @id @default(cuid())
-  userId    String
-  name      String
-  color     String?
-  user      User       @relation("UserTags", fields: [userId], references: [id], onDelete: Cascade)
-  habits    HabitTag[]
+  id     String  @id @default(cuid())
+  userId String
+  name   String
+  color  String?
+
+  user   User       @relation("UserTags", fields: [userId], references: [id], onDelete: Cascade)
+  habits HabitTag[]
+
   @@unique([userId, name])
 }
 
 model HabitTag {
   habitId String
   tagId   String
-  habit   Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
-  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  tag   Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
   @@id([habitId, tagId])
 }
