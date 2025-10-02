@@ -1,9 +1,11 @@
 "use client";
 import { useState } from 'react';
 
-export default function SettingsForm({ user }: { user: any }) {
-  const [name, setName] = useState(user?.name ?? '');
-  const [email, setEmail] = useState(user?.email ?? '');
+type User = { name?: string; email?: string };
+
+export default function SettingsForm({ user }: { user: User }) {
+  const [name, setName] = useState<string>(user?.name ?? '');
+  const [email, setEmail] = useState<string>(user?.email ?? '');
 
   return (
     <form onSubmit={(e) => { e.preventDefault(); alert('Save not implemented'); }}>

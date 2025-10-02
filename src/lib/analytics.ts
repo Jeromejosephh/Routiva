@@ -16,7 +16,7 @@ export function computeCurrentStreak(logs: { status: string; date: Date }[]) {
   }
 
   // start from today UTC
-  let cursor = new Date();
+  const cursor = new Date();
   cursor.setUTCHours(0,0,0,0);
   let streak = 0;
   while (true) {
