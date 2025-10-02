@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
             return;
           }
 
-          // Fallback to Ethereal for development
+          //Fallback to Ethereal
           console.log("Using Ethereal email for development...");
           const test = await nodemailer.createTestAccount();
           const transporter = nodemailer.createTransport({
@@ -62,8 +62,8 @@ export const authOptions: NextAuthOptions = {
           );
         } catch (error) {
           console.error("Failed to send verification email:", error);
-          // Don't throw the error to prevent the auth flow from breaking
-          // The user will see a generic error message
+          //Don't throw to avoid breaking auth flow
+          //User sees a generic error message
         }
       },
     }),

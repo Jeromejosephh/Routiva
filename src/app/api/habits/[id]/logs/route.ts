@@ -13,7 +13,7 @@ const toUtcMidnight = (s: string) => {
   return d;
 };
 
-// Safely extract client IP from a Request. Avoids using non-standard `req.ip` directly
+//Get client IP from headers
 const getRequestIp = (req: Request) => {
   // Prefer X-Forwarded-For (may contain comma-separated list)
   const xff = req.headers.get('x-forwarded-for');
@@ -34,7 +34,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-  // Rate limiting
+  //RateLimit
   const ip = getRequestIp(req);
     await rateLimitRequest(ip);
 
@@ -86,7 +86,7 @@ export async function POST(
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
     }
 
-    // Sanitize note if provided
+  //Sanitize note
     let sanitizedNote = parsed.data.note;
     if (sanitizedNote) {
       const { sanitizeText } = await import("@/lib/sanitize");

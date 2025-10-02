@@ -51,7 +51,7 @@ class Logger {
 
     const formattedLog = this.formatLog(entry);
 
-    // Console output
+    //Console output
     switch (level) {
       case 'debug':
         if (this.isDevelopment) console.debug(formattedLog);
@@ -67,17 +67,17 @@ class Logger {
         break;
     }
 
-    // In production, you might want to send to external logging service
+    //Send errors to external logger in production
     if (!this.isDevelopment && level === 'error') {
-      // TODO: Send to external logging service (e.g., Sentry, LogRocket, etc.)
+      //Send to external logging service
       this.sendToExternalLogger(entry);
     }
   }
 
   private sendToExternalLogger(_entry: LogEntry) {
-    // Placeholder for external logging service integration
-    // Example: Sentry.captureException(entry.error);
-    // Use the parameter in a no-op to avoid unused-variable lint warnings
+    //External logger placeholder
+    //Example:Sentry.captureException(entry.error)
+    //Mark param used to avoid lint
     void _entry;
   }
 

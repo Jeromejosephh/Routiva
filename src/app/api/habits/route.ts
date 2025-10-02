@@ -25,6 +25,7 @@ function formToHabitInput(fd: FormData): HabitInput {
   };
 }
 
+//Get client IP from headers
 const getRequestIp = (req: Request) => {
   const xff = req.headers.get('x-forwarded-for');
   if (xff) return xff.split(',')[0].trim();
@@ -36,7 +37,7 @@ const getRequestIp = (req: Request) => {
 
 export async function GET(req: NextRequest) {
   try {
-  // Rate limiting
+  //RateLimit
   const ip = getRequestIp(req);
   await rateLimitRequest(ip);
 
@@ -108,7 +109,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(parsed.error.format(), { status: 400 });
     }
 
-    // Sanitize input
+  //Sanitize input
     const { sanitizeHabitName, sanitizeHabitDescription } = await import("@/lib/sanitize");
     const sanitizedName = sanitizeHabitName(parsed.data.name);
     const sanitizedDescription = sanitizeHabitDescription(parsed.data.description);

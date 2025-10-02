@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
 
 export function middleware() {
-  // Security headers
+  //Security headers
   const response = NextResponse.next();
-  
-  // Prevent XSS attacks
+  //Prevent XSS
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-XSS-Protection', '1; mode=block');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   
-  // Content Security Policy
+  //Content Security Policy
   const csp = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
@@ -23,7 +22,7 @@ export function middleware() {
   
   response.headers.set('Content-Security-Policy', csp);
   
-  // Rate limiting headers (informational)
+  //RateLimit headers
   response.headers.set('X-RateLimit-Limit', '10');
   response.headers.set('X-RateLimit-Remaining', '9');
   
