@@ -6,7 +6,7 @@ interface LogEntry {
   timestamp: string;
   userId?: string;
   error?: Error;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 class Logger {
@@ -38,7 +38,7 @@ class Logger {
   private log(level: LogLevel, message: string, options?: {
     userId?: string;
     error?: Error;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
   }) {
     const entry: LogEntry = {
       level,
@@ -72,27 +72,27 @@ class Logger {
     }
   }
 
-  private sendToExternalLogger(entry: LogEntry) {
+  private sendToExternalLogger(_entry: LogEntry) {
     // Placeholder for external logging service integration
     // Example: Sentry.captureException(entry.error);
   }
 
-  debug(message: string, options?: { userId?: string; metadata?: Record<string, any> }) {
+  debug(message: string, options?: { userId?: string; metadata?: Record<string, unknown> }) {
     this.log('debug', message, options);
   }
 
-  info(message: string, options?: { userId?: string; metadata?: Record<string, any> }) {
+  info(message: string, options?: { userId?: string; metadata?: Record<string, unknown> }) {
     this.log('info', message, options);
   }
 
-  warn(message: string, options?: { userId?: string; metadata?: Record<string, any> }) {
+  warn(message: string, options?: { userId?: string; metadata?: Record<string, unknown> }) {
     this.log('warn', message, options);
   }
 
   error(message: string, options?: { 
     userId?: string; 
     error?: Error; 
-    metadata?: Record<string, any> 
+    metadata?: Record<string, unknown> 
   }) {
     this.log('error', message, options);
   }
