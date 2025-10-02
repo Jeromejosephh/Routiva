@@ -7,8 +7,30 @@ import { env } from "@/lib/env";
 import nodemailer from "nodemailer";
 import { logger } from "@/lib/logger";
 
+// Wrap PrismaAdapter to defensively ignore P2025 (record not found) on session deletes.
+const createSafePrismaAdapter = () => {
+  const base = PrismaAdapter(prisma) as any;
+  // If deleteSession is present, wrap it to ignore P2025 errors from Prisma
+  if (typeof base.deleteSession === 'function') {
+    const orig = base.deleteSession.bind(base);
+    base.deleteSession = async (sessionToken: string) => {
+      try {
+        return await orig(sessionToken);
+      } catch (e: any) {
+        // Prisma P2025: record not found for delete — ignore as a safe fallback
+        if (e?.code === 'P2025') {
+          logger.warn('Prisma deleteSession P2025 ignored', { metadata: { sessionToken: String(sessionToken).slice(-6) } });
+          return null;
+        }
+        throw e;
+      }
+    };
+  }
+  return base as ReturnType<typeof PrismaAdapter>;
+};
+
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: createSafePrismaAdapter(),
 
   providers: [
     EmailProvider({
