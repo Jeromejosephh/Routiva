@@ -110,5 +110,7 @@ export const authOptions: NextAuthOptions = {
         logger.info("NextAuth createUser event", { metadata: { userId: user?.id, email: user?.email } });
       } catch (e) {}
     },
+    // Note: avoid adding an 'error' event here because NextAuth types do not include it.
+    // Runtime errors are logged by the route handler wrapper in src/app/api/auth/[...nextauth]/route.ts
   },
 };
