@@ -24,7 +24,7 @@ export default function SignInPage() {
         console.error("Sign in error:", result.error);
         alert("Failed to send email. Please try again.");
       } else {
-        alert("Check your email (or terminal for Ethereal preview link).");
+        alert("Check your email.");
       }
     } catch (error) {
       console.error("Sign in error:", error);
