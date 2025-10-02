@@ -25,11 +25,20 @@ function formToHabitInput(fd: FormData): HabitInput {
   };
 }
 
+const getRequestIp = (req: Request) => {
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  const cf = req.headers.get('cf-connecting-ip');
+  if (cf) return cf;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (req as any).ip ?? 'unknown';
+};
+
 export async function GET(req: NextRequest) {
   try {
-    // Rate limiting
-    const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'unknown';
-    await rateLimitRequest(ip);
+  // Rate limiting
+  const ip = getRequestIp(req);
+  await rateLimitRequest(ip);
 
     const user = await requireUser();
     
@@ -50,7 +59,7 @@ export async function GET(req: NextRequest) {
       }
     });
     
-    logger.info("Retrieved habits", { userId: user.id, count: rows.length });
+  logger.info("Retrieved habits", { userId: user.id, metadata: { count: rows.length } });
     return NextResponse.json(rows);
   } catch (error) {
     logger.error("Failed to get habits", { 
@@ -67,9 +76,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // Rate limiting
-    const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'unknown';
-    await rateLimitRequest(ip);
+  // Rate limiting
+  const ip = getRequestIp(req);
+  await rateLimitRequest(ip);
 
     const user = await requireUser();
     const ct = req.headers.get("content-type") ?? "";
@@ -94,7 +103,7 @@ export async function POST(req: NextRequest) {
     if (!parsed.success) {
       logger.warn("Invalid habit creation request", { 
         userId: user.id, 
-        errors: parsed.error.format() 
+        metadata: { errors: parsed.error.format() } 
       });
       return NextResponse.json(parsed.error.format(), { status: 400 });
     }
@@ -113,7 +122,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    logger.info("Created habit", { userId: user.id, habitId: row.id });
+  logger.info("Created habit", { userId: user.id, metadata: { habitId: row.id } });
     return NextResponse.json(row, { status: 201 });
   } catch (error) {
     logger.error("Failed to create habit", { 

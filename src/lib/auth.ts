@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
           // Fallback to Ethereal for development
           console.log("Using Ethereal email for development...");
           const test = await nodemailer.createTestAccount();
-          const transporter = nodemailer.createTransporter({
+          const transporter = nodemailer.createTransport({
             host: "smtp.ethereal.email",
             port: 587,
             auth: { user: test.user, pass: test.pass },

@@ -13,13 +13,29 @@ const toUtcMidnight = (s: string) => {
   return d;
 };
 
+// Safely extract client IP from a Request. Avoids using non-standard `req.ip` directly
+const getRequestIp = (req: Request) => {
+  // Prefer X-Forwarded-For (may contain comma-separated list)
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+
+  // Vercel / Cloudflare header
+  const cf = req.headers.get('cf-connecting-ip');
+  if (cf) return cf;
+
+  // Fallback to any non-standard property if present (avoid TS error by casting)
+  // This is a last resort and may be undefined in many runtimes.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (req as any).ip ?? 'unknown';
+};
+
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Rate limiting
-    const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'unknown';
+  // Rate limiting
+  const ip = getRequestIp(req);
     await rateLimitRequest(ip);
 
     const { id } = await params;
@@ -30,7 +46,7 @@ export async function POST(
       select: { id: true },
     });
     if (!habit) {
-      logger.warn("Habit not found", { userId: user.id, habitId: id });
+      logger.warn("Habit not found", { userId: user.id, metadata: { habitId: id } });
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
@@ -56,8 +72,7 @@ export async function POST(
     if (!parsed.success) {
       logger.warn("Invalid log creation request", { 
         userId: user.id, 
-        habitId: id,
-        errors: parsed.error.format() 
+        metadata: { habitId: id, errors: parsed.error.format() } 
       });
       return NextResponse.json(parsed.error.format(), { status: 400 });
     }
@@ -66,8 +81,7 @@ export async function POST(
     if (!date) {
       logger.warn("Invalid date provided", { 
         userId: user.id, 
-        habitId: id,
-        date: parsed.data.date 
+        metadata: { habitId: id, date: parsed.data.date } 
       });
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
     }
@@ -92,15 +106,13 @@ export async function POST(
 
     logger.info("Created/updated habit log", { 
       userId: user.id, 
-      habitId: id, 
-      logId: log.id,
-      status: parsed.data.status 
+      metadata: { habitId: id, logId: log.id, status: parsed.data.status } 
     });
 
     return NextResponse.json(log, { status: 201 });
   } catch (error) {
     logger.error("Failed to create/update habit log", { 
-      error: error instanceof Error ? error : new Error(String(error))
+      metadata: { error: error instanceof Error ? error : new Error(String(error)) }
     });
     
     if (error instanceof Error && error.message.includes('Rate limit')) {

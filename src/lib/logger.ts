@@ -35,10 +35,12 @@ class Logger {
     return logMessage;
   }
 
+  // Allow additional arbitrary properties in options to avoid strict object literal errors
   private log(level: LogLevel, message: string, options?: {
     userId?: string;
     error?: Error;
     metadata?: Record<string, unknown>;
+    [key: string]: unknown;
   }) {
     const entry: LogEntry = {
       level,
@@ -75,24 +77,27 @@ class Logger {
   private sendToExternalLogger(_entry: LogEntry) {
     // Placeholder for external logging service integration
     // Example: Sentry.captureException(entry.error);
+    // Use the parameter in a no-op to avoid unused-variable lint warnings
+    void _entry;
   }
 
-  debug(message: string, options?: { userId?: string; metadata?: Record<string, unknown> }) {
+  debug(message: string, options?: { userId?: string; metadata?: Record<string, unknown>; [key: string]: unknown }) {
     this.log('debug', message, options);
   }
 
-  info(message: string, options?: { userId?: string; metadata?: Record<string, unknown> }) {
+  info(message: string, options?: { userId?: string; metadata?: Record<string, unknown>; [key: string]: unknown }) {
     this.log('info', message, options);
   }
 
-  warn(message: string, options?: { userId?: string; metadata?: Record<string, unknown> }) {
+  warn(message: string, options?: { userId?: string; metadata?: Record<string, unknown>; [key: string]: unknown }) {
     this.log('warn', message, options);
   }
 
   error(message: string, options?: { 
     userId?: string; 
     error?: Error; 
-    metadata?: Record<string, unknown> 
+    metadata?: Record<string, unknown>;
+    [key: string]: unknown;
   }) {
     this.log('error', message, options);
   }
