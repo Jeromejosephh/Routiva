@@ -1,28 +1,39 @@
 import { prisma } from '@/lib/db';
 import { requireUser } from '@/lib/auth-helpers';
-import { computeCompletionRate } from '@/lib/analytics';
+import { computeCompletionRate, computeCurrentStreak, buildSeries } from '@/lib/analytics';
+import HabitChart from '@/components/HabitChart';
 
 export default async function AnalyticsPage() {
   const user = await requireUser('/analytics');
 
-  // last 30 days
   const to = new Date();
   to.setUTCHours(0,0,0,0);
   const from = new Date(to);
   from.setUTCDate(to.getUTCDate() - 29);
 
-  const logs = await prisma.habitLog.findMany({
-    where: { date: { gte: from, lte: to }, habit: { userId: user.id } },
-    select: { status: true, date: true },
-  });
+  const habits = await prisma.habit.findMany({ where: { userId: user.id, isArchived: false } });
 
-  const completionRate = computeCompletionRate(logs);
+  const habitStats = await Promise.all(habits.map(async (h) => {
+    const logs = await prisma.habitLog.findMany({
+      where: { habitId: h.id, date: { gte: from, lte: to } },
+      select: { status: true, date: true }
+    });
+    const completionRate = computeCompletionRate(logs);
+    const streak = computeCurrentStreak(logs);
+    const series = buildSeries(from, to, logs);
+    return { habit: h, completionRate, streak, series };
+  }));
 
   return (
     <div>
       <h1>Analytics</h1>
-      <p>Completion rate (last 30 days): {Math.round(completionRate*100)}%</p>
-      <pre>{JSON.stringify({from: from.toISOString(), to: to.toISOString(), logsCount: logs.length}, null, 2)}</pre>
+      {habitStats.map((s) => (
+        <section key={s.habit.id}>
+          <h2>{s.habit.name}</h2>
+          <p>Completion: {Math.round(s.completionRate*100)}% • Streak: {s.streak}</p>
+          <HabitChart series={s.series} />
+        </section>
+      ))}
     </div>
   );
 }
