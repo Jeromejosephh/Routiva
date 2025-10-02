@@ -9,20 +9,23 @@ import { logger } from "@/lib/logger";
 
 // Wrap PrismaAdapter to defensively ignore P2025 (record not found) on session deletes.
 const createSafePrismaAdapter = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const base = PrismaAdapter(prisma) as any;
   // If deleteSession is present, wrap it to ignore P2025 errors from Prisma
   if (typeof base.deleteSession === 'function') {
     const orig = base.deleteSession.bind(base);
-    base.deleteSession = async (sessionToken: string) => {
+    base.deleteSession = async (sessionToken: string): Promise<unknown> => {
       try {
-        return await orig(sessionToken);
-      } catch (e: any) {
+        const result = await orig(sessionToken);
+        return result as unknown;
+      } catch (errorUnknown) {
         // Prisma P2025: record not found for delete — ignore as a safe fallback
-        if (e?.code === 'P2025') {
+        const err = errorUnknown as { code?: string } | undefined;
+        if (err?.code === 'P2025') {
           logger.warn('Prisma deleteSession P2025 ignored', { metadata: { sessionToken: String(sessionToken).slice(-6) } });
-          return null;
+          return undefined;
         }
-        throw e;
+        throw errorUnknown;
       }
     };
   }
@@ -46,7 +49,8 @@ export const authOptions: NextAuthOptions = {
             const pathname = parsed.pathname + parsed.search;
             const tail = pathname.slice(-12);
             return `${parsed.protocol}//${parsed.host}...${tail}`;
-          } catch (e) {
+          } catch (_e) {
+            void _e;
             return '(invalid-url)';
           }
         };
@@ -98,8 +102,9 @@ export const authOptions: NextAuthOptions = {
           });
           const preview = nodemailer.getTestMessageUrl(info) ?? "(no-preview)";
           logger.info("Ethereal preview URL", { metadata: { preview } });
-        } catch (error) {
-          logger.error("Failed to send verification email", { error: error instanceof Error ? error : new Error(String(error)), metadata: { identifier } });
+        } catch (_e) {
+          void _e;
+          logger.error("Failed to send verification email", { error: _e instanceof Error ? _e : new Error(String(_e)), metadata: { identifier } });
           //Don't throw to avoid breaking auth flow; NextAuth will surface a generic error to the user
         }
       },
@@ -123,14 +128,17 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       try {
         logger.info("NextAuth signIn event", { metadata: { userId: user?.id, provider: account?.provider } });
-      } catch (e) {
+      } catch (_e) {
+        void _e;
         // swallow logging errors
       }
     },
     async createUser({ user }) {
       try {
         logger.info("NextAuth createUser event", { metadata: { userId: user?.id, email: user?.email } });
-      } catch (e) {}
+      } catch (_e) {
+        void _e;
+      }
     },
     // Note: avoid adding an 'error' event here because NextAuth types do not include it.
     // Runtime errors are logged by the route handler wrapper in src/app/api/auth/[...nextauth]/route.ts
