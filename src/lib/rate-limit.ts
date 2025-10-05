@@ -1,62 +1,57 @@
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
+//src/lib/rate-limit.ts
+import type { NextRequest } from "next/server";
+import { Ratelimit as UpstashRatelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
-// Create Redis instance (fallback to in-memory for development)
-const redis = process.env.UPSTASH_REDIS_REST_URL 
-  ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-    })
-  : null;
+export type LimitResult = {
+  success: boolean;
+  limit: number;
+  remaining: number;
+  reset: number;
+  pending?: Promise<unknown>;
+};
 
-// Create rate limiter
-export const rateLimit = redis 
-  ? new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(10, '1 m'), // 10 requests per minute
-      analytics: true,
-    })
-  : null;
+export type Limiter = { limit: (key: string) => Promise<LimitResult> };
 
-// Fallback rate limiter for development (in-memory)
-class InMemoryRateLimit {
-  private requests = new Map<string, { count: number; resetTime: number }>();
-  
-  async limit(identifier: string): Promise<{ success: boolean; limit: number; remaining: number; reset: number }> {
-    const now = Date.now();
-    const windowMs = 60 * 1000; // 1 minute
-    const maxRequests = 10;
-    
-    const key = identifier;
-    const current = this.requests.get(key);
-    
-    if (!current || now > current.resetTime) {
-      // Reset window
-      this.requests.set(key, { count: 1, resetTime: now + windowMs });
-      return { success: true, limit: maxRequests, remaining: maxRequests - 1, reset: now + windowMs };
-    }
-    
-    if (current.count >= maxRequests) {
-      return { success: false, limit: maxRequests, remaining: 0, reset: current.resetTime };
-    }
-    
-    current.count++;
-    return { success: true, limit: maxRequests, remaining: maxRequests - current.count, reset: current.resetTime };
+const hasUpstash =
+  !!process.env.UPSTASH_REDIS_REST_URL &&
+  !!process.env.UPSTASH_REDIS_REST_TOKEN;
+
+function createLimiter(): Limiter {
+  if (hasUpstash) {
+    const rl = new UpstashRatelimit({
+      redis: new Redis({
+        url: process.env.UPSTASH_REDIS_REST_URL as string,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN as string,
+      }),
+      limiter: UpstashRatelimit.slidingWindow(100, "1 m"),
+      analytics: false,
+      prefix: "rl",
+    });
+    return {
+      limit: async (key: string) => rl.limit(key) as unknown as LimitResult,
+    };
   }
+  //fallback no-op
+  return {
+    limit: async () => ({
+      success: true,
+      limit: 999999,
+      remaining: 999998,
+      reset: Date.now() + 60000,
+      pending: undefined,
+    }),
+  };
 }
 
-const fallbackRateLimit = new InMemoryRateLimit();
+export const rateLimit: Limiter = createLimiter();
 
-/**
- * Rate limit a request by identifier (IP or user ID)
- */
-export async function rateLimitRequest(identifier: string) {
-  const limiter = rateLimit || fallbackRateLimit;
-  const result = await limiter.limit(identifier);
-  
-  if (!result.success) {
-    throw new Error('Rate limit exceeded. Please try again later.');
-  }
-  
-  return result;
+//stable key from request
+export function rateLimitRequest(req: NextRequest): string {
+  const fwd = req.headers.get("x-forwarded-for");
+  const ip =
+    (fwd ? fwd.split(",")[0] : undefined) ??
+    req.headers.get("x-real-ip") ??
+    "127.0.0.1";
+  return ip.trim();
 }
