@@ -6,7 +6,6 @@ import { rateLimitRequest } from "@/lib/rate-limit";
 import { logCreate } from "@/lib/validators";
 import { logger } from "@/lib/logger";
 
-// Prefer importing this from a shared util if it exists already.
 function getRequestIp(req: NextRequest): string {
   const xff = req.headers.get("x-forwarded-for");
   if (xff) return xff.split(",")[0]!.trim();
@@ -14,7 +13,6 @@ function getRequestIp(req: NextRequest): string {
   return real ?? "unknown";
 }
 
-// Normalize any date to UTC midnight to avoid TZ drift
 function toUtcMidnight(d: Date): Date {
   return new Date(
     Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
@@ -23,17 +21,17 @@ function toUtcMidnight(d: Date): Date {
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  ctx: { params: Record<string, string> }
 ) {
   const user = await requireUser();
 
-  // Your helper expects only the request object.
+  // Your helper expects only the request
   await rateLimitRequest(req);
 
   const ip = getRequestIp(req);
-  const habitId = params.id;
+  const habitId = ctx.params.id;
 
-  // Ensure the habit belongs to the current user
+  // Verify ownership
   const habit = await prisma.habit.findFirst({
     where: { id: habitId, userId: user.id },
     select: { id: true },
@@ -42,7 +40,7 @@ export async function POST(
     return NextResponse.json({ error: "Habit not found" }, { status: 404 });
   }
 
-  // Parse JSON or multipart/form-data safely (no `any`)
+  // Parse body safely (JSON or multipart/form-data)
   const contentType = req.headers.get("content-type") ?? "";
   let raw: Record<string, unknown> = {};
 
@@ -65,18 +63,15 @@ export async function POST(
   }
 
   // Validate with Zod
-  const candidate = {
-    date: raw.date,
-    status: raw.status,
-    note: raw.note,
-  };
+  const candidate = { date: raw.date, status: raw.status, note: raw.note };
   const parsed = logCreate.parse(candidate);
 
+  // Normalise date
   const dateInput =
     parsed.date instanceof Date ? parsed.date : new Date(String(parsed.date));
   const dateUtc = toUtcMidnight(dateInput);
 
-  // Upsert by composite unique (habitId, date)
+  // Upsert by (habitId, date)
   const result = await prisma.habitLog.upsert({
     where: { habitId_date: { habitId, date: dateUtc } },
     create: {
