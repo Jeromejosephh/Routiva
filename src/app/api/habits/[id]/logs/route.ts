@@ -16,17 +16,14 @@ const toUtcMidnight = (s: string) => {
 //Get client IP from headers
 const getRequestIp = (req: Request) => {
   // Prefer X-Forwarded-For (may contain comma-separated list)
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',')[0].trim();
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) return xff.split(",")[0].trim();
 
   // Vercel / Cloudflare header
-  const cf = req.headers.get('cf-connecting-ip');
+  const cf = req.headers.get("cf-connecting-ip");
   if (cf) return cf;
 
-  // Fallback to any non-standard property if present (avoid TS error by casting)
-  // This is a last resort and may be undefined in many runtimes.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (req as any).ip ?? 'unknown';
+  return (req as any).ip ?? "unknown";
 };
 
 export async function POST(
@@ -34,9 +31,13 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-  //RateLimit
-  const ip = getRequestIp(req);
-    await rateLimitRequest(ip);
+    //RateLimit
+    const ip = getRequestIp(req);
+    try {
+      await rateLimitRequest(ip);
+    } catch {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
 
     const { id } = await params;
     const user = await requireUser();
@@ -46,7 +47,10 @@ export async function POST(
       select: { id: true },
     });
     if (!habit) {
-      logger.warn("Habit not found", { userId: user.id, metadata: { habitId: id } });
+      logger.warn("Habit not found", {
+        userId: user.id,
+        metadata: { habitId: id },
+      });
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
@@ -70,23 +74,23 @@ export async function POST(
 
     const parsed = logCreate.safeParse(candidate);
     if (!parsed.success) {
-      logger.warn("Invalid log creation request", { 
-        userId: user.id, 
-        metadata: { habitId: id, errors: parsed.error.format() } 
+      logger.warn("Invalid log creation request", {
+        userId: user.id,
+        metadata: { habitId: id, errors: parsed.error.format() },
       });
       return NextResponse.json(parsed.error.format(), { status: 400 });
     }
 
     const date = toUtcMidnight(String(parsed.data.date));
     if (!date) {
-      logger.warn("Invalid date provided", { 
-        userId: user.id, 
-        metadata: { habitId: id, date: parsed.data.date } 
+      logger.warn("Invalid date provided", {
+        userId: user.id,
+        metadata: { habitId: id, date: parsed.data.date },
       });
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
     }
 
-  //Sanitize note
+    //Sanitize note
     let sanitizedNote = parsed.data.note;
     if (sanitizedNote) {
       const { sanitizeText } = await import("@/lib/sanitize");
@@ -104,22 +108,27 @@ export async function POST(
       },
     });
 
-    logger.info("Created/updated habit log", { 
-      userId: user.id, 
-      metadata: { habitId: id, logId: log.id, status: parsed.data.status } 
+    logger.info("Created/updated habit log", {
+      userId: user.id,
+      metadata: { habitId: id, logId: log.id, status: parsed.data.status },
     });
 
     return NextResponse.json(log, { status: 201 });
   } catch (error) {
-    logger.error("Failed to create/update habit log", { 
-      metadata: { error: error instanceof Error ? error : new Error(String(error)) }
+    logger.error("Failed to create/update habit log", {
+      metadata: {
+        error: error instanceof Error ? error : new Error(String(error)),
+      },
     });
-    
-    if (error instanceof Error && error.message.includes('Rate limit')) {
+
+    if (error instanceof Error && error.message.includes("Rate limit")) {
       return NextResponse.json({ error: "Too many requests" }, { status: 429 });
     }
-    
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
