@@ -6,10 +6,10 @@ import { rateLimitRequest } from "@/lib/rate-limit";
 import { logCreate } from "@/lib/validators";
 import { logger } from "@/lib/logger";
 
-function getRequestIp(req: NextRequest): string {
-  const xff = req.headers.get("x-forwarded-for");
+function getRequestIp(headers: Headers): string {
+  const xff = headers.get("x-forwarded-for");
   if (xff) return xff.split(",")[0]!.trim();
-  const real = req.headers.get("x-real-ip");
+  const real = headers.get("x-real-ip");
   return real ?? "unknown";
 }
 
@@ -19,19 +19,33 @@ function toUtcMidnight(d: Date): Date {
   );
 }
 
-export async function POST(
-  req: NextRequest,
-  ctx: { params: Record<string, string> }
-) {
+function extractHabitIdFromUrl(req: NextRequest): string | null {
+  try {
+    const pathname = req.nextUrl?.pathname ?? new URL(req.url).pathname;
+    const m = pathname.match(/\/api\/habits\/([^/]+)\/logs/i);
+    return m?.[1] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function POST(req: NextRequest) {
   const user = await requireUser();
 
-  // Your helper expects only the request
+  // limiter: your helper expects only the request
   await rateLimitRequest(req);
 
-  const ip = getRequestIp(req);
-  const habitId = ctx.params.id;
+  const ip = getRequestIp(req.headers);
 
-  // Verify ownership
+  const habitId = extractHabitIdFromUrl(req);
+  if (!habitId) {
+    return NextResponse.json(
+      { error: "Invalid habit id in URL" },
+      { status: 400 }
+    );
+  }
+
+  // Ensure the habit belongs to the user
   const habit = await prisma.habit.findFirst({
     where: { id: habitId, userId: user.id },
     select: { id: true },
@@ -66,12 +80,12 @@ export async function POST(
   const candidate = { date: raw.date, status: raw.status, note: raw.note };
   const parsed = logCreate.parse(candidate);
 
-  // Normalise date
+  // Normalise date to UTC midnight
   const dateInput =
     parsed.date instanceof Date ? parsed.date : new Date(String(parsed.date));
   const dateUtc = toUtcMidnight(dateInput);
 
-  // Upsert by (habitId, date)
+  // Upsert by composite unique (habitId, date)
   const result = await prisma.habitLog.upsert({
     where: { habitId_date: { habitId, date: dateUtc } },
     create: {
