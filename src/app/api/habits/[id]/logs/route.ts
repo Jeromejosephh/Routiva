@@ -32,12 +32,16 @@ export async function POST(
 ) {
   try {
     //RateLimit
-    const ip = getRequestIp(req);
-    try {
-      await rateLimitRequest(ip);
-    } catch {
-      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
-    }
+    //Get client IP from headers
+    const getRequestIp = (req: Request): string => {
+      const xff = req.headers.get("x-forwarded-for");
+      if (xff) return xff.split(",")[0].trim();
+      const cf = req.headers.get("cf-connecting-ip");
+      if (cf) return cf;
+      const xr = req.headers.get("x-real-ip");
+      if (xr) return xr;
+      return "unknown";
+    };
 
     const { id } = await params;
     const user = await requireUser();
