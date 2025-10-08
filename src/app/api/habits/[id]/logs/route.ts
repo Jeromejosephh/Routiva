@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth-helpers";
-import { rateLimitRequest } from "@/lib/rate-limit";
+import { rateLimitRequest, rateLimit } from "@/lib/rate-limit";
 import { logCreate } from "@/lib/validators";
 import { logger } from "@/lib/logger";
 
@@ -30,10 +30,12 @@ function extractHabitIdFromUrl(req: NextRequest): string | null {
 }
 
 export async function POST(req: NextRequest) {
-  const user = await requireUser();
+  try {
+    const user = await requireUser();
 
-  // limiter: your helper expects only the request
-  await rateLimitRequest(req);
+    // Rate limiting
+    const key = rateLimitRequest(req);
+    await rateLimit(key);
 
   const ip = getRequestIp(req.headers);
 
@@ -119,4 +121,15 @@ export async function POST(req: NextRequest) {
     },
     { status: 200 }
   );
+  } catch (error) {
+    logger.error("Failed to create/update habit log", {
+      error: error instanceof Error ? error : new Error(String(error))
+    });
+
+    if (error instanceof Error && error.message.includes('Rate limit')) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+
+    return NextResponse.json({ error: "Could not update" }, { status: 500 });
+  }
 }

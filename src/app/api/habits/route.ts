@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { habitCreate } from "@/lib/validators";
 import { requireUser } from "@/lib/auth-helpers";
-import { rateLimitRequest } from "@/lib/rate-limit";
+import { rateLimitRequest, rateLimit } from "@/lib/rate-limit";
 import { logger } from "@/lib/logger";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
@@ -38,8 +38,8 @@ const getRequestIp = (req: Request) => {
 export async function GET(req: NextRequest) {
   try {
   //RateLimit
-  const ip = getRequestIp(req);
-  await rateLimitRequest(ip);
+  const key = rateLimitRequest(req);
+  await rateLimit(key);
 
     const user = await requireUser();
     
@@ -78,8 +78,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
   // Rate limiting
-  const ip = getRequestIp(req);
-  await rateLimitRequest(ip);
+  const key = rateLimitRequest(req);
+  await rateLimit(key);
 
     const user = await requireUser();
     const ct = req.headers.get("content-type") ?? "";

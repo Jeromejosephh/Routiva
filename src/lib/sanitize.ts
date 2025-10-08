@@ -1,53 +1,41 @@
+// src/lib/sanitize.ts
 import DOMPurify from 'dompurify';
 
 /**
- * Sanitizes HTML content to prevent XSS attacks
+ * Sanitizes habit names to prevent XSS and normalize input
  */
-export function sanitizeHtml(html: string): string {
-  if (typeof window === 'undefined') {
-    // Server-side: basic HTML stripping
-    return html.replace(/<[^>]*>/g, '');
-  }
+export function sanitizeHabitName(name: string | undefined): string {
+  if (!name) return '';
   
-  // Client-side: use DOMPurify
-  return DOMPurify.sanitize(html, { 
-    ALLOWED_TAGS: [],
-    ALLOWED_ATTR: []
-  });
-}
-
-/**
- * Sanitizes plain text input
- */
-export function sanitizeText(text: string): string {
-  return text
+  // Basic sanitization for habit names - remove dangerous characters
+  const sanitized = name
     .trim()
-    .replace(/[<>]/g, '') // Remove potential HTML tags
-    .slice(0, 200); // Limit length
-}
-
-/**
- * Validates and sanitizes habit names
- */
-export function sanitizeHabitName(name: string): string {
-  const sanitized = sanitizeText(name);
-  if (sanitized.length === 0) {
-    throw new Error('Habit name cannot be empty');
-  }
-  if (sanitized.length > 60) {
-    throw new Error('Habit name must be 60 characters or less');
-  }
+    .replace(/[<>"/\\&]/g, '') // Remove potentially dangerous characters
+    .substring(0, 60); // Enforce max length
+  
   return sanitized;
 }
 
 /**
- * Validates and sanitizes habit descriptions
+ * Sanitizes habit descriptions with more permissive rules
  */
-export function sanitizeHabitDescription(description?: string): string | undefined {
+export function sanitizeHabitDescription(description: string | undefined): string | undefined {
   if (!description) return undefined;
-  const sanitized = sanitizeText(description);
-  if (sanitized.length > 200) {
-    throw new Error('Description must be 200 characters or less');
+  
+  // In server environment, DOMPurify might not be available
+  // Fallback to basic sanitization
+  if (typeof window === 'undefined') {
+    return description
+      .trim()
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove scripts
+      .substring(0, 200); // Enforce max length
   }
-  return sanitized.length > 0 ? sanitized : undefined;
+  
+  // Client-side: use DOMPurify for better sanitization
+  const sanitized = DOMPurify.sanitize(description, {
+    ALLOWED_TAGS: ['p', 'br', 'b', 'i', 'em', 'strong'],
+    ALLOWED_ATTR: []
+  });
+  
+  return sanitized.substring(0, 200);
 }
