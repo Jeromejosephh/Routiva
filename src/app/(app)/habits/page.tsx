@@ -69,7 +69,7 @@ export default async function HabitsPage() {
         </button>
       </form>
 
-      <h1 className="text-xl font-semibold">Your habits</h1>
+      <h1 className="text-xl font-semibold text-center">Habits</h1>
 
       {habits.length === 0 ? (
         <div className="rounded border p-4 text-sm text-muted-foreground">

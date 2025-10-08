@@ -1,7 +1,6 @@
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
-import StreakBadge from "@/components/StreakBadge";
 import ActivityHeat30 from "@/components/ActivityHeat30";
 import { revalidatePath } from "next/cache";
 
@@ -67,7 +66,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Today</h1>
+      <h1 className="text-xl font-semibold text-center">Dashboard</h1>
 
       <ActivityHeat30 userId={user.id} />
 
@@ -97,7 +96,6 @@ export default async function DashboardPage() {
             >
               <span>{h.name}</span>
               <div className="flex items-center gap-3">
-                <StreakBadge habitId={h.id} />
                 <HabitRow habitId={h.id} initialChecked={doneSet.has(h.id)} />
               </div>
             </li>

@@ -63,8 +63,8 @@ export default async function SettingsPage() {
   });
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      <h1 className="text-2xl font-semibold">Settings</h1>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-semibold text-center">Settings</h1>
       <div className="border rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
@@ -195,7 +195,7 @@ export default async function SettingsPage() {
               Download all your habit data as JSON format.
             </p>
             <button 
-              className="border px-4 py-2 rounded text-sm bg-gray-100 cursor-not-allowed"
+              className="bg-blue-600 text-white px-4 py-2 rounded opacity-50 cursor-not-allowed"
               disabled
               title="Data export will be available in a future update"
             >
@@ -227,11 +227,6 @@ export default async function SettingsPage() {
         <div className="space-y-2 text-sm text-gray-600">
           <p>Version: 0.1.0 (MVP)</p>
           <p>A simple, effective habit tracking application.</p>
-          <div className="flex space-x-4 mt-3">
-            <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
-            <a href="#" className="text-blue-600 hover:underline">Terms of Service</a>
-            <a href="#" className="text-blue-600 hover:underline">Support</a>
-          </div>
         </div>
       </div>
     </div>
