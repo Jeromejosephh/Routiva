@@ -8,6 +8,14 @@ export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
       from: process.env.EMAIL_FROM,
+      server: {
+        host: "smtp.resend.com",
+        port: 587,
+        auth: {
+          user: "resend",
+          pass: process.env.RESEND_API_KEY,
+        },
+      },
       maxAge: 10 * 60, // Magic links are valid for 10 min only
       generateVerificationToken: () => {
         // Generate a random string that is 32 characters long
@@ -15,7 +23,6 @@ export const authOptions: NextAuthOptions = {
           .map(b => b.toString(16).padStart(2, '0'))
           .join('');
       },
-      // Use default NextAuth email sending for reliability
     }),
   ],
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
