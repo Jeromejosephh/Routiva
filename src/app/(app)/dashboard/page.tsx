@@ -58,8 +58,8 @@ export default async function DashboardPage() {
 
   const doneSet = new Set(
     habits
-      .filter(h => h.logs.some(log => log.status === 'done'))
-      .map(h => h.id)
+      .filter((h: any) => h.logs.some((log: any) => log.status === 'done'))
+      .map((h: any) => h.id)
   );
 
   const isEmpty = habits.length === 0;
@@ -89,7 +89,7 @@ export default async function DashboardPage() {
         </div>
       ) : (
         <ul className="space-y-2">
-          {habits.map((h) => (
+          {habits.map((h: any) => (
             <li
               key={h.id}
               className="border p-3 rounded flex items-center justify-between"

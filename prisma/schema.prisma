@@ -22,7 +22,7 @@ model User {
   summaryWeeklyEnabled Boolean @default(false)
 
   habits    Habit[]
-  tags      Tag[]     @relation("UserTags")
+  groups    HabitGroup[] @relation("UserGroups")
   accounts  Account[]
   sessions  Session[]
   createdAt DateTime  @default(now())
@@ -72,9 +72,12 @@ model Habit {
   priority  Int     @default(2) // 1=high,2=med,3=low
   timeOfDay String? // "morning" | "afternoon" | "evening"
 
+  // 🔹 Groups system - simpler than tags
+  groupId String?
+  group   HabitGroup? @relation(fields: [groupId], references: [id], onDelete: SetNull)
+
   user User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   logs HabitLog[]
-  tags HabitTag[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,6 +85,7 @@ model Habit {
   // 🔹 Fast queries & duplicate-name guard
   @@unique([userId, name])
   @@index([userId, isArchived])
+  @@index([userId, groupId])
 }
 
 model HabitLog {
@@ -98,24 +102,20 @@ model HabitLog {
   @@index([habitId, date])
 }
 
-model Tag {
+model HabitGroup {
   id     String  @id @default(cuid())
   userId String
   name   String
-  color  String?
+  color  String  @default("blue")
+  icon   String? // Optional emoji like "💪", "🏃", "📚"
+  order  Int     @default(0) // Custom sorting order
 
-  user   User       @relation("UserTags", fields: [userId], references: [id], onDelete: Cascade)
-  habits HabitTag[]
+  user   User    @relation("UserGroups", fields: [userId], references: [id], onDelete: Cascade)
+  habits Habit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, name])
-}
-
-model HabitTag {
-  habitId String
-  tagId   String
-
-  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
-  tag   Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@id([habitId, tagId])
+  @@index([userId, order])
 }
