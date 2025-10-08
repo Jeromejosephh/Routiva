@@ -48,9 +48,26 @@ export default function EmailForm() {
       });
 
       if (result?.error) {
+        // Handle specific error cases
+        const errorMessage = (() => {
+          switch (result.error) {
+            case "AccessDenied":
+              return "This email is not authorized to sign in.";
+            case "Verification":
+              return "There was a problem sending the verification email.";
+            case "EmailSignin":
+              return "The sign-in link is no longer valid. Please request a new one.";
+            default:
+              if (process.env.NODE_ENV !== "production") {
+                console.error("Sign-in error:", result.error);
+              }
+              return "Could not send sign-in email. Please try again.";
+          }
+        })();
+
         setFormState({
           status: 'error',
-          message: 'Could not send sign-in email. Please try again.'
+          message: errorMessage
         });
       } else {
         setFormState({
@@ -58,6 +75,9 @@ export default function EmailForm() {
           message: 'Check your inbox for the sign-in link.'
         });
         setEmail(''); // Clear the form on success
+        
+        // Redirect to verify-request page
+        window.location.href = '/auth/verify-request';
       }
     } catch (error) {
       setFormState({
