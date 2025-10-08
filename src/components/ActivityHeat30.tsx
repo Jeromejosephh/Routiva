@@ -1,4 +1,3 @@
-// src/components/ActivityHeat30.tsx
 export const runtime = "nodejs";
 export const revalidate = 60;
 

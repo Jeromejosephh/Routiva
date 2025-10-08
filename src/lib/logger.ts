@@ -9,6 +9,7 @@ interface LogEntry {
   metadata?: Record<string, unknown>;
 }
 
+//centralized logging with console output and external service support
 class Logger {
   private isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -35,7 +36,7 @@ class Logger {
     return logMessage;
   }
 
-  // Allow additional arbitrary properties in options to avoid strict object literal errors
+
   private log(level: LogLevel, message: string, options?: {
     userId?: string;
     error?: Error;
@@ -51,7 +52,6 @@ class Logger {
 
     const formattedLog = this.formatLog(entry);
 
-    //Console output
     switch (level) {
       case 'debug':
         if (this.isDevelopment) console.debug(formattedLog);
@@ -67,16 +67,13 @@ class Logger {
         break;
     }
 
-    //Send errors to external logger in production
     if (!this.isDevelopment && level === 'error') {
-      //Send to external logging service
       this.sendToExternalLogger(entry);
     }
   }
 
   private sendToExternalLogger(entry: LogEntry) {
-    // TODO: Integrate with external logging service (e.g., Sentry, LogRocket)
-    // Example: Sentry.captureException(entry.error)
+    //TODO: add external logging service
     console.error('External logging not configured:', entry.error);
   }
 

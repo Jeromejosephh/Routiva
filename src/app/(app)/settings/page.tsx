@@ -1,8 +1,8 @@
-// src/app/(app)/settings/page.tsx
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
+//server action to update user preferences
 async function updateUserSettings(formData: FormData) {
   "use server";
   
@@ -35,28 +35,12 @@ async function updateUserSettings(formData: FormData) {
   }
 }
 
-// Future feature: Export user data
-// async function exportData() {
-//   "use server";
-//   
-//   const user = await requireUser();
-//   
-//   // Get user's habits and logs for export
-//   const habits = await prisma.habit.findMany({
-//     where: { userId: user.id },
-//     include: {
-//       logs: {
-//         orderBy: { date: 'desc' }
-//       }
-//     }
-//   });
-// 
-//   return habits;
-// }
+
 
 export default async function SettingsPage() {
   const user = await requireUser();
   
+  //fetch user settings and account stats
   const userSettings = await prisma.user.findUnique({
     where: { id: user.id },
     select: {
@@ -81,8 +65,6 @@ export default async function SettingsPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <h1 className="text-2xl font-semibold">Settings</h1>
-
-      {/* Account Information */}
       <div className="border rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
@@ -105,12 +87,11 @@ export default async function SettingsPage() {
         </div>
       </div>
 
-      {/* User Preferences */}
+      {/* user preference form with timezone and notification settings */}
       <form action={updateUserSettings} className="border rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Preferences</h2>
         
         <div className="space-y-4">
-          {/* Timezone */}
           <div>
             <label htmlFor="timezone" className="block text-sm font-medium mb-1">
               Timezone

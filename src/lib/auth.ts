@@ -16,9 +16,8 @@ export const authOptions: NextAuthOptions = {
           pass: process.env.RESEND_API_KEY,
         },
       },
-      maxAge: 10 * 60, // Magic links are valid for 10 min only
+      maxAge: 10 * 60, //magic links expire in 10 minutes
       generateVerificationToken: () => {
-        // Generate a random string that is 32 characters long
         return Array.from(crypto.getRandomValues(new Uint8Array(24)))
           .map(b => b.toString(16).padStart(2, '0'))
           .join('');
@@ -31,7 +30,6 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Email transport not configured');
         }
 
-        // Gmail-optimized email template
         const html = `
 <!DOCTYPE html>
 <html>
@@ -120,6 +118,7 @@ If you didn't request this email, you can safely ignore it.`;
         });
       },
     }),
+    //database adapter for nextauth
   ],
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
   pages: {
@@ -135,15 +134,11 @@ If you didn't request this email, you can safely ignore it.`;
   callbacks: {
     async redirect({ url, baseUrl }) {
       try {
-        // allow relative
         if (url.startsWith("/")) return `${baseUrl}${url}`;
-        // allow same-origin absolute
         const u = new URL(url);
         if (u.origin === baseUrl) return url;
       } catch {
-        // ignore parse errors
       }
-      // safe fallback
       return `${baseUrl}/dashboard`;
     },
     async session({ session, token }) {

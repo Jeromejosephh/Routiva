@@ -11,13 +11,11 @@ const envSchema = z.object({
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
 });
 
-// Parse environment variables with better error handling
 let env: z.infer<typeof envSchema>;
 try {
   env = envSchema.parse(process.env);
 } catch (error) {
   console.error('Environment validation failed:', error);
-  // Fallback to defaults for development
   env = {
     NODE_ENV: 'development',
     DATABASE_URL: process.env.DATABASE_URL || '',
@@ -31,6 +29,4 @@ try {
 }
 
 export { env };
-
-// Type-safe environment variables
 export type Env = z.infer<typeof envSchema>;

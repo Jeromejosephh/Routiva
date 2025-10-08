@@ -1,4 +1,3 @@
-//src/lib/rate-limit.ts
 import type { NextRequest } from "next/server";
 import { Ratelimit as UpstashRatelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
@@ -16,8 +15,7 @@ export type RateLimitConfig = {
   window: string;
 };
 
-// Define rate limit configurations
-export const RATE_LIMITS = {
+const RATE_LIMITS = {
   auth: { maxRequests: 20, window: "1 m" },
   api: { maxRequests: 100, window: "1 m" },
 } as const;
@@ -33,13 +31,11 @@ const redis = hasUpstash
     })
   : null;
 
-// Create rate limiters for different routes
 const rateLimiters = new Map<string, UpstashRatelimit>();
 
 function getRateLimiter(type: keyof typeof RATE_LIMITS): UpstashRatelimit {
   if (!rateLimiters.has(type)) {
     if (!hasUpstash || !redis) {
-      // Return a no-op rate limiter in development
       const noOpLimiter = {
         limit: async () => ({
           success: true,
@@ -52,9 +48,7 @@ function getRateLimiter(type: keyof typeof RATE_LIMITS): UpstashRatelimit {
     }
 
     const config = RATE_LIMITS[type];
-    // Parse rate limit window configuration
-    // const [amount, duration] = config.window.split(" ");
-    // const durationInSeconds = duration === "m" ? 60 : 3600;
+
 
     const limiter = new UpstashRatelimit({
       redis,
@@ -74,9 +68,7 @@ export async function rateLimit(key: string, type: keyof typeof RATE_LIMITS = 'a
   return limiter.limit(key) as Promise<LimitResult>;
 }
 
-//stable key from request
 export function rateLimitRequest(req: NextRequest): string {
-  // Get IP address
   const fwd = req.headers.get("x-forwarded-for");
   const ip =
     (fwd ? fwd.split(",")[0] : undefined) ??
@@ -84,11 +76,8 @@ export function rateLimitRequest(req: NextRequest): string {
     req.headers.get("x-client-ip") ??
     "127.0.0.1";
 
-  // Get basic request info for more accurate rate limiting
   const userAgent = req.headers.get("user-agent") || 'unknown';
   const method = req.method;
-  
-  // Create a hash of the identifying information
   const identifier = `${ip.trim()}_${userAgent.substring(0, 50)}_${method}`;
   
   return identifier;

@@ -1,4 +1,3 @@
-// src/app/api/habits/[id]/logs/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth-helpers";
@@ -6,6 +5,7 @@ import { rateLimitRequest, rateLimit } from "@/lib/rate-limit";
 import { logCreate } from "@/lib/validators";
 import { logger } from "@/lib/logger";
 
+//utility functions for request processing
 function getRequestIp(headers: Headers): string {
   const xff = headers.get("x-forwarded-for");
   if (xff) return xff.split(",")[0]!.trim();
@@ -29,11 +29,10 @@ function extractHabitIdFromUrl(req: NextRequest): string | null {
   }
 }
 
+//create a new habit log entry
 export async function POST(req: NextRequest) {
   try {
     const user = await requireUser();
-
-    // Rate limiting
     const key = rateLimitRequest(req);
     await rateLimit(key);
 
@@ -47,7 +46,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Ensure the habit belongs to the user
+  //verify user owns this habit
   const habit = await prisma.habit.findFirst({
     where: { id: habitId, userId: user.id },
     select: { id: true },
@@ -56,7 +55,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Habit not found" }, { status: 404 });
   }
 
-  // Parse body safely (JSON or multipart/form-data)
   const contentType = req.headers.get("content-type") ?? "";
   let raw: Record<string, unknown> = {};
 

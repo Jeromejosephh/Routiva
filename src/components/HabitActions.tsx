@@ -1,6 +1,6 @@
-// src/components/HabitActions.tsx
 "use client";
 
+//dropdown menu for habit edit/archive/delete actions
 import { useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/lib/toast";
@@ -47,7 +47,6 @@ export default function HabitActions({
     const next = window.prompt("Rename habit", name)?.trim();
     if (!next || next === name) return;
     
-    // Basic client-side validation
     if (next.length === 0) {
       toast("Habit name cannot be empty");
       return;

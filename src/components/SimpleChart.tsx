@@ -1,4 +1,3 @@
-// src/components/SimpleChart.tsx
 interface SimpleBarChartProps {
   data: Array<{ label: string; value: number; color?: string }>;
   title?: string;

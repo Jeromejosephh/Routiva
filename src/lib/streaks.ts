@@ -1,4 +1,3 @@
-// src/lib/streaks.ts
 export function computeStreak(logs: { date: Date; status: string }[]) {
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);

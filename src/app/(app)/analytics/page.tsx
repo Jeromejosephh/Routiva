@@ -1,9 +1,9 @@
-// src/app/(app)/analytics/page.tsx
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import { computeCompletionRate, computeCurrentStreak } from "@/lib/analytics";
 import { SimpleBarChart, ProgressRing } from "@/components/SimpleChart";
 
+//calculate comprehensive analytics for user's habits
 async function getAnalyticsData(userId: string) {
   const habits = await prisma.habit.findMany({
     where: { userId, isArchived: false },
@@ -24,15 +24,12 @@ async function getAnalyticsData(userId: string) {
 
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
-
-  // Calculate overall stats
   const totalHabits = habits.length;
   const totalLogs = habits.reduce((sum, habit) => sum + habit.logs.length, 0);
   const totalCompletions = habits.reduce((sum, habit) => 
     sum + habit.logs.filter(log => log.status === 'done').length, 0
   );
 
-  // Recent activity
   const recentLogs = habits.flatMap(habit => 
     habit.logs.filter(log => log.date >= thirtyDaysAgo)
   );
@@ -40,7 +37,7 @@ async function getAnalyticsData(userId: string) {
     habit.logs.filter(log => log.date >= sevenDaysAgo)
   );
 
-  // Habit performance
+  //calculate individual habit performance metrics
   const habitStats = habits.map(habit => {
     const completionRate = computeCompletionRate(habit.logs);
     const currentStreak = computeCurrentStreak(habit.logs);
@@ -74,8 +71,6 @@ export default async function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Analytics</h1>
-      
-      {/* Overview Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="border rounded-lg p-4">
           <div className="text-2xl font-bold text-blue-600">{analytics.totalHabits}</div>
@@ -107,7 +102,6 @@ export default async function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Habit Performance */}
       <div className="border rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Habit Performance</h2>
         
@@ -117,7 +111,6 @@ export default async function AnalyticsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Individual Habit Stats */}
             <div className="space-y-3">
               {analytics.habitStats.map((habit) => (
                 <div key={habit.id} className="flex items-center justify-between p-3 border rounded">
@@ -147,7 +140,6 @@ export default async function AnalyticsPage() {
               ))}
             </div>
 
-            {/* Visual Chart */}
             <div>
               <SimpleBarChart
                 title="Completion Rates"
@@ -164,7 +156,6 @@ export default async function AnalyticsPage() {
         )}
       </div>
 
-      {/* Quick Insights */}
       <div className="border rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Quick Insights</h2>
         <div className="space-y-2 text-sm">

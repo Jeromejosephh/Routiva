@@ -1,4 +1,3 @@
-// src/app/(app)/dashboard/page.tsx
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
@@ -6,6 +5,7 @@ import StreakBadge from "@/components/StreakBadge";
 import ActivityHeat30 from "@/components/ActivityHeat30";
 import { revalidatePath } from "next/cache";
 
+//server action to create new habits from dashboard
 async function createHabit(formData: FormData) {
   "use server";
   try {
@@ -16,7 +16,6 @@ async function createHabit(formData: FormData) {
       throw new Error("Habit name is required");
     }
 
-    // Sanitize input
     const { sanitizeHabitName } = await import("@/lib/sanitize");
     const sanitizedName = sanitizeHabitName(name);
 
@@ -46,7 +45,7 @@ export default async function DashboardPage() {
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
 
-  // Optimized query: get habits with today's logs in a single query
+  //fetch user habits with today's completion status
   const habits = await prisma.habit.findMany({
     where: { userId: user.id, isArchived: false },
     orderBy: { createdAt: "desc" },

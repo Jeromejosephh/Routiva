@@ -8,6 +8,7 @@ interface FormState {
   message: string;
 }
 
+//email sign-in form with validation and loading states
 export default function EmailForm() {
   const [email, setEmail] = useState("");
   const [formState, setFormState] = useState<FormState>({
@@ -15,7 +16,6 @@ export default function EmailForm() {
     message: ''
   });
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (formState.status === 'loading') {
@@ -28,9 +28,7 @@ export default function EmailForm() {
     e.preventDefault();
     if (formState.status === 'loading') return;
 
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setFormState({
         status: 'error',
         message: 'Please enter a valid email address'
@@ -48,7 +46,6 @@ export default function EmailForm() {
       });
 
       if (result?.error) {
-        // Handle specific error cases
         const errorMessage = (() => {
           switch (result.error) {
             case "AccessDenied":
@@ -74,9 +71,7 @@ export default function EmailForm() {
           status: 'success',
           message: 'Check your inbox for the sign-in link.'
         });
-        setEmail(''); // Clear the form on success
-        
-        // Redirect to verify-request page
+        setEmail('');
         window.location.href = '/auth/verify-request';
       }
     } catch (err) {

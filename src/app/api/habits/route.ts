@@ -1,4 +1,3 @@
-// src/app/api/habits/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { habitCreate } from "@/lib/validators";
@@ -25,19 +24,10 @@ function formToHabitInput(fd: FormData): HabitInput {
   };
 }
 
-// Get client IP from headers (for future rate limiting enhancement)
-// const getRequestIp = (req: Request) => {
-//   const xff = req.headers.get('x-forwarded-for');
-//   if (xff) return xff.split(',')[0].trim();
-//   const cf = req.headers.get('cf-connecting-ip');
-//   if (cf) return cf;
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   return (req as any).ip ?? 'unknown';
-// };
+
 
 export async function GET(req: NextRequest) {
   try {
-  //RateLimit
   const key = rateLimitRequest(req);
   await rateLimit(key);
 
@@ -77,7 +67,6 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-  // Rate limiting
   const key = rateLimitRequest(req);
   await rateLimit(key);
 
@@ -109,7 +98,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(parsed.error.format(), { status: 400 });
     }
 
-  //Sanitize input
     const { sanitizeHabitName, sanitizeHabitDescription } = await import("@/lib/sanitize");
     const sanitizedName = sanitizeHabitName(parsed.data.name);
     const sanitizedDescription = sanitizeHabitDescription(parsed.data.description);

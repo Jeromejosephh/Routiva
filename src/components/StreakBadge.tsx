@@ -1,7 +1,7 @@
 // src/components/StreakBadge.tsx
 "use client";
 import { useEffect, useState, useMemo } from "react";
-import { computeStreak } from "@/lib/streaks";
+import { computeCurrentStreak } from "@/lib/analytics";
 
 type HabitLogDTO = { date: string; status: string; note?: string | null };
 
@@ -37,7 +37,7 @@ export default function StreakBadge({ habitId }: { habitId: string }) {
           status: l.status,
         }));
 
-        const s = computeStreak(normalized);
+        const s = computeCurrentStreak(normalized);
         if (!cancelled) {
           setStreak(s);
           setLoading(false);
