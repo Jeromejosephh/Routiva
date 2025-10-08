@@ -52,8 +52,9 @@ function getRateLimiter(type: keyof typeof RATE_LIMITS): UpstashRatelimit {
     }
 
     const config = RATE_LIMITS[type];
-    const [amount, duration] = config.window.split(" ");
-    const durationInSeconds = duration === "m" ? 60 : 3600;
+    // Parse rate limit window configuration
+    // const [amount, duration] = config.window.split(" ");
+    // const durationInSeconds = duration === "m" ? 60 : 3600;
 
     const limiter = new UpstashRatelimit({
       redis,

@@ -74,11 +74,10 @@ class Logger {
     }
   }
 
-  private sendToExternalLogger(_entry: LogEntry) {
-    //External logger placeholder
-    //Example:Sentry.captureException(entry.error)
-    //Mark param used to avoid lint
-    void _entry;
+  private sendToExternalLogger(entry: LogEntry) {
+    // TODO: Integrate with external logging service (e.g., Sentry, LogRocket)
+    // Example: Sentry.captureException(entry.error)
+    console.error('External logging not configured:', entry.error);
   }
 
   debug(message: string, options?: { userId?: string; metadata?: Record<string, unknown>; [key: string]: unknown }) {

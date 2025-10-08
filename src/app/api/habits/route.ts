@@ -25,15 +25,15 @@ function formToHabitInput(fd: FormData): HabitInput {
   };
 }
 
-//Get client IP from headers
-const getRequestIp = (req: Request) => {
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',')[0].trim();
-  const cf = req.headers.get('cf-connecting-ip');
-  if (cf) return cf;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (req as any).ip ?? 'unknown';
-};
+// Get client IP from headers (for future rate limiting enhancement)
+// const getRequestIp = (req: Request) => {
+//   const xff = req.headers.get('x-forwarded-for');
+//   if (xff) return xff.split(',')[0].trim();
+//   const cf = req.headers.get('cf-connecting-ip');
+//   if (cf) return cf;
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   return (req as any).ip ?? 'unknown';
+// };
 
 export async function GET(req: NextRequest) {
   try {

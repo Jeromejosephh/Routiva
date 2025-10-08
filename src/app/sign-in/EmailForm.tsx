@@ -79,7 +79,8 @@ export default function EmailForm() {
         // Redirect to verify-request page
         window.location.href = '/auth/verify-request';
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Sign-in error:', err);
       setFormState({
         status: 'error',
         message: 'An unexpected error occurred. Please try again.'
