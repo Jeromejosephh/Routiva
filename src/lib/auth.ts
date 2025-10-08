@@ -15,29 +15,7 @@ export const authOptions: NextAuthOptions = {
           .map(b => b.toString(16).padStart(2, '0'))
           .join('');
       },
-      sendVerificationRequest: async ({ identifier, url, provider }) => {
-        // Log the verification URL in development
-        if (process.env.NODE_ENV !== "production") {
-          console.log("Login URL:", url);
-        }
-        
-        // Use your email service to send the email
-        const { host } = new URL(url);
-        await fetch(process.env.EMAIL_API_URL || "https://api.resend.com/v1/email/send", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: provider.from,
-            to: identifier,
-            subject: `Sign in to ${host}`,
-            html: `<p>Click <a href="${url}">here</a> to sign in to your account.</p>
-                   <p>If you did not request this email, you can safely ignore it.</p>`,
-          }),
-        });
-      },
+      // Use default NextAuth email sending for reliability
     }),
   ],
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
