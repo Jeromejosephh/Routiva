@@ -133,3 +133,77 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not update" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const user = await requireUser();
+
+    // Rate limiting
+    const key = rateLimitRequest(req);
+    await rateLimit(key);
+
+    const ip = getRequestIp(req.headers);
+
+    const habitId = extractHabitIdFromUrl(req);
+    if (!habitId) {
+      return NextResponse.json(
+        { error: "Invalid habit id in URL" },
+        { status: 400 }
+      );
+    }
+
+    // Ensure the habit belongs to the user
+    const habit = await prisma.habit.findFirst({
+      where: { id: habitId, userId: user.id },
+      select: { id: true },
+    });
+    if (!habit) {
+      return NextResponse.json({ error: "Habit not found" }, { status: 404 });
+    }
+
+    // Get date from query parameter
+    const url = new URL(req.url);
+    const dateParam = url.searchParams.get("date");
+    if (!dateParam) {
+      return NextResponse.json(
+        { error: "Date parameter is required" },
+        { status: 400 }
+      );
+    }
+
+    // Normalise date to UTC midnight
+    const dateInput = new Date(dateParam);
+    const dateUtc = toUtcMidnight(dateInput);
+
+    // Delete the habit log entry
+    const deletedLog = await prisma.habitLog.deleteMany({
+      where: {
+        habitId,
+        date: dateUtc,
+      },
+    });
+
+    logger.info("habitLog deleted", {
+      userId: user.id,
+      habitId,
+      date: dateUtc.toISOString(),
+      deletedCount: deletedLog.count,
+      ip,
+    });
+
+    return NextResponse.json({
+      success: true,
+      deletedCount: deletedLog.count,
+    });
+  } catch (error) {
+    logger.error("Failed to delete habit log", {
+      error: error instanceof Error ? error : new Error(String(error))
+    });
+
+    if (error instanceof Error && error.message.includes('Rate limit')) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+
+    return NextResponse.json({ error: "Could not delete" }, { status: 500 });
+  }
+}
