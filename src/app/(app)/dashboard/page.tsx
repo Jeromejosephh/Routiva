@@ -56,10 +56,16 @@ export default async function DashboardPage() {
     }
   });
 
+  type HabitWithLogs = {
+    id: string;
+    name: string;
+    logs: Array<{ status: string }>;
+  };
+
   const doneSet = new Set(
-    habits
-      .filter((h: any) => h.logs.some((log: any) => log.status === 'done'))
-      .map((h: any) => h.id)
+    (habits as HabitWithLogs[])
+      .filter((h) => h.logs.some((log) => log.status === 'done'))
+      .map((h) => h.id)
   );
 
   const isEmpty = habits.length === 0;
@@ -89,7 +95,7 @@ export default async function DashboardPage() {
         </div>
       ) : (
         <ul className="space-y-2">
-          {habits.map((h: any) => (
+          {(habits as HabitWithLogs[]).map((h) => (
             <li
               key={h.id}
               className="border p-3 rounded flex items-center justify-between"
