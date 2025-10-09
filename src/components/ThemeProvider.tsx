@@ -363,21 +363,22 @@ export function ThemeProvider({
         existingOverlay.remove();
       }
       
-      // Apply theme classes
+      // Apply theme classes with forced consistent sizing
       if (shouldUseDark) {
         root.classList.add('dark');
         document.body.classList.add('dark', 'text-gray-100');
         document.body.style.backgroundImage = "url('/bg-dark.png')";
-        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundPosition = 'center center';
+        document.body.style.backgroundSize = '100vw 100vh';
       } else {
         document.body.classList.add('text-gray-900');
         document.body.style.backgroundImage = "url('/bg-light.png')";
-        document.body.style.backgroundPosition = 'center 60%';
+        document.body.style.backgroundPosition = 'center center';
+        document.body.style.backgroundSize = '100vw 100vh';
       }
       
       // Always add these classes and background styles
       document.body.classList.add('min-h-screen', 'transition-all', 'duration-300');
-      document.body.style.backgroundSize = 'cover';
       document.body.style.backgroundRepeat = 'no-repeat';
       document.body.style.backgroundAttachment = 'fixed';
       
