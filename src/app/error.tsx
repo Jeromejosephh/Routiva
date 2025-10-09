@@ -33,7 +33,7 @@ export default function Error({
           </button>
           <button
             onClick={() => window.location.href = '/dashboard'}
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
           >
             Go to Dashboard
           </button>

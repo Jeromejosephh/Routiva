@@ -22,7 +22,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </Link>
           </div>
           <form action="/api/auth/signout" method="post">
-            <button className="text-sm border px-3 py-1 rounded">Sign out</button>
+            <button className="text-sm border px-3 py-1 rounded transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-50 dark:hover:bg-gray-700">Sign out</button>
           </form>
         </nav>
 

@@ -16,7 +16,7 @@ export default function DataManagementSection() {
             Download all your habit data as JSON format.
           </p>
           <button 
-            className={`${themeClasses.primary} text-white px-4 py-2 rounded opacity-50 cursor-not-allowed`}
+            className={`${themeClasses.primary} text-white px-4 py-2 rounded opacity-50 cursor-not-allowed transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]`}
             disabled
             title="Data export will be available in a future update"
           >
@@ -31,7 +31,7 @@ export default function DataManagementSection() {
             Permanently delete your account and all associated data.
           </p>
           <button 
-            className="border border-red-300 text-red-600 px-4 py-2 rounded text-sm bg-red-50 cursor-not-allowed"
+            className="border border-red-300 text-red-600 px-4 py-2 rounded text-sm bg-red-50 cursor-not-allowed transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
             disabled
             title="Account deletion will be available in a future update"
           >

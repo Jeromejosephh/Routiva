@@ -160,13 +160,13 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                   setFormError("");
                   setShowForm(true);
                 }}
-                className="p-1 hover:bg-gray-100 rounded"
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Edit2 size={14} />
               </button>
               <button
                 onClick={() => handleDelete(group)}
-                className="p-1 hover:bg-gray-100 rounded text-red-600"
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-red-600 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
                 disabled={group._count.habits > 0}
               >
                 <Trash2 size={14} />
@@ -274,7 +274,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                     setSelectedIcon(NO_ICON_VALUE);
                     setFormError("");
                   }}
-                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 transition-all duration-150"
+                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Cancel
                 </button>

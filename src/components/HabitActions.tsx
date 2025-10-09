@@ -106,12 +106,12 @@ export default function HabitActions({
         <MoreHorizontal className="h-4 w-4" />
       </summary>
 
-      <div className="absolute right-0 z-20 mt-2 w-44 rounded-md border bg-background shadow">
+      <div className="absolute right-0 z-20 mt-2 w-44 rounded-md border bg-background/50 backdrop-blur-sm shadow">
         <button
           type="button"
           onClick={rename}
           disabled={pending}
-          className="flex w-full items-center gap-2 px-3 py-2 hover:bg-muted text-left"
+          className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
         >
           <Pencil className="h-4 w-4" /> Rename
         </button>
@@ -119,7 +119,7 @@ export default function HabitActions({
           type="button"
           onClick={toggleArchive}
           disabled={pending}
-          className="flex w-full items-center gap-2 px-3 py-2 hover:bg-muted text-left"
+          className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
         >
           {isArchived ? (
             <ArchiveRestore className="h-4 w-4" />
@@ -128,12 +128,11 @@ export default function HabitActions({
           )}
           {isArchived ? "Unarchive" : "Archive"}
         </button>
-        <div className="my-1 h-px bg-border" />
         <button
           type="button"
           onClick={del}
           disabled={pending}
-          className="flex w-full items-center gap-2 px-3 py-2 hover:bg-muted text-left text-red-600"
+          className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-red-600 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
         >
           <Trash2 className="h-4 w-4" /> Delete
         </button>

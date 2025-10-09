@@ -127,7 +127,7 @@ export default function EmailForm() {
       <button
         type="submit"
         disabled={isLoading}
-        className={`w-full rounded py-2 transition-colors ${
+        className={`w-full rounded py-2 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] ${
           isLoading ? 'bg-gray-400' : 'bg-black hover:bg-gray-800'
         } text-white disabled:opacity-50`}
         aria-busy={isLoading}

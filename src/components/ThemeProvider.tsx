@@ -357,16 +357,45 @@ export function ThemeProvider({
       root.classList.remove('dark');
       document.body.classList.remove('bg-gray-50', 'bg-gray-900', 'text-gray-900', 'text-gray-100', 'dark');
       
+      // Remove existing overlay if any
+      const existingOverlay = document.getElementById('bg-overlay');
+      if (existingOverlay) {
+        existingOverlay.remove();
+      }
+      
       // Apply theme classes
       if (shouldUseDark) {
         root.classList.add('dark');
-        document.body.classList.add('dark', 'bg-gray-900', 'text-gray-100');
+        document.body.classList.add('dark', 'text-gray-100');
+        document.body.style.backgroundImage = "url('/bg-dark.jpg')";
       } else {
-        document.body.classList.add('bg-gray-50', 'text-gray-900');
+        document.body.classList.add('text-gray-900');
+        document.body.style.backgroundImage = "url('/bg-light.jpg')";
       }
       
-      // Always add these classes
-      document.body.classList.add('min-h-screen', 'transition-colors', 'duration-300');
+      // Always add these classes and background styles
+      document.body.classList.add('min-h-screen', 'transition-all', 'duration-300');
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundAttachment = 'fixed';
+      
+      // Add overlay for 20% transparency
+      const overlay = document.getElementById('bg-overlay') || document.createElement('div');
+      overlay.id = 'bg-overlay';
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: ${shouldUseDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)'};
+        pointer-events: none;
+        z-index: -1;
+      `;
+      if (!document.getElementById('bg-overlay')) {
+        document.body.appendChild(overlay);
+      }
     };
 
     // Apply theme immediately
