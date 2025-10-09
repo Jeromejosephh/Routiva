@@ -367,10 +367,10 @@ export function ThemeProvider({
       if (shouldUseDark) {
         root.classList.add('dark');
         document.body.classList.add('dark', 'text-gray-100');
-        document.body.style.backgroundImage = "url('/bg-dark.jpg')";
+        document.body.style.backgroundImage = "url('/bg-dark.png')";
       } else {
         document.body.classList.add('text-gray-900');
-        document.body.style.backgroundImage = "url('/bg-light.jpg')";
+        document.body.style.backgroundImage = "url('/bg-light.png')";
       }
       
       // Always add these classes and background styles
