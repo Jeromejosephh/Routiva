@@ -99,12 +99,12 @@ export default async function HabitsPage() {
         <input
           name="name"
           placeholder="New habit name"
-          className="border rounded px-3 py-2 flex-1"
+          className="border rounded px-3 py-2 flex-1 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           required
         />
         <select
           name="groupId"
-          className="border rounded px-3 py-2"
+          className="border rounded px-3 py-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
         >
           <option value="">No Group</option>
           {groups.map((group) => (
@@ -113,7 +113,7 @@ export default async function HabitsPage() {
             </option>
           ))}
         </select>
-        <button type="submit" className="border rounded px-3 py-2">
+        <button type="submit" className="border rounded px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white border-blue-600">
           Add
         </button>
       </form>
@@ -174,7 +174,7 @@ export default async function HabitsPage() {
                       </h3>
                       <ul className="space-y-2">
                         {groupHabits.map((h) => (
-                          <li key={h.id} className="bg-white border p-3 rounded">
+                          <li key={h.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded">
                             <div className="flex items-center justify-between">
                               <span className={h.isArchived ? "opacity-60 line-through" : ""}>
                                 {h.name}
@@ -197,11 +197,11 @@ export default async function HabitsPage() {
 
                 {/* Ungrouped habits */}
                 {ungroupedHabits.length > 0 && (
-                  <div className="border rounded-lg p-4">
+                  <div className="border rounded-lg p-4 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50">
                     <h3 className="font-medium mb-3">Ungrouped Habits ({ungroupedHabits.length})</h3>
                     <ul className="space-y-2">
                       {ungroupedHabits.map((h) => (
-                        <li key={h.id} className="border p-3 rounded">
+                        <li key={h.id} className="border p-3 rounded border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
                           <div className="flex items-center justify-between">
                             <span className={h.isArchived ? "opacity-60 line-through" : ""}>
                               {h.name}

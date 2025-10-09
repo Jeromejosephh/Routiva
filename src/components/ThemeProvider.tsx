@@ -179,34 +179,54 @@ export function ThemeProvider({
   initialTheme?: Theme;
   initialPrimaryColor?: PastelColor;
 }) {
+  const [mounted, setMounted] = useState(false);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [primaryColor, setPrimaryColor] = useState<PastelColor>(initialPrimaryColor);
   const [isDark, setIsDark] = useState(false);
 
+  // Ensure component is mounted before applying themes (prevents hydration mismatch)
   useEffect(() => {
-    const root = window.document.documentElement;
-    
-    // Determine if we should use dark mode
-    const shouldUseDark = theme === 'dark' || 
-      (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    
-    setIsDark(shouldUseDark);
-    
-    if (shouldUseDark) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    
-    // Set CSS custom properties for dynamic theming
-    // const colorScheme = PASTEL_COLORS[primaryColor]; // Future use for CSS custom properties
-    
-    // Apply theme to body
-    document.body.className = shouldUseDark 
-      ? `dark bg-gray-900 text-gray-100 min-h-screen transition-colors duration-300`
-      : `bg-gray-50 text-gray-900 min-h-screen transition-colors duration-300`;
+    setMounted(true);
+  }, []);
 
-  }, [theme, primaryColor]);
+  useEffect(() => {
+    if (!mounted) return; // Don't apply themes until mounted
+    
+    const applyTheme = () => {
+      const root = window.document.documentElement;
+      
+      // Determine if we should use dark mode
+      const shouldUseDark = theme === 'dark' || 
+        (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      
+      setIsDark(shouldUseDark);
+      
+      // Remove all theme-related classes first
+      root.classList.remove('dark');
+      document.body.classList.remove('bg-gray-50', 'bg-gray-900', 'text-gray-900', 'text-gray-100', 'dark');
+      
+      // Apply theme classes
+      if (shouldUseDark) {
+        root.classList.add('dark');
+        document.body.classList.add('dark', 'bg-gray-900', 'text-gray-100');
+      } else {
+        document.body.classList.add('bg-gray-50', 'text-gray-900');
+      }
+      
+      // Always add these classes
+      document.body.classList.add('min-h-screen', 'transition-colors', 'duration-300');
+    };
+
+    // Apply theme immediately
+    applyTheme();
+
+    // Listen for system theme changes if using system theme
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addEventListener('change', applyTheme);
+      return () => mediaQuery.removeEventListener('change', applyTheme);
+    }
+  }, [mounted, theme, primaryColor]);
 
   const updateUserPreferences = async (newTheme?: Theme, newColor?: PastelColor) => {
     try {
@@ -236,6 +256,11 @@ export function ThemeProvider({
     setPrimaryColor(newColor);
     updateUserPreferences(undefined, newColor);
   };
+
+  // Don't render until mounted to prevent hydration mismatch
+  if (!mounted) {
+    return <div style={{ visibility: 'hidden' }}>{children}</div>;
+  }
 
   return (
     <ThemeContext.Provider 

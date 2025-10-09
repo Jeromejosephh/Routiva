@@ -137,25 +137,25 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
 
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
               {editingGroup ? "Edit Group" : "Create Group"}
             </h3>
             
             <form action={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Name</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Name</label>
                 <input
                   name="name"
                   defaultValue={editingGroup?.name || ""}
-                  className="w-full border rounded px-3 py-2"
+                  className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
                   placeholder="e.g., Health, Work, Personal"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Color</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Color</label>
                 <div className="grid grid-cols-4 gap-2">
                   {COLORS.map((color) => (
                     <label key={color.value} className="flex items-center gap-2 cursor-pointer">
@@ -166,15 +166,15 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                         defaultChecked={editingGroup?.color === color.value || (!editingGroup && color.value === "blue")}
                         className="sr-only"
                       />
-                      <div className={`w-6 h-6 rounded ${color.class} border-2 border-transparent peer-checked:border-gray-400`} />
-                      <span className="text-sm">{color.name}</span>
+                      <div className={`w-6 h-6 rounded ${color.class} border-2 border-transparent peer-checked:border-gray-400 dark:peer-checked:border-gray-300`} />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{color.name}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Icon (Optional)</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Icon (Optional)</label>
                 <div className="grid grid-cols-5 gap-2">
                   {ICONS.map((icon) => (
                     <label key={icon} className="flex items-center justify-center cursor-pointer">
@@ -185,7 +185,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                         defaultChecked={editingGroup?.icon === icon}
                         className="sr-only peer"
                       />
-                      <div className="w-10 h-10 flex items-center justify-center text-xl border rounded peer-checked:bg-blue-100 peer-checked:border-blue-500">
+                      <div className="w-10 h-10 flex items-center justify-center text-xl border rounded border-gray-300 dark:border-gray-600 peer-checked:bg-blue-100 dark:peer-checked:bg-blue-900/30 peer-checked:border-blue-500 dark:peer-checked:border-blue-400">
                         {icon}
                       </div>
                     </label>
@@ -200,7 +200,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                     setShowForm(false);
                     setEditingGroup(null);
                   }}
-                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50"
+                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
                 >
                   Cancel
                 </button>

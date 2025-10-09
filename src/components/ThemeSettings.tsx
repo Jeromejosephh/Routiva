@@ -78,39 +78,12 @@ export default function ThemeSettings() {
         </div>
       </div>
 
-      {/* Preview Section */}
+      {/* Live Preview */}
       <div className="border rounded-lg p-4 dark:border-gray-700">
         <h4 className="font-medium mb-3">Preview</h4>
-        <div className="space-y-3">
-          {/* Sample components using the theme */}
-          <div className={`p-3 rounded ${PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'].primary}`}>
-            <div className="font-medium">Sample Card</div>
-            <div className="text-sm opacity-80">This is how your content will look</div>
-          </div>
-          
-          <button className={`px-4 py-2 rounded font-medium ${PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'].button}`}>
-            Sample Button
-          </button>
-          
-          <div className={`p-2 rounded border ${PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'].secondary} ${PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'].border}`}>
-            <div className="text-sm">Secondary content area</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Color Customization Hint */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <div className="flex items-start gap-3">
-          <Palette className="text-blue-600 dark:text-blue-400 mt-0.5" size={16} />
-          <div>
-            <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-1">
-              Pastel Color Theme
-            </h4>
-            <p className="text-sm text-blue-700 dark:text-blue-300">
-              All colors are designed with soft, pleasant pastel tones that work beautifully in both light and dark modes. 
-              Your selection will be automatically saved and applied across the entire application.
-            </p>
-          </div>
+        <div className={`p-3 rounded ${PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'].primary}`}>
+          <div className="font-medium">Sample Card</div>
+          <div className="text-sm opacity-80">This is how your content will look</div>
         </div>
       </div>
     </div>
