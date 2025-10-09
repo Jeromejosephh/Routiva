@@ -114,7 +114,7 @@ export default function EmailForm() {
               id="email-error"
               className={`mt-1 text-sm ${
                 formState.status === 'error' ? 'text-red-600' :
-                formState.status === 'success' ? 'text-green-600' : 'text-gray-600'
+                formState.status === 'success' ? 'text-green-600' : 'text-white/70'
               }`}
               role="status"
               aria-live="polite"

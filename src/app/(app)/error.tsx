@@ -22,7 +22,7 @@ export default function AppError({
     <div className="p-6">
       <div className="max-w-md mx-auto text-center space-y-4">
         <h2 className="text-xl font-semibold text-red-600">Oops! Something went wrong</h2>
-        <p className="text-gray-600">
+        <p className="text-white/70">
           We&apos;re having trouble loading this page. Please try again.
         </p>
         <button

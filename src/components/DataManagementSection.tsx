@@ -12,7 +12,7 @@ export default function DataManagementSection() {
       <div className="space-y-4">
         <div>
           <h3 className="font-medium mb-2">Export Data</h3>
-          <p className="text-sm text-gray-600 mb-3">
+          <p className="text-sm text-white/70 mb-3">
             Download all your habit data as JSON format.
           </p>
           <button 
@@ -22,12 +22,12 @@ export default function DataManagementSection() {
           >
             Export Data
           </button>
-          <p className="text-xs text-gray-500 mt-1">Feature coming in next release</p>
+          <p className="text-xs text-white/60 mt-1">Feature coming in next release</p>
         </div>
 
         <div className="border-t pt-4">
           <h3 className="font-medium mb-2 text-red-600">Danger Zone</h3>
-          <p className="text-sm text-gray-600 mb-3">
+          <p className="text-sm text-white/70 mb-3">
             Permanently delete your account and all associated data.
           </p>
           <button 
@@ -37,7 +37,7 @@ export default function DataManagementSection() {
           >
             Delete Account
           </button>
-          <p className="text-xs text-gray-500 mt-1">Contact support for account deletion requests</p>
+          <p className="text-xs text-white/60 mt-1">Contact support for account deletion requests</p>
         </div>
       </div>
     </div>

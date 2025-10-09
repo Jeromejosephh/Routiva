@@ -107,7 +107,7 @@ export default function HabitList({ habits, groups, doneSet }: HabitListProps) {
       {/* Ungrouped habits */}
       {ungroupedHabits.length > 0 && (
         <div className={`border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 ${themeClasses.secondary} ${themeClasses.border}`}>
-          <h3 className="font-medium mb-3 text-gray-700 dark:text-gray-300">Other Habits</h3>
+          <h3 className="font-medium mb-3 text-white/90">Other Habits</h3>
           <ul className="space-y-2">
             {ungroupedHabits.map((habit) => (
               <li key={habit.id} className={`border p-3 rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${themeClasses.primary} ${themeClasses.border}`}>
@@ -132,7 +132,7 @@ export default function HabitList({ habits, groups, doneSet }: HabitListProps) {
 
       {habits.length === 0 && (
         <div className={`text-center p-8 border border-dashed rounded-lg backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${themeClasses.border}`}>
-          <p className="text-gray-500 dark:text-gray-400">No habits yet. Create your first habit!</p>
+          <p className="text-white/60">No habits yet. Create your first habit!</p>
         </div>
       )}
     </div>

@@ -19,12 +19,12 @@ export default function VerifyRequestPage() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Check your email
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-white/70">
             A sign in link has been sent to your email address.
           </p>
         </div>
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-white/60">
             The link will expire in 10 minutes.
           </p>
           <p className="mt-4 text-sm">

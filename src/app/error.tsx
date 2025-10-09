@@ -21,7 +21,7 @@ export default function Error({
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center space-y-4">
         <h2 className="text-2xl font-semibold text-red-600">Something went wrong!</h2>
-        <p className="text-gray-600">
+        <p className="text-white/70">
           We encountered an unexpected error. Our team has been notified.
         </p>
         <div className="space-x-4">
@@ -40,7 +40,7 @@ export default function Error({
         </div>
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-4 text-left">
-            <summary className="cursor-pointer text-sm text-gray-500">
+            <summary className="cursor-pointer text-sm text-white/60">
               Error Details (Development)
             </summary>
             <pre className="mt-2 p-4 bg-gray-100 rounded text-xs overflow-auto">

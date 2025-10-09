@@ -147,7 +147,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
               <span className="text-lg">{group.icon}</span>
               <div>
                 <div className="font-medium">{group.name}</div>
-                <div className="text-sm text-gray-500">{group._count.habits} habits</div>
+                <div className="text-sm text-white/60">{group._count.habits} habits</div>
               </div>
             </div>
             
@@ -179,7 +179,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md backdrop-blur-lg">
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold mb-4 text-white">
               {editingGroup ? "Edit Group" : "Create Group"}
             </h3>
             
@@ -191,18 +191,18 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
             
             <form action={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Name</label>
+                <label className="block text-sm font-medium mb-1 text-white/90">Name</label>
                 <input
                   name="name"
                   defaultValue={editingGroup?.name || ""}
-                  className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                  className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-white border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
                   placeholder="e.g., Health, Work, Personal"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Color</label>
+                <label className="block text-sm font-medium mb-2 text-white/90">Color</label>
                 <div className="grid grid-cols-2 gap-3">
                   {COLORS.map((color) => (
                     <div key={color.value} className="flex items-center gap-3">
@@ -223,8 +223,8 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                       </button>
                       <span className={`text-sm transition-colors ${
                         selectedColor === color.value 
-                          ? 'font-medium text-gray-900 dark:text-gray-100' 
-                          : 'text-gray-700 dark:text-gray-300'
+                          ? 'font-medium text-white' 
+                          : 'text-white/90'
                       }`}>
                         {color.name}
                       </span>
@@ -234,7 +234,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Icon (Optional)</label>
+                <label className="block text-sm font-medium mb-2 text-white/90">Icon (Optional)</label>
                 <div className="grid grid-cols-6 gap-2">
                   <button
                     type="button"
@@ -242,7 +242,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                     className={`w-10 h-10 flex items-center justify-center text-xs border-2 rounded-lg transition-all duration-200 ${
                       selectedIcon === NO_ICON_VALUE || selectedIcon === ""
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 scale-105 ring-2 ring-blue-200 dark:ring-blue-800'
-                        : 'border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500 hover:scale-105'
+                        : 'border-gray-300 dark:border-gray-600 text-white/60 hover:border-gray-400 dark:hover:border-gray-500 hover:scale-105'
                     }`}
                   >
                     None
@@ -274,7 +274,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                     setSelectedIcon(NO_ICON_VALUE);
                     setFormError("");
                   }}
-                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-white/90 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Cancel
                 </button>

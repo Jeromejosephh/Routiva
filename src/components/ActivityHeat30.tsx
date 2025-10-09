@@ -42,7 +42,7 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
       {/* Card header */}
       <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Last 30 days</h2>
+          <h2 className="text-lg font-semibold text-white">Last 30 days</h2>
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
               {totalCompletions} completions
@@ -50,7 +50,7 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
           </div>
         </div>
         {/* Legend */}
-        <div className="flex items-center justify-between mt-3 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between mt-3 text-xs text-white/70">
           <span>Activity level</span>
           <div className="flex items-center gap-1">
             <span>Less</span>

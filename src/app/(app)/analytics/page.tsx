@@ -84,7 +84,7 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div className="text-2xl font-bold text-blue-600">{analytics.totalHabits}</div>
-          <div className="text-sm text-gray-600">Total Habits</div>
+          <div className="text-sm text-white/70">Total Habits</div>
         </div>
         
         <div className="border rounded-lg p-4 flex items-center justify-between backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
@@ -92,7 +92,7 @@ export default async function AnalyticsPage() {
             <div className="text-2xl font-bold text-green-600">
               {Math.round(analytics.overallCompletionRate * 100)}%
             </div>
-            <div className="text-sm text-gray-600">Overall Completion</div>
+            <div className="text-sm text-white/70">Overall Completion</div>
           </div>
           <ProgressRing 
             percentage={analytics.overallCompletionRate * 100}
@@ -103,12 +103,12 @@ export default async function AnalyticsPage() {
         
         <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div className="text-2xl font-bold text-purple-600">{analytics.weeklyActivity}</div>
-          <div className="text-sm text-gray-600">This Week</div>
+          <div className="text-sm text-white/70">This Week</div>
         </div>
         
         <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div className="text-2xl font-bold text-orange-600">{analytics.recentActivity}</div>
-          <div className="text-sm text-gray-600">Last 30 Days</div>
+          <div className="text-sm text-white/70">Last 30 Days</div>
         </div>
       </div>
 
@@ -116,7 +116,7 @@ export default async function AnalyticsPage() {
         <h2 className="text-lg font-semibold mb-4">Habit Performance</h2>
         
         {analytics.habitStats.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-white/60">
             <p>No habits yet. Create your first habit to see analytics!</p>
           </div>
         ) : (
@@ -126,7 +126,7 @@ export default async function AnalyticsPage() {
                 <div key={habit.id} className="flex items-center justify-between p-3 border rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60">
                   <div className="flex-1">
                     <div className="font-medium">{habit.name}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-white/60">
                       {habit.totalLogs} total logs • {habit.recentActivity} this week
                     </div>
                   </div>
@@ -136,14 +136,14 @@ export default async function AnalyticsPage() {
                       <div className="font-semibold text-green-600">
                         {Math.round(habit.completionRate * 100)}%
                       </div>
-                      <div className="text-xs text-gray-500">Success Rate</div>
+                      <div className="text-xs text-white/60">Success Rate</div>
                     </div>
                     
                     <div className="text-center">
                       <div className="font-semibold text-blue-600">
                         {habit.currentStreak}
                       </div>
-                      <div className="text-xs text-gray-500">Current Streak</div>
+                      <div className="text-xs text-white/60">Current Streak</div>
                     </div>
                   </div>
                 </div>
@@ -193,7 +193,7 @@ export default async function AnalyticsPage() {
               )}
             </>
           ) : (
-            <p className="text-gray-500">Start tracking habits to see personalized insights here.</p>
+            <p className="text-white/60">Start tracking habits to see personalized insights here.</p>
           )}
         </div>
       </div>

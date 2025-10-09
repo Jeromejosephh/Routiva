@@ -18,7 +18,7 @@ export function SimpleBarChart({ data, title, maxValue }: SimpleBarChartProps) {
       <div className="space-y-2">
         {data.map((item, index) => (
           <div key={index} className="flex items-center space-x-3">
-            <div className="w-20 text-xs text-gray-600 truncate">
+            <div className="w-20 text-xs text-white/70 truncate">
               {item.label}
             </div>
             <div className="flex-1 bg-gray-100 rounded-full h-4 relative overflow-hidden">
@@ -29,7 +29,7 @@ export function SimpleBarChart({ data, title, maxValue }: SimpleBarChartProps) {
                 style={{ width: `${max > 0 ? (item.value / max) * 100 : 0}%` }}
               />
             </div>
-            <div className="w-8 text-xs text-gray-600 text-right">
+            <div className="w-8 text-xs text-white/70 text-right">
               {item.value}
             </div>
           </div>

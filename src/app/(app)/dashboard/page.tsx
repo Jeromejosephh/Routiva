@@ -87,7 +87,7 @@ export default async function DashboardPage() {
       {/* Page intro row with date and week blurb */}
       <div className="flex items-center justify-between py-2 px-1">
         <div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-white/70">
             {new Date().toLocaleDateString('en-US', { 
               weekday: 'long', 
               year: 'numeric', 
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
               day: 'numeric' 
             })}
           </p>
-          <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
+          <p className="text-xs text-white/60 dark:text-white/60 mt-0.5">
             Your week at a glance
           </p>
         </div>

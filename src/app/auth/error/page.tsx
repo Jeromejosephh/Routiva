@@ -25,7 +25,7 @@ export default function AuthErrorPage() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Authentication Error
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-white/70">
             {error === "AccessDenied" && "You don't have access to this resource."}
             {error === "Verification" && 
               "The sign-in link is no longer valid. It may have expired or already been used."}

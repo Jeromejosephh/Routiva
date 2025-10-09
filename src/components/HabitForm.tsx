@@ -22,12 +22,12 @@ export default function HabitForm({
       <input
         name="name"
         placeholder="New habit name"
-        className="border rounded px-3 py-2 flex-1 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+        className="border rounded px-3 py-2 flex-1 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-white placeholder-gray-500 dark:placeholder-gray-400"
         required
       />
       <select
         name="groupId"
-        className="border rounded px-3 py-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
+        className="border rounded px-3 py-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-white"
       >
         <option value="">No Group</option>
         {groups.map((group) => (

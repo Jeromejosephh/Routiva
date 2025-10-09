@@ -84,7 +84,7 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
             defaultValue={userSettings?.reminderDailyTime || "09:00"}
             className="border rounded px-3 py-2"
           />
-          <p className="text-xs text-gray-500 mt-1">Email reminders will be available in a future update</p>
+          <p className="text-xs text-white/60 mt-1">Email reminders will be available in a future update</p>
         </div>
 
         {/* Weekly Summary */}
@@ -101,7 +101,7 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
               Enable weekly summary emails
             </label>
           </div>
-          <p className="text-xs text-gray-500 mt-1">Weekly summaries will be available in a future update</p>
+          <p className="text-xs text-white/60 mt-1">Weekly summaries will be available in a future update</p>
         </div>
       </div>
 

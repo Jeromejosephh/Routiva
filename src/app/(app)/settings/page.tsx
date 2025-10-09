@@ -54,19 +54,19 @@ export default async function SettingsPage() {
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-600">Email:</span>
+            <span className="text-white/70">Email:</span>
             <span>{userSettings?.email}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Member since:</span>
+            <span className="text-white/70">Member since:</span>
             <span>{userSettings?.createdAt.toLocaleDateString()}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Active habits:</span>
+            <span className="text-white/70">Active habits:</span>
             <span>{habitCount}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Total completions:</span>
+            <span className="text-white/70">Total completions:</span>
             <span>{totalLogs}</span>
           </div>
         </div>
@@ -81,7 +81,7 @@ export default async function SettingsPage() {
       {/* App Information */}
       <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">About Routiva</h2>
-        <div className="space-y-2 text-sm text-gray-600">
+        <div className="space-y-2 text-sm text-white/70">
           <p>Version: 0.1.0 (MVP)</p>
           <p>A simple, effective habit tracking application.</p>
         </div>
