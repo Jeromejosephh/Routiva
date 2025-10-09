@@ -44,7 +44,7 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Last 30 days</h2>
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
               {totalCompletions} completions
             </span>
           </div>
@@ -56,10 +56,10 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
             <span>Less</span>
             <div className="flex gap-1">
               <div className="w-2.5 h-2.5 rounded-sm bg-gray-200 dark:bg-gray-600"></div>
-              <div className="w-2.5 h-2.5 rounded-sm bg-green-200 dark:bg-green-900/40"></div>
-              <div className="w-2.5 h-2.5 rounded-sm bg-green-300 dark:bg-green-800/60"></div>
-              <div className="w-2.5 h-2.5 rounded-sm bg-green-400 dark:bg-green-700/80"></div>
-              <div className="w-2.5 h-2.5 rounded-sm bg-green-500 dark:bg-green-600"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-gray-300 dark:bg-gray-500"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-gray-400 dark:bg-gray-400"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-gray-500 dark:bg-gray-300"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-gray-600 dark:bg-gray-200"></div>
             </div>
             <span>More</span>
           </div>
@@ -82,7 +82,7 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
               const style =
                 t === 0
                   ? { backgroundColor: "#e5e7eb" }
-                  : { backgroundColor: `rgba(34, 197, 94, ${0.3 + t * 0.7})` };
+                  : { backgroundColor: `rgba(107, 114, 128, ${0.3 + t * 0.7})` };
               return (
                 <div
                   key={d.key}

@@ -26,45 +26,67 @@ const COLORS = [
 ];
 
 const ICONS = ["💪", "🏃", "📚", "🎯", "💼", "🏠", "🎨", "🧘", "🍎", "💡"];
+const NO_ICON_VALUE = "__no_icon__";
 
 export default function GroupManager({ groups }: { groups: Group[] }) {
   const [showForm, setShowForm] = useState(false);
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
   const [pending, startTransition] = useTransition();
+  const [selectedColor, setSelectedColor] = useState<string>("blue");
+  const [selectedIcon, setSelectedIcon] = useState<string>(NO_ICON_VALUE);
+  const [formError, setFormError] = useState<string>("");
   const router = useRouter();
   const themeClasses = useThemeClasses();
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
+    const name = formData.get('name') as string;
+    const color = selectedColor;
+    const icon = selectedIcon === NO_ICON_VALUE || selectedIcon === "" ? undefined : selectedIcon;
+    
+    if (!name?.trim()) {
+      setFormError("Group name is required");
+      return;
+    }
+
+    setFormError("");
     startTransition(async () => {
       try {
-        const url = editingGroup ? `/api/groups/${editingGroup.id}` : "/api/groups";
-        const method = editingGroup ? "PATCH" : "POST";
-        
-        const response = await fetch(url, {
-          method,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: formData.get("name"),
-            color: formData.get("color"),
-            icon: formData.get("icon"),
-          }),
-        });
+        if (editingGroup) {
+          const response = await fetch(`/api/groups/${editingGroup.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, color, icon }),
+          });
 
-        if (!response.ok) {
-          throw new Error(await response.text());
+          if (!response.ok) {
+            throw new Error(await response.text());
+          }
+          
+          toast("Group updated!");
+        } else {
+          const response = await fetch("/api/groups", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, color, icon }),
+          });
+
+          if (!response.ok) {
+            throw new Error(await response.text());
+          }
+          
+          toast("Group created!");
         }
-
-        toast(editingGroup ? "Group updated!" : "Group created!");
         setShowForm(false);
         setEditingGroup(null);
+        setSelectedColor("blue");
+        setSelectedIcon(NO_ICON_VALUE);
         router.refresh();
       } catch (error) {
-        toast(`Error: ${error instanceof Error ? error.message : "Something went wrong"}`);
+        console.error('Error saving group:', error);
+        setFormError("Failed to save group. Please try again.");
       }
     });
-  };
-
-  const handleDelete = (group: Group) => {
+  };  const handleDelete = (group: Group) => {
     if (group._count.habits > 0) {
       toast("Cannot delete group with habits. Move habits to another group first.");
       return;
@@ -95,7 +117,13 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Habit Groups</h2>
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+            setEditingGroup(null);
+            setSelectedColor("blue");
+            setSelectedIcon(NO_ICON_VALUE);
+            setFormError("");
+            setShowForm(true);
+          }}
           className={`flex items-center gap-2 px-3 py-2 text-white rounded ${themeClasses.button}`}
         >
           <Plus size={16} />
@@ -119,6 +147,9 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
               <button
                 onClick={() => {
                   setEditingGroup(group);
+                  setSelectedColor(group.color || "blue");
+                  setSelectedIcon(group.icon || NO_ICON_VALUE);
+                  setFormError("");
                   setShowForm(true);
                 }}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -144,53 +175,83 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
               {editingGroup ? "Edit Group" : "Create Group"}
             </h3>
             
+            {formError && (
+              <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded text-red-700 dark:text-red-300 text-sm">
+                {formError}
+              </div>
+            )}
+            
             <form action={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Name</label>
                 <input
                   name="name"
                   defaultValue={editingGroup?.name || ""}
-                  className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
+                  className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
                   placeholder="e.g., Health, Work, Personal"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Color</label>
-                <div className="grid grid-cols-4 gap-2">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Color</label>
+                <div className="grid grid-cols-2 gap-3">
                   {COLORS.map((color) => (
-                    <label key={color.value} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="color"
-                        value={color.value}
-                        defaultChecked={editingGroup?.color === color.value || (!editingGroup && color.value === "blue")}
-                        className="sr-only"
-                      />
-                      <div className={`w-6 h-6 rounded ${color.class} border-2 border-transparent peer-checked:border-gray-400 dark:peer-checked:border-gray-300`} />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{color.name}</span>
-                    </label>
+                    <div key={color.value} className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedColor(color.value)}
+                        className={`relative w-7 h-7 rounded-full ${color.class} transition-all duration-200 ${
+                          selectedColor === color.value 
+                            ? 'scale-110 ring-3 ring-gray-800 dark:ring-gray-200 ring-offset-2 ring-offset-white dark:ring-offset-gray-800' 
+                            : 'hover:scale-105 border-2 border-gray-300 dark:border-gray-600'
+                        }`}
+                      >
+                        {selectedColor === color.value && (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-2 h-2 bg-gray-800 dark:bg-gray-200 rounded-full"></div>
+                          </div>
+                        )}
+                      </button>
+                      <span className={`text-sm transition-colors ${
+                        selectedColor === color.value 
+                          ? 'font-medium text-gray-900 dark:text-gray-100' 
+                          : 'text-gray-700 dark:text-gray-300'
+                      }`}>
+                        {color.name}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Icon (Optional)</label>
-                <div className="grid grid-cols-5 gap-2">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Icon (Optional)</label>
+                <div className="grid grid-cols-6 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedIcon(NO_ICON_VALUE)}
+                    className={`w-10 h-10 flex items-center justify-center text-xs border-2 rounded-lg transition-all duration-200 ${
+                      selectedIcon === NO_ICON_VALUE || selectedIcon === ""
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 scale-105 ring-2 ring-blue-200 dark:ring-blue-800'
+                        : 'border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500 hover:scale-105'
+                    }`}
+                  >
+                    None
+                  </button>
                   {ICONS.map((icon) => (
-                    <label key={icon} className="flex items-center justify-center cursor-pointer">
-                      <input
-                        type="radio"
-                        name="icon"
-                        value={icon}
-                        defaultChecked={editingGroup?.icon === icon}
-                        className="sr-only peer"
-                      />
-                      <div className={`w-10 h-10 flex items-center justify-center text-xl border rounded border-gray-300 dark:border-gray-600 peer-checked:${themeClasses.secondary} peer-checked:${themeClasses.border}`}>
-                        {icon}
-                      </div>
-                    </label>
+                    <button
+                      key={icon}
+                      type="button"
+                      onClick={() => setSelectedIcon(icon)}
+                      className={`w-10 h-10 flex items-center justify-center text-xl border-2 rounded-lg transition-all duration-200 ${
+                        selectedIcon === icon
+                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 scale-105 ring-2 ring-blue-200 dark:ring-blue-800'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:scale-105'
+                      }`}
+                    >
+                      {icon}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -201,8 +262,11 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                   onClick={() => {
                     setShowForm(false);
                     setEditingGroup(null);
+                    setSelectedColor("blue");
+                    setSelectedIcon(NO_ICON_VALUE);
+                    setFormError("");
                   }}
-                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                  className="flex-1 px-4 py-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 transition-all duration-150"
                 >
                   Cancel
                 </button>
