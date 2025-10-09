@@ -6,7 +6,7 @@ export default function DataManagementSection() {
   const themeClasses = useThemeClasses();
 
   return (
-    <div className="border rounded-lg p-6">
+    <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
       <h2 className="text-lg font-semibold mb-4">Data Management</h2>
       
       <div className="space-y-4">

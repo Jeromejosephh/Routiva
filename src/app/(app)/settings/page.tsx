@@ -36,11 +36,11 @@ export default async function SettingsPage() {
         <h1 className="text-2xl font-semibold text-center">Settings</h1>
         
         {/* Theme Settings */}
-        <div className="border rounded-lg p-6">
+        <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <ThemeSettings />
         </div>
 
-        <div className="border rounded-lg p-6">
+        <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
@@ -69,7 +69,7 @@ export default async function SettingsPage() {
       <DataManagementSection />
 
       {/* App Information */}
-      <div className="border rounded-lg p-6">
+      <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">About Routiva</h2>
         <div className="space-y-2 text-sm text-gray-600">
           <p>Version: 0.1.0 (MVP)</p>

@@ -94,7 +94,7 @@ export default async function DashboardPage() {
       <ActivityHeat30 userId={user.id} />
 
       {isEmpty ? (
-        <div className="rounded border p-4">
+        <div className="rounded border p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <p className="mb-3 text-sm text-muted-foreground">
             You don’t have any habits yet. Create your first one:
           </p>
@@ -115,7 +115,7 @@ export default async function DashboardPage() {
           {(habits as HabitWithLogs[]).map((h) => (
             <li
               key={h.id}
-              className="border p-3 rounded flex items-center justify-between"
+              className="border p-3 rounded flex items-center justify-between backdrop-blur-sm bg-white/60 dark:bg-gray-700/60"
             >
               <span>{h.name}</span>
               <div className="flex items-center gap-3">

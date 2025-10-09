@@ -34,7 +34,7 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
   }
 
   return (
-    <form action={handleSubmit} className="border rounded-lg p-6">
+    <form action={handleSubmit} className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
       <h2 className="text-lg font-semibold mb-4">Preferences</h2>
       
       <div className="space-y-4">

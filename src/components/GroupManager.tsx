@@ -141,7 +141,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {groups.map((group) => (
-          <div key={group.id} className="flex items-center justify-between p-3 border rounded">
+          <div key={group.id} className="flex items-center justify-between p-3 border rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60">
             <div className="flex items-center gap-3">
               <div className={`w-4 h-4 rounded ${COLORS.find(c => c.value === group.color)?.class || 'bg-gray-500'}`} />
               <span className="text-lg">{group.icon}</span>
@@ -178,7 +178,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
 
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md backdrop-blur-lg">
             <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
               {editingGroup ? "Edit Group" : "Create Group"}
             </h3>

@@ -72,12 +72,12 @@ export default async function AnalyticsPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-center">Analytics</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="border rounded-lg p-4">
+        <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div className="text-2xl font-bold text-blue-600">{analytics.totalHabits}</div>
           <div className="text-sm text-gray-600">Total Habits</div>
         </div>
         
-        <div className="border rounded-lg p-4 flex items-center justify-between">
+        <div className="border rounded-lg p-4 flex items-center justify-between backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div>
             <div className="text-2xl font-bold text-green-600">
               {Math.round(analytics.overallCompletionRate * 100)}%
@@ -91,18 +91,18 @@ export default async function AnalyticsPage() {
           />
         </div>
         
-        <div className="border rounded-lg p-4">
+        <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div className="text-2xl font-bold text-purple-600">{analytics.weeklyActivity}</div>
           <div className="text-sm text-gray-600">This Week</div>
         </div>
         
-        <div className="border rounded-lg p-4">
+        <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div className="text-2xl font-bold text-orange-600">{analytics.recentActivity}</div>
           <div className="text-sm text-gray-600">Last 30 Days</div>
         </div>
       </div>
 
-      <div className="border rounded-lg p-6">
+      <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">Habit Performance</h2>
         
         {analytics.habitStats.length === 0 ? (
@@ -113,7 +113,7 @@ export default async function AnalyticsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-3">
               {analytics.habitStats.map((habit) => (
-                <div key={habit.id} className="flex items-center justify-between p-3 border rounded">
+                <div key={habit.id} className="flex items-center justify-between p-3 border rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60">
                   <div className="flex-1">
                     <div className="font-medium">{habit.name}</div>
                     <div className="text-sm text-gray-500">
@@ -156,7 +156,7 @@ export default async function AnalyticsPage() {
         )}
       </div>
 
-      <div className="border rounded-lg p-6">
+      <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">Quick Insights</h2>
         <div className="space-y-2 text-sm">
           {analytics.habitStats.length > 0 ? (

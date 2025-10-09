@@ -3,7 +3,7 @@ export default function Loading() {
   return (
     <div className="space-y-6">
       <div className="h-6 w-28 rounded bg-zinc-800 animate-pulse" />
-      <div className="h-28 rounded border p-4">
+      <div className="h-28 rounded border p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <div className="h-4 w-32 rounded bg-zinc-800 animate-pulse mb-3" />
         <div className="flex gap-1">
           {Array.from({ length: 20 }).map((_, i) => (

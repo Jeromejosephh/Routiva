@@ -38,7 +38,7 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
   const totalCompletions = grouped.reduce((n, g) => n + (g._count._all as number), 0);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
       {/* Card header */}
       <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between">

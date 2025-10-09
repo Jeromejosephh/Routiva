@@ -80,7 +80,7 @@ export default function ThemeSettings() {
       </div>
 
       {/* Live Preview */}
-      <div className="border rounded-lg p-4 dark:border-gray-700">
+      <div className="border rounded-lg p-4 dark:border-gray-700 backdrop-blur-sm bg-white/60 dark:bg-gray-700/60">
         <h4 className="font-medium mb-3">Preview</h4>
         <div className="space-y-3">
           <div className={`p-3 rounded ${themeClasses.primary}`}>
