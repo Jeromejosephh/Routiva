@@ -372,7 +372,7 @@ export function ThemeProvider({
       } else {
         document.body.classList.add('text-gray-900');
         document.body.style.backgroundImage = "url('/bg-light.png')";
-        document.body.style.backgroundPosition = 'center bottom';
+        document.body.style.backgroundPosition = 'center 60%';
       }
       
       // Always add these classes and background styles
