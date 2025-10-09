@@ -27,12 +27,12 @@ export const PASTEL_COLORS = {
       border: 'border-blue-200',
     },
     dark: {
-      primary: 'bg-blue-900/20 border-blue-800/30 text-blue-100',
-      secondary: 'bg-blue-800/10 border-blue-700/20 text-blue-200',
+      primary: 'bg-blue-900 border-blue-800 text-blue-100',
+      secondary: 'bg-blue-800 border-blue-700 text-blue-200',
       accent: 'bg-blue-600 text-white',
       button: 'bg-blue-600 hover:bg-blue-700 text-white',
       text: 'text-blue-100',
-      border: 'border-blue-800/30',
+      border: 'border-blue-800',
     }
   },
   pink: {
@@ -46,12 +46,12 @@ export const PASTEL_COLORS = {
       border: 'border-pink-200',
     },
     dark: {
-      primary: 'bg-pink-900/20 border-pink-800/30 text-pink-100',
-      secondary: 'bg-pink-800/10 border-pink-700/20 text-pink-200',
+      primary: 'bg-pink-900 border-pink-800 text-pink-100',
+      secondary: 'bg-pink-800 border-pink-700 text-pink-200',
       accent: 'bg-pink-600 text-white',
       button: 'bg-pink-600 hover:bg-pink-700 text-white',
       text: 'text-pink-100',
-      border: 'border-pink-800/30',
+      border: 'border-pink-800',
     }
   },
   purple: {
@@ -65,12 +65,12 @@ export const PASTEL_COLORS = {
       border: 'border-purple-200',
     },
     dark: {
-      primary: 'bg-purple-900/20 border-purple-800/30 text-purple-100',
-      secondary: 'bg-purple-800/10 border-purple-700/20 text-purple-200',
+      primary: 'bg-purple-900 border-purple-800 text-purple-100',
+      secondary: 'bg-purple-800 border-purple-700 text-purple-200',
       accent: 'bg-purple-600 text-white',
       button: 'bg-purple-600 hover:bg-purple-700 text-white',
       text: 'text-purple-100',
-      border: 'border-purple-800/30',
+      border: 'border-purple-800',
     }
   },
   green: {
@@ -84,12 +84,12 @@ export const PASTEL_COLORS = {
       border: 'border-green-200',
     },
     dark: {
-      primary: 'bg-green-900/20 border-green-800/30 text-green-100',
-      secondary: 'bg-green-800/10 border-green-700/20 text-green-200',
+      primary: 'bg-green-900 border-green-800 text-green-100',
+      secondary: 'bg-green-800 border-green-700 text-green-200',
       accent: 'bg-green-600 text-white',
       button: 'bg-green-600 hover:bg-green-700 text-white',
       text: 'text-green-100',
-      border: 'border-green-800/30',
+      border: 'border-green-800',
     }
   },
   orange: {
@@ -103,12 +103,12 @@ export const PASTEL_COLORS = {
       border: 'border-orange-200',
     },
     dark: {
-      primary: 'bg-orange-900/20 border-orange-800/30 text-orange-100',
-      secondary: 'bg-orange-800/10 border-orange-700/20 text-orange-200',
+      primary: 'bg-orange-900 border-orange-800 text-orange-100',
+      secondary: 'bg-orange-800 border-orange-700 text-orange-200',
       accent: 'bg-orange-600 text-white',
       button: 'bg-orange-600 hover:bg-orange-700 text-white',
       text: 'text-orange-100',
-      border: 'border-orange-800/30',
+      border: 'border-orange-800',
     }
   },
   yellow: {
@@ -122,12 +122,12 @@ export const PASTEL_COLORS = {
       border: 'border-yellow-200',
     },
     dark: {
-      primary: 'bg-yellow-900/20 border-yellow-800/30 text-yellow-100',
-      secondary: 'bg-yellow-800/10 border-yellow-700/20 text-yellow-200',
+      primary: 'bg-yellow-900 border-yellow-800 text-yellow-100',
+      secondary: 'bg-yellow-800 border-yellow-700 text-yellow-200',
       accent: 'bg-yellow-600 text-white',
       button: 'bg-yellow-600 hover:bg-yellow-700 text-white',
       text: 'text-yellow-100',
-      border: 'border-yellow-800/30',
+      border: 'border-yellow-800',
     }
   },
   red: {
@@ -141,12 +141,12 @@ export const PASTEL_COLORS = {
       border: 'border-red-200',
     },
     dark: {
-      primary: 'bg-red-900/20 border-red-800/30 text-red-100',
-      secondary: 'bg-red-800/10 border-red-700/20 text-red-200',
+      primary: 'bg-red-900 border-red-800 text-red-100',
+      secondary: 'bg-red-800 border-red-700 text-red-200',
       accent: 'bg-red-600 text-white',
       button: 'bg-red-600 hover:bg-red-700 text-white',
       text: 'text-red-100',
-      border: 'border-red-800/30',
+      border: 'border-red-800',
     }
   },
   teal: {
@@ -160,12 +160,12 @@ export const PASTEL_COLORS = {
       border: 'border-teal-200',
     },
     dark: {
-      primary: 'bg-teal-900/20 border-teal-800/30 text-teal-100',
-      secondary: 'bg-teal-800/10 border-teal-700/20 text-teal-200',
+      primary: 'bg-teal-900 border-teal-800 text-teal-100',
+      secondary: 'bg-teal-800 border-teal-700 text-teal-200',
       accent: 'bg-teal-600 text-white',
       button: 'bg-teal-600 hover:bg-teal-700 text-white',
       text: 'text-teal-100',
-      border: 'border-teal-800/30',
+      border: 'border-teal-800',
     }
   },
 } as const;
