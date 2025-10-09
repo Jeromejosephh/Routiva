@@ -3,6 +3,16 @@ import { prisma } from "@/lib/db";
 import ThemeSettings from "@/components/ThemeSettings";
 import SettingsForm from "@/components/SettingsForm";
 import DataManagementSection from "@/components/DataManagementSection";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Settings",
+  description: "Customize your Routiva experience - manage account preferences, themes, colors, timezone settings, and data export options.",
+  openGraph: {
+    title: "Settings | Routiva",
+    description: "Personalize your habit tracking experience with custom themes, preferences, and account settings.",
+  },
+};
 
 export default async function SettingsPage() {
   const user = await requireUser();

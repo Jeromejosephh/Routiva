@@ -5,6 +5,16 @@ import { revalidatePath } from "next/cache";
 import GroupManager from "@/components/GroupManager";
 import HabitForm from "@/components/HabitForm";
 import HabitList from "@/components/HabitList";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Habits",
+  description: "Manage all your habits - create new ones, organize into groups, edit existing habits, and customize your routine. Build better habits with Routiva.",
+  openGraph: {
+    title: "Habits | Routiva",
+    description: "Create, organize, and manage your habits with groups, colors, and custom settings.",
+  },
+};
 
 async function createHabit(formData: FormData) {
   "use server";

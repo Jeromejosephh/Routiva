@@ -2,6 +2,16 @@ import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import { computeCompletionRate, computeCurrentStreak } from "@/lib/analytics";
 import { SimpleBarChart, ProgressRing } from "@/components/SimpleChart";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Analytics",
+  description: "Detailed habit analytics and insights - view completion rates, streaks, weekly activity, and comprehensive performance data to optimize your routine.",
+  openGraph: {
+    title: "Analytics | Routiva",
+    description: "Track your habit performance with detailed analytics, completion rates, and streak insights.",
+  },
+};
 
 //calculate comprehensive analytics for user's habits
 async function getAnalyticsData(userId: string) {

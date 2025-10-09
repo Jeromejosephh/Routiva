@@ -3,6 +3,16 @@ import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
 import ActivityHeat30 from "@/components/ActivityHeat30";
 import { revalidatePath } from "next/cache";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Your habit tracking dashboard - view today's habits, track progress, and see your activity heatmap. Stay consistent with your daily routines.",
+  openGraph: {
+    title: "Dashboard | Routiva",
+    description: "Track your daily habits and view your progress with Routiva's intuitive dashboard.",
+  },
+};
 
 //server action to create new habits from dashboard
 async function createHabit(formData: FormData) {
