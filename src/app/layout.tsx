@@ -5,10 +5,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: 'Routiva - Simple Habit Tracking App',
+    default: 'Routiva | Transform Your Routine',
     template: '%s | Routiva'
   },
-  description: "Transform your daily routines with Routiva - a simple, effective habit tracking app. Build consistent habits, track your progress, and achieve your goals with beautiful analytics and insights.",
+  description: "Transform your daily routines with Routiva - a simple, effective habit tracking app that is completely FREE. Build consistent habits, track your progress, and achieve your goals with beautiful analytics and insights.",
   keywords: ["habit tracker", "productivity", "goals", "routine", "daily habits", "self improvement", "progress tracking"],
   authors: [{ name: "Routiva Team" }],
   creator: "Routiva Team",
@@ -48,6 +48,20 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'your-google-verification-code',
+  },
+  icons: {
+    icon: [
+      { url: '/favicon_io/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon_io/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon_io/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/favicon_io/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { rel: 'icon', url: '/favicon_io/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { rel: 'icon', url: '/favicon_io/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
   },
 };
 

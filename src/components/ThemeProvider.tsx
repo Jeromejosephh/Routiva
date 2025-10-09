@@ -363,7 +363,7 @@ export function ThemeProvider({
         existingOverlay.remove();
       }
       
-      // Apply theme classes with proper fit to screen
+      // Apply theme classes with consistent positioning
       if (shouldUseDark) {
         root.classList.add('dark');
         document.body.classList.add('dark', 'text-gray-100');
@@ -374,7 +374,7 @@ export function ThemeProvider({
         document.body.classList.add('text-gray-900');
         document.body.style.backgroundImage = "url('/bg-light.png')";
         document.body.style.backgroundPosition = 'center center';
-        document.body.style.backgroundSize = 'contain';
+        document.body.style.backgroundSize = 'cover';
       }
       
       // Always add these classes and background styles
