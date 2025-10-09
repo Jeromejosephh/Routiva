@@ -14,14 +14,14 @@ type Group = {
 };
 
 const COLORS = [
-  { name: "Blue", value: "blue", class: "bg-blue-500" },
-  { name: "Green", value: "green", class: "bg-green-500" },
-  { name: "Purple", value: "purple", class: "bg-purple-500" },
-  { name: "Red", value: "red", class: "bg-red-500" },
-  { name: "Orange", value: "orange", class: "bg-orange-500" },
-  { name: "Yellow", value: "yellow", class: "bg-yellow-500" },
-  { name: "Pink", value: "pink", class: "bg-pink-500" },
-  { name: "Gray", value: "gray", class: "bg-gray-500" },
+  { name: "Blue", value: "blue", class: "bg-blue-400" },
+  { name: "Green", value: "green", class: "bg-green-400" },
+  { name: "Purple", value: "purple", class: "bg-purple-400" },
+  { name: "Red", value: "red", class: "bg-red-400" },
+  { name: "Orange", value: "orange", class: "bg-orange-400" },
+  { name: "Yellow", value: "yellow", class: "bg-yellow-400" },
+  { name: "Pink", value: "pink", class: "bg-pink-400" },
+  { name: "Teal", value: "teal", class: "bg-teal-400" },
 ];
 
 const ICONS = ["💪", "🏃", "📚", "🎯", "💼", "🏠", "🎨", "🧘", "🍎", "💡"];

@@ -153,14 +153,15 @@ export default async function HabitsPage() {
                   if (!group) return null;
                   
                   const colorMap: Record<string, string> = {
-                    blue: 'bg-blue-100 border-blue-300',
-                    green: 'bg-green-100 border-green-300',
-                    purple: 'bg-purple-100 border-purple-300',
-                    red: 'bg-red-100 border-red-300',
-                    orange: 'bg-orange-100 border-orange-300',
-                    yellow: 'bg-yellow-100 border-yellow-300',
-                    pink: 'bg-pink-100 border-pink-300',
-                    gray: 'bg-gray-100 border-gray-300',
+                    blue: 'bg-blue-100 border-blue-300 dark:bg-blue-900/20 dark:border-blue-800/30',
+                    green: 'bg-green-100 border-green-300 dark:bg-green-900/20 dark:border-green-800/30',
+                    purple: 'bg-purple-100 border-purple-300 dark:bg-purple-900/20 dark:border-purple-800/30',
+                    red: 'bg-red-100 border-red-300 dark:bg-red-900/20 dark:border-red-800/30',
+                    orange: 'bg-orange-100 border-orange-300 dark:bg-orange-900/20 dark:border-orange-800/30',
+                    yellow: 'bg-yellow-100 border-yellow-300 dark:bg-yellow-900/20 dark:border-yellow-800/30',
+                    pink: 'bg-pink-100 border-pink-300 dark:bg-pink-900/20 dark:border-pink-800/30',
+                    teal: 'bg-teal-100 border-teal-300 dark:bg-teal-900/20 dark:border-teal-800/30',
+                    gray: 'bg-gray-100 border-gray-300 dark:bg-gray-900/20 dark:border-gray-800/30',
                   };
                   const colorClass = colorMap[group.color] || 'bg-gray-100 border-gray-300';
 

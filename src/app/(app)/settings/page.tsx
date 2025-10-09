@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import ThemeSettings from "@/components/ThemeSettings";
 
 //server action to update user preferences
 async function updateUserSettings(formData: FormData) {
@@ -9,7 +10,6 @@ async function updateUserSettings(formData: FormData) {
   try {
     const user = await requireUser();
     const timezone = String(formData.get("timezone") ?? "UTC");
-    const theme = String(formData.get("theme") ?? "");
     const reminderDailyEnabled = formData.get("reminderDailyEnabled") === "on";
     const reminderDailyTime = String(formData.get("reminderDailyTime") ?? "");
     const summaryWeeklyEnabled = formData.get("summaryWeeklyEnabled") === "on";
@@ -18,7 +18,6 @@ async function updateUserSettings(formData: FormData) {
       where: { id: user.id },
       data: {
         timezone,
-        theme: theme || null,
         reminderDailyEnabled,
         reminderDailyTime: reminderDailyTime || null,
         summaryWeeklyEnabled,
@@ -41,11 +40,13 @@ export default async function SettingsPage() {
   const user = await requireUser();
   
   //fetch user settings and account stats
-  const userSettings = await prisma.user.findUnique({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const userSettings = await (prisma as any).user.findUnique({
     where: { id: user.id },
     select: {
       timezone: true,
       theme: true,
+      primaryColor: true,
       reminderDailyEnabled: true,
       reminderDailyTime: true,
       summaryWeeklyEnabled: true,
@@ -64,8 +65,14 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-center">Settings</h1>
-      <div className="border rounded-lg p-6">
+        <h1 className="text-2xl font-semibold text-center">Settings</h1>
+        
+        {/* Theme Settings */}
+        <div className="border rounded-lg p-6">
+          <ThemeSettings />
+        </div>
+
+        <div className="border rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
@@ -115,23 +122,7 @@ export default async function SettingsPage() {
             </select>
           </div>
 
-          {/* Theme */}
-          <div>
-            <label htmlFor="theme" className="block text-sm font-medium mb-1">
-              Theme
-            </label>
-            <select
-              id="theme"
-              name="theme"
-              defaultValue={userSettings?.theme || ""}
-              className="w-full border rounded px-3 py-2"
-            >
-              <option value="">System Default</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-            <p className="text-xs text-gray-500 mt-1">Theme switching will be available in a future update</p>
-          </div>
+
 
           {/* Daily Reminders */}
           <div>

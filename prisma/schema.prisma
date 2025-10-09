@@ -16,7 +16,8 @@ model User {
 
   // 🔹 New settings/trust fields
   timezone             String  @default("UTC")
-  theme                String?
+  theme                String? @default("light")
+  primaryColor         String  @default("blue")
   reminderDailyTime    String?
   reminderDailyEnabled Boolean @default(false)
   summaryWeeklyEnabled Boolean @default(false)

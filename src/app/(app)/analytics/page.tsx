@@ -146,8 +146,8 @@ export default async function AnalyticsPage() {
                 data={analytics.habitStats.map(habit => ({
                   label: habit.name.length > 15 ? habit.name.substring(0, 15) + '...' : habit.name,
                   value: Math.round(habit.completionRate * 100),
-                  color: habit.completionRate >= 0.8 ? 'bg-green-500' : 
-                         habit.completionRate >= 0.6 ? 'bg-yellow-500' : 'bg-red-500'
+                  color: habit.completionRate >= 0.8 ? 'bg-green-400' : 
+                         habit.completionRate >= 0.6 ? 'bg-yellow-400' : 'bg-red-400'
                 }))}
                 maxValue={100}
               />
