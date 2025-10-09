@@ -74,6 +74,23 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <h1 className="text-xl font-semibold text-center">Dashboard</h1>
 
+      {/* Page intro row with date and week blurb */}
+      <div className="flex items-center justify-between py-2 px-1">
+        <div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {new Date().toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
+            Your week at a glance
+          </p>
+        </div>
+      </div>
+
       <ActivityHeat30 userId={user.id} />
 
       {isEmpty ? (

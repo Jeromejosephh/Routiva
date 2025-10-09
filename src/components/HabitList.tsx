@@ -80,7 +80,6 @@ export default function HabitList({ habits, groups, doneSet }: HabitListProps) {
             <h3 className="font-medium mb-3 flex items-center gap-2">
               <span className="text-lg">{group.icon}</span>
               {group.name}
-              <span className="text-sm text-gray-600">({groupHabits.length})</span>
             </h3>
             <ul className="space-y-2">
               {groupHabits.map((habit) => (

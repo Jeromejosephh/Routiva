@@ -35,31 +35,65 @@ export default async function ActivityHeat30({ userId }: { userId: string }) {
   }
   const max = days.reduce((m, d) => Math.max(m, d.count), 0) || 1;
 
+  const totalCompletions = grouped.reduce((n, g) => n + (g._count._all as number), 0);
+
   return (
-    <div className="mt-6 rounded border p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Last 30 days</h2>
-        <div className="text-sm text-muted-foreground">
-          {grouped.reduce((n, g) => n + (g._count._all as number), 0)}{" "}
-          completions
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      {/* Card header */}
+      <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Last 30 days</h2>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+              {totalCompletions} completions
+            </span>
+          </div>
+        </div>
+        {/* Legend */}
+        <div className="flex items-center justify-between mt-3 text-xs text-gray-500 dark:text-gray-400">
+          <span>Activity level</span>
+          <div className="flex items-center gap-1">
+            <span>Less</span>
+            <div className="flex gap-1">
+              <div className="w-2.5 h-2.5 rounded-sm bg-gray-200 dark:bg-gray-600"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-green-200 dark:bg-green-900/40"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-green-300 dark:bg-green-800/60"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-green-400 dark:bg-green-700/80"></div>
+              <div className="w-2.5 h-2.5 rounded-sm bg-green-500 dark:bg-green-600"></div>
+            </div>
+            <span>More</span>
+          </div>
         </div>
       </div>
-      <div className="flex flex-wrap gap-1">
-        {days.map((d) => {
-          const t = d.count / max;
-          const style =
-            t === 0
-              ? { backgroundColor: "#3f3f46" }
-              : { backgroundColor: `rgba(16,185,129, ${0.25 + t * 0.6})` };
-          return (
-            <div
-              key={d.key}
-              className="h-6 w-6 rounded border border-zinc-600/40"
-              style={style}
-              title={`${d.label}: ${d.count} done`}
-            />
-          );
-        })}
+      
+      {/* Chart area with subtle grid */}
+      <div className="p-6">
+        <div className="relative">
+          {/* Y-axis grid lines */}
+          <div className="absolute inset-0 flex flex-col justify-between opacity-20">
+            {Array.from({length: 5}, (_, i) => (
+              <div key={i} className="border-t border-gray-200 dark:border-gray-600"></div>
+            ))}
+          </div>
+          
+          <div className="relative flex flex-wrap gap-1">
+            {days.map((d) => {
+              const t = d.count / max;
+              const style =
+                t === 0
+                  ? { backgroundColor: "#e5e7eb" }
+                  : { backgroundColor: `rgba(34, 197, 94, ${0.3 + t * 0.7})` };
+              return (
+                <div
+                  key={d.key}
+                  className="h-6 w-6 rounded-sm border border-gray-200 dark:border-gray-600"
+                  style={style}
+                  title={`${d.label}: ${d.count} completions`}
+                />
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
