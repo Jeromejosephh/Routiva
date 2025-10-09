@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export type Theme = 'light' | 'dark' | 'system';
-export type PastelColor = 'blue' | 'pink' | 'purple' | 'green' | 'orange' | 'yellow' | 'red' | 'teal';
+export type PastelColor = 'blue' | 'green' | 'purple' | 'red' | 'orange' | 'yellow' | 'pink' | 'teal' | 'indigo' | 'cyan' | 'emerald' | 'lime' | 'amber' | 'rose' | 'violet' | 'sky';
 
 interface ThemeContextType {
   theme: Theme;
@@ -17,7 +17,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const PASTEL_COLORS = {
   blue: {
-    name: 'Ocean Blue',
+    name: 'Blue',
     light: {
       primary: 'bg-blue-100 border-blue-200 text-blue-900',
       secondary: 'bg-blue-50 border-blue-100 text-blue-800',
@@ -36,7 +36,7 @@ export const PASTEL_COLORS = {
     }
   },
   pink: {
-    name: 'Soft Pink',
+    name: 'Pink',
     light: {
       primary: 'bg-pink-100 border-pink-200 text-pink-900',
       secondary: 'bg-pink-50 border-pink-100 text-pink-800',
@@ -55,7 +55,7 @@ export const PASTEL_COLORS = {
     }
   },
   purple: {
-    name: 'Lavender',
+    name: 'Purple',
     light: {
       primary: 'bg-purple-100 border-purple-200 text-purple-900',
       secondary: 'bg-purple-50 border-purple-100 text-purple-800',
@@ -74,7 +74,7 @@ export const PASTEL_COLORS = {
     }
   },
   green: {
-    name: 'Mint Green',
+    name: 'Green',
     light: {
       primary: 'bg-green-100 border-green-200 text-green-900',
       secondary: 'bg-green-50 border-green-100 text-green-800',
@@ -93,7 +93,7 @@ export const PASTEL_COLORS = {
     }
   },
   orange: {
-    name: 'Peach',
+    name: 'Orange',
     light: {
       primary: 'bg-orange-100 border-orange-200 text-orange-900',
       secondary: 'bg-orange-50 border-orange-100 text-orange-800',
@@ -112,7 +112,7 @@ export const PASTEL_COLORS = {
     }
   },
   yellow: {
-    name: 'Sunshine',
+    name: 'Yellow',
     light: {
       primary: 'bg-yellow-100 border-yellow-200 text-yellow-900',
       secondary: 'bg-yellow-50 border-yellow-100 text-yellow-800',
@@ -131,7 +131,7 @@ export const PASTEL_COLORS = {
     }
   },
   red: {
-    name: 'Rose',
+    name: 'Red',
     light: {
       primary: 'bg-red-100 border-red-200 text-red-900',
       secondary: 'bg-red-50 border-red-100 text-red-800',
@@ -150,7 +150,7 @@ export const PASTEL_COLORS = {
     }
   },
   teal: {
-    name: 'Aqua',
+    name: 'Teal',
     light: {
       primary: 'bg-teal-100 border-teal-200 text-teal-900',
       secondary: 'bg-teal-50 border-teal-100 text-teal-800',
@@ -166,6 +166,158 @@ export const PASTEL_COLORS = {
       button: 'bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
       text: 'text-teal-100',
       border: 'border-teal-800',
+    }
+  },
+  indigo: {
+    name: 'Indigo',
+    light: {
+      primary: 'bg-indigo-100 border-indigo-200 text-indigo-900',
+      secondary: 'bg-indigo-50 border-indigo-100 text-indigo-800',
+      accent: 'bg-indigo-500 text-white',
+      button: 'bg-indigo-400 hover:bg-indigo-500 active:bg-indigo-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-indigo-900',
+      border: 'border-indigo-200',
+    },
+    dark: {
+      primary: 'bg-indigo-900 border-indigo-800 text-indigo-100',
+      secondary: 'bg-indigo-800 border-indigo-700 text-indigo-200',
+      accent: 'bg-indigo-600 text-white',
+      button: 'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-indigo-100',
+      border: 'border-indigo-800',
+    }
+  },
+  cyan: {
+    name: 'Cyan',
+    light: {
+      primary: 'bg-cyan-100 border-cyan-200 text-cyan-900',
+      secondary: 'bg-cyan-50 border-cyan-100 text-cyan-800',
+      accent: 'bg-cyan-500 text-white',
+      button: 'bg-cyan-400 hover:bg-cyan-500 active:bg-cyan-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-cyan-900',
+      border: 'border-cyan-200',
+    },
+    dark: {
+      primary: 'bg-cyan-900 border-cyan-800 text-cyan-100',
+      secondary: 'bg-cyan-800 border-cyan-700 text-cyan-200',
+      accent: 'bg-cyan-600 text-white',
+      button: 'bg-cyan-600 hover:bg-cyan-700 active:bg-cyan-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-cyan-100',
+      border: 'border-cyan-800',
+    }
+  },
+  emerald: {
+    name: 'Emerald',
+    light: {
+      primary: 'bg-emerald-100 border-emerald-200 text-emerald-900',
+      secondary: 'bg-emerald-50 border-emerald-100 text-emerald-800',
+      accent: 'bg-emerald-500 text-white',
+      button: 'bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-emerald-900',
+      border: 'border-emerald-200',
+    },
+    dark: {
+      primary: 'bg-emerald-900 border-emerald-800 text-emerald-100',
+      secondary: 'bg-emerald-800 border-emerald-700 text-emerald-200',
+      accent: 'bg-emerald-600 text-white',
+      button: 'bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-emerald-100',
+      border: 'border-emerald-800',
+    }
+  },
+  lime: {
+    name: 'Lime',
+    light: {
+      primary: 'bg-lime-100 border-lime-200 text-lime-900',
+      secondary: 'bg-lime-50 border-lime-100 text-lime-800',
+      accent: 'bg-lime-500 text-white',
+      button: 'bg-lime-400 hover:bg-lime-500 active:bg-lime-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-lime-900',
+      border: 'border-lime-200',
+    },
+    dark: {
+      primary: 'bg-lime-900 border-lime-800 text-lime-100',
+      secondary: 'bg-lime-800 border-lime-700 text-lime-200',
+      accent: 'bg-lime-600 text-white',
+      button: 'bg-lime-600 hover:bg-lime-700 active:bg-lime-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-lime-100',
+      border: 'border-lime-800',
+    }
+  },
+  amber: {
+    name: 'Amber',
+    light: {
+      primary: 'bg-amber-100 border-amber-200 text-amber-900',
+      secondary: 'bg-amber-50 border-amber-100 text-amber-800',
+      accent: 'bg-amber-500 text-white',
+      button: 'bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-amber-900',
+      border: 'border-amber-200',
+    },
+    dark: {
+      primary: 'bg-amber-900 border-amber-800 text-amber-100',
+      secondary: 'bg-amber-800 border-amber-700 text-amber-200',
+      accent: 'bg-amber-600 text-white',
+      button: 'bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-amber-100',
+      border: 'border-amber-800',
+    }
+  },
+  rose: {
+    name: 'Rose',
+    light: {
+      primary: 'bg-rose-100 border-rose-200 text-rose-900',
+      secondary: 'bg-rose-50 border-rose-100 text-rose-800',
+      accent: 'bg-rose-500 text-white',
+      button: 'bg-rose-400 hover:bg-rose-500 active:bg-rose-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-rose-900',
+      border: 'border-rose-200',
+    },
+    dark: {
+      primary: 'bg-rose-900 border-rose-800 text-rose-100',
+      secondary: 'bg-rose-800 border-rose-700 text-rose-200',
+      accent: 'bg-rose-600 text-white',
+      button: 'bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-rose-100',
+      border: 'border-rose-800',
+    }
+  },
+  violet: {
+    name: 'Violet',
+    light: {
+      primary: 'bg-violet-100 border-violet-200 text-violet-900',
+      secondary: 'bg-violet-50 border-violet-100 text-violet-800',
+      accent: 'bg-violet-500 text-white',
+      button: 'bg-violet-400 hover:bg-violet-500 active:bg-violet-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-violet-900',
+      border: 'border-violet-200',
+    },
+    dark: {
+      primary: 'bg-violet-900 border-violet-800 text-violet-100',
+      secondary: 'bg-violet-800 border-violet-700 text-violet-200',
+      accent: 'bg-violet-600 text-white',
+      button: 'bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-violet-100',
+      border: 'border-violet-800',
+    }
+  },
+  sky: {
+    name: 'Sky',
+    light: {
+      primary: 'bg-sky-100 border-sky-200 text-sky-900',
+      secondary: 'bg-sky-50 border-sky-100 text-sky-800',
+      accent: 'bg-sky-500 text-white',
+      button: 'bg-sky-400 hover:bg-sky-500 active:bg-sky-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-sky-900',
+      border: 'border-sky-200',
+    },
+    dark: {
+      primary: 'bg-sky-900 border-sky-800 text-sky-100',
+      secondary: 'bg-sky-800 border-sky-700 text-sky-200',
+      accent: 'bg-sky-600 text-white',
+      button: 'bg-sky-600 hover:bg-sky-700 active:bg-sky-800 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+      text: 'text-sky-100',
+      border: 'border-sky-800',
     }
   },
 } as const;

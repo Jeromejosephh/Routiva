@@ -5,7 +5,7 @@ import { z } from "zod";
 
 const updatePreferencesSchema = z.object({
   theme: z.enum(['light', 'dark', 'system']).optional(),
-  primaryColor: z.enum(['blue', 'pink', 'purple', 'green', 'orange', 'yellow', 'red', 'teal']).optional(),
+  primaryColor: z.enum(['blue', 'green', 'purple', 'red', 'orange', 'yellow', 'pink', 'teal', 'indigo', 'cyan', 'emerald', 'lime', 'amber', 'rose', 'violet', 'sky']).optional(),
 });
 
 export async function PATCH(req: NextRequest) {

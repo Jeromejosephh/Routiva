@@ -58,6 +58,8 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
             <option value="Asia/Tokyo">Tokyo</option>
             <option value="Asia/Shanghai">Shanghai</option>
             <option value="Australia/Sydney">Sydney</option>
+            <option value="Pacific/Auckland">New Zealand (Auckland)</option>
+            <option value="Pacific/Chatham">New Zealand (Chatham Islands)</option>
           </select>
         </div>
 

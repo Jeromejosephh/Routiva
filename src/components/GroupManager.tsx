@@ -23,9 +23,17 @@ const COLORS = [
   { name: "Yellow", value: "yellow", class: "bg-yellow-400" },
   { name: "Pink", value: "pink", class: "bg-pink-400" },
   { name: "Teal", value: "teal", class: "bg-teal-400" },
+  { name: "Indigo", value: "indigo", class: "bg-indigo-400" },
+  { name: "Cyan", value: "cyan", class: "bg-cyan-400" },
+  { name: "Emerald", value: "emerald", class: "bg-emerald-400" },
+  { name: "Lime", value: "lime", class: "bg-lime-400" },
+  { name: "Amber", value: "amber", class: "bg-amber-400" },
+  { name: "Rose", value: "rose", class: "bg-rose-400" },
+  { name: "Violet", value: "violet", class: "bg-violet-400" },
+  { name: "Sky", value: "sky", class: "bg-sky-400" },
 ];
 
-const ICONS = ["💪", "🏃", "📚", "🎯", "💼", "🏠", "🎨", "🧘", "🍎", "💡"];
+const ICONS = ["💪", "🏃", "📚", "🎯", "💼", "🏠", "🎨", "🧘", "🍎", "💡", "⚡", "🌱", "🔥", "🚀", "🎵", "💤"];
 const NO_ICON_VALUE = "__no_icon__";
 
 export default function GroupManager({ groups }: { groups: Group[] }) {
