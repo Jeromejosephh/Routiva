@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/lib/toast";
 import { Plus, Edit2, Trash2 } from "lucide-react";
+import { useThemeClasses } from "./ThemeProvider";
 
 type Group = {
   id: string;
@@ -31,6 +32,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
   const [pending, startTransition] = useTransition();
   const router = useRouter();
+  const themeClasses = useThemeClasses();
 
   const handleSubmit = (formData: FormData) => {
     startTransition(async () => {
@@ -94,7 +96,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
         <h2 className="text-lg font-semibold">Habit Groups</h2>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className={`flex items-center gap-2 px-3 py-2 text-white rounded ${themeClasses.button}`}
         >
           <Plus size={16} />
           Add Group
@@ -185,7 +187,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                         defaultChecked={editingGroup?.icon === icon}
                         className="sr-only peer"
                       />
-                      <div className="w-10 h-10 flex items-center justify-center text-xl border rounded border-gray-300 dark:border-gray-600 peer-checked:bg-blue-100 dark:peer-checked:bg-blue-900/30 peer-checked:border-blue-500 dark:peer-checked:border-blue-400">
+                      <div className={`w-10 h-10 flex items-center justify-center text-xl border rounded border-gray-300 dark:border-gray-600 peer-checked:${themeClasses.secondary} peer-checked:${themeClasses.border}`}>
                         {icon}
                       </div>
                     </label>
@@ -207,7 +209,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
                 <button
                   type="submit"
                   disabled={pending}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                  className={`flex-1 px-4 py-2 text-white rounded disabled:opacity-50 ${themeClasses.button}`}
                 >
                   {pending ? "Saving..." : editingGroup ? "Update" : "Create"}
                 </button>

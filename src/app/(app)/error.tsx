@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { toast } from '@/lib/toast';
+import { useThemeClasses } from '@/components/ThemeProvider';
 
 export default function AppError({
   error,
@@ -10,6 +11,8 @@ export default function AppError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const themeClasses = useThemeClasses();
+  
   useEffect(() => {
     console.error('App error:', error);
     toast('An error occurred. Please try again.');
@@ -24,7 +27,7 @@ export default function AppError({
         </p>
         <button
           onClick={() => reset()}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className={`px-4 py-2 rounded text-white ${themeClasses.button}`}
         >
           Try again
         </button>

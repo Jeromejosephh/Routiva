@@ -1,3 +1,7 @@
+'use client';
+
+import { useThemeClasses } from "@/components/ThemeProvider";
+
 interface SimpleBarChartProps {
   data: Array<{ label: string; value: number; color?: string }>;
   title?: string;
@@ -5,6 +9,7 @@ interface SimpleBarChartProps {
 }
 
 export function SimpleBarChart({ data, title, maxValue }: SimpleBarChartProps) {
+  const themeClasses = useThemeClasses();
   const max = maxValue || Math.max(...data.map(d => d.value));
   
   return (
@@ -19,7 +24,7 @@ export function SimpleBarChart({ data, title, maxValue }: SimpleBarChartProps) {
             <div className="flex-1 bg-gray-100 rounded-full h-4 relative overflow-hidden">
               <div
                 className={`h-full rounded-full ${
-                  item.color || 'bg-blue-500'
+                  item.color || themeClasses.accent
                 } transition-all duration-300`}
                 style={{ width: `${max > 0 ? (item.value / max) * 100 : 0}%` }}
               />

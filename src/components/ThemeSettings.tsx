@@ -1,11 +1,12 @@
 "use client";
 
 
-import { useTheme, PASTEL_COLORS, type PastelColor, type Theme } from "./ThemeProvider";
+import { useTheme, PASTEL_COLORS, getThemeClasses, type PastelColor, type Theme } from "./ThemeProvider";
 import { Palette, Monitor, Moon, Sun } from "lucide-react";
 
 export default function ThemeSettings() {
   const { theme, primaryColor, isDark, setTheme, setPrimaryColor } = useTheme();
+  const themeClasses = getThemeClasses(primaryColor, isDark);
 
   const themeOptions: { value: Theme; label: string; icon: React.ReactNode }[] = [
     { value: 'light', label: 'Light', icon: <Sun size={16} /> },
@@ -33,7 +34,7 @@ export default function ThemeSettings() {
                   onClick={() => setTheme(option.value)}
                   className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-all ${
                     theme === option.value
-                      ? 'border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300'
+                      ? `${themeClasses.primary} ${themeClasses.border}`
                       : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                   }`}
                 >
@@ -81,9 +82,14 @@ export default function ThemeSettings() {
       {/* Live Preview */}
       <div className="border rounded-lg p-4 dark:border-gray-700">
         <h4 className="font-medium mb-3">Preview</h4>
-        <div className={`p-3 rounded ${PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'].primary}`}>
-          <div className="font-medium">Sample Card</div>
-          <div className="text-sm opacity-80">This is how your content will look</div>
+        <div className="space-y-3">
+          <div className={`p-3 rounded ${themeClasses.primary}`}>
+            <div className="font-medium">Sample Card</div>
+            <div className="text-sm opacity-80">This is how your content will look</div>
+          </div>
+          <button className={`px-4 py-2 rounded font-medium ${themeClasses.button}`}>
+            Sample Button
+          </button>
         </div>
       </div>
     </div>

@@ -288,3 +288,9 @@ export function useTheme() {
 export function getThemeClasses(primaryColor: PastelColor, isDark: boolean) {
   return PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'];
 }
+
+// Hook to get current theme classes
+export function useThemeClasses() {
+  const { primaryColor, isDark } = useTheme();
+  return getThemeClasses(primaryColor, isDark);
+}
