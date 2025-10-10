@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: 'Routiva',
     images: [
       {
-        url: '/Routivalogo.png',
+        url: '/Routivalogo.png?v=4',
         width: 1200,
         height: 630,
         alt: 'Routiva - Habit Tracking App',
@@ -42,22 +42,22 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Routiva - Simple Habit Tracking App',
     description: 'Transform your daily routines with Routiva - a simple, effective habit tracking app. Build consistent habits and achieve your goals.',
-    images: ['/Routivalogo.png'],
+    images: ['/Routivalogo.png?v=4'],
     creator: '@routiva',
     site: '@routiva',
   },
   icons: {
     icon: [
-      { url: '/favicon_io/favicon.ico?v=3', sizes: '32x32', type: 'image/x-icon' },
-      { url: '/favicon_io/favicon-16x16.png?v=3', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon_io/favicon-32x32.png?v=3', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon_io/favicon.ico?v=4', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon_io/favicon-16x16.png?v=4', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon_io/favicon-32x32.png?v=4', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
-      { url: '/favicon_io/apple-touch-icon.png?v=3', sizes: '180x180', type: 'image/png' },
+      { url: '/favicon_io/apple-touch-icon.png?v=4', sizes: '180x180', type: 'image/png' },
     ],
     other: [
-      { rel: 'icon', url: '/favicon_io/android-chrome-192x192.png?v=3', sizes: '192x192', type: 'image/png' },
-      { rel: 'icon', url: '/favicon_io/android-chrome-512x512.png?v=3', sizes: '512x512', type: 'image/png' },
+      { rel: 'icon', url: '/favicon_io/android-chrome-192x192.png?v=4', sizes: '192x192', type: 'image/png' },
+      { rel: 'icon', url: '/favicon_io/android-chrome-512x512.png?v=4', sizes: '512x512', type: 'image/png' },
     ],
   },
 };

@@ -84,6 +84,15 @@ export default async function SettingsPage() {
         <div className="space-y-2 text-sm text-white/70">
           <p>Version: 0.1.0 (MVP)</p>
           <p>A simple, effective habit tracking application.</p>
+          <a
+            href="https://jeromejoseph.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 underline hover:text-blue-600 transition-colors"
+          >
+            Contact the developer at jeromejoseph.dev
+          </a>
+          <p className="text-xs text-white/60 mt-1">You can reach out for support, feedback, or questions.</p>
         </div>
       </div>
     </div>
