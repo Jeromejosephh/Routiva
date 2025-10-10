@@ -46,9 +46,6 @@ export const metadata: Metadata = {
     creator: '@routiva',
     site: '@routiva',
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
   icons: {
     icon: [
       { url: '/favicon_io/favicon.ico?v=3', sizes: '32x32', type: 'image/x-icon' },
