@@ -117,18 +117,18 @@ export default function DataManagementSection() {
               Delete Account
             </button>
           ) : (
-            <div className="space-y-3 p-4 border border-red-300 rounded bg-red-50">
-              <p className="text-sm text-red-800 font-medium">
+            <div className="space-y-3 p-4 border border-red-300 rounded bg-white">
+              <p className="text-sm text-gray-900 font-medium">
                 Are you absolutely sure? This will permanently delete your account, all habits, logs, and groups.
               </p>
-              <p className="text-sm text-red-700">
+              <p className="text-sm text-gray-800">
                 Type <strong>DELETE</strong> to confirm:
               </p>
               <input
                 type="text"
                 value={deleteConfirmText}
                 onChange={(e) => setDeleteConfirmText(e.target.value)}
-                className="w-full px-3 py-2 border border-red-300 rounded text-sm"
+                className="w-full px-3 py-2 border border-red-300 rounded text-sm text-gray-900 bg-gray-50"
                 placeholder="Type DELETE to confirm"
               />
               <div className="flex gap-2">
@@ -144,7 +144,7 @@ export default function DataManagementSection() {
                     setShowDeleteConfirm(false);
                     setDeleteConfirmText("");
                   }}
-                  className="border border-gray-300 px-4 py-2 rounded text-sm hover:bg-gray-50 transition-colors"
+                  className="border border-gray-300 px-4 py-2 rounded text-sm text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors"
                 >
                   Cancel
                 </button>
