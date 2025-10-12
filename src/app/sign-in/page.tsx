@@ -1,5 +1,6 @@
 import AutoClear from "./AutoClear";
 import EmailForm from "./EmailForm";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,10 +20,13 @@ export default function SignInPage() {
         {/* Logo/Brand Section */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 mb-4">
-            <img 
+            <Image 
               src="/Routivalogo.png" 
               alt="Routiva Logo" 
-              className="w-16 h-16 rounded-2xl shadow-lg object-cover"
+              width={64}
+              height={64}
+              className="rounded-2xl shadow-lg object-cover"
+              priority
             />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">
@@ -41,7 +45,7 @@ export default function SignInPage() {
                 Get Started
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                We'll send you a secure link to sign in
+                We&apos;ll send you a secure link to sign in
               </p>
             </div>
             
