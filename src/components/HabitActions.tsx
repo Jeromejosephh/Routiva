@@ -105,37 +105,44 @@ export default function HabitActions({
       >
         <MoreHorizontal className="h-4 w-4" />
       </summary>
-
-      <div className="absolute right-0 z-20 mt-2 w-44 rounded-md border bg-background/50 backdrop-blur-sm shadow">
-        <button
-          type="button"
-          onClick={rename}
-          disabled={pending}
-          className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
+      <div
+        className="fixed inset-0 flex items-center justify-center z-[100]"
+        style={{ pointerEvents: 'none' }}
+      >
+        <div
+          className="w-56 rounded-xl border border-white/20 bg-background/60 backdrop-blur-lg shadow-2xl flex flex-col gap-2 p-2"
+          style={{ pointerEvents: 'auto' }}
         >
-          <Pencil className="h-4 w-4" /> Rename
-        </button>
-        <button
-          type="button"
-          onClick={toggleArchive}
-          disabled={pending}
-          className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
-        >
-          {isArchived ? (
-            <ArchiveRestore className="h-4 w-4" />
-          ) : (
-            <Archive className="h-4 w-4" />
-          )}
-          {isArchived ? "Unarchive" : "Archive"}
-        </button>
-        <button
-          type="button"
-          onClick={del}
-          disabled={pending}
-          className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-red-600 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <Trash2 className="h-4 w-4" /> Delete
-        </button>
+          <button
+            type="button"
+            onClick={rename}
+            disabled={pending}
+            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+          >
+            <Pencil className="h-4 w-4" /> Rename
+          </button>
+          <button
+            type="button"
+            onClick={toggleArchive}
+            disabled={pending}
+            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+          >
+            {isArchived ? (
+              <ArchiveRestore className="h-4 w-4" />
+            ) : (
+              <Archive className="h-4 w-4" />
+            )}
+            {isArchived ? "Unarchive" : "Archive"}
+          </button>
+          <button
+            type="button"
+            onClick={del}
+            disabled={pending}
+            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-red-600 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+          >
+            <Trash2 className="h-4 w-4" /> Delete
+          </button>
+        </div>
       </div>
     </details>
   );
