@@ -106,11 +106,11 @@ export default function HabitActions({
         <MoreHorizontal className="h-4 w-4" />
       </summary>
       <div
-        className="absolute right-0 mt-2 z-[100]"
+        className="absolute right-0 mt-2 z-[9999] min-w-full"
         style={{ pointerEvents: 'none' }}
       >
         <div
-          className="w-56 rounded-xl border border-white/20 bg-white dark:bg-gray-800 shadow-2xl flex flex-col gap-2 p-2"
+          className="rounded-xl border border-white/20 bg-white dark:bg-gray-800 shadow-2xl flex flex-col gap-2 p-2 w-full"
           style={{ pointerEvents: 'auto' }}
         >
           <button
