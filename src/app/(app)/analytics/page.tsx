@@ -79,9 +79,9 @@ export default async function AnalyticsPage() {
   const analytics = await getAnalyticsData(user.id);
 
   return (
-    <div className="space-y-6">
+  <div className="space-y-6 px-2 sm:px-4 max-w-screen-md mx-auto w-full">
       <h1 className="text-2xl font-semibold text-center">Analytics</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <div className="text-2xl font-bold text-blue-600">{analytics.totalHabits}</div>
           <div className="text-sm text-white/70">Total Habits</div>
@@ -112,7 +112,7 @@ export default async function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
+  <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 overflow-x-auto">
         <h2 className="text-lg font-semibold mb-4">Habit Performance</h2>
         
         {analytics.habitStats.length === 0 ? (
@@ -120,18 +120,18 @@ export default async function AnalyticsPage() {
             <p>No habits yet. Create your first habit to see analytics!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="space-y-3 min-w-0">
               {analytics.habitStats.map((habit) => (
-                <div key={habit.id} className="flex items-center justify-between p-3 border rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60">
-                  <div className="flex-1">
+                <div key={habit.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 border rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 min-w-0">
+                  <div className="flex-1 min-w-0">
                     <div className="font-medium">{habit.name}</div>
                     <div className="text-sm text-white/60">
                       {habit.totalLogs} total logs • {habit.recentActivity} this week
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-4 text-sm">
+                  <div className="flex flex-row sm:flex-row items-center space-x-4 text-sm mt-2 sm:mt-0">
                     <div className="text-center">
                       <div className="font-semibold text-green-600">
                         {Math.round(habit.completionRate * 100)}%
