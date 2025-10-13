@@ -24,7 +24,7 @@ export default async function ThemeProviderWrapper({
 
     return (
       <ThemeProvider 
-        initialTheme={userSettings?.theme as 'light' | 'dark' | 'system' || 'light'}
+        initialTheme={userSettings?.theme as 'light' | 'dark' | 'system' || 'dark'}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initialPrimaryColor={(userWithColor as any)?.primaryColor || 'blue'}
       >
@@ -34,7 +34,7 @@ export default async function ThemeProviderWrapper({
   } catch {
     // If user is not authenticated or there's an error, use defaults
     return (
-      <ThemeProvider initialTheme="light" initialPrimaryColor="blue">
+      <ThemeProvider initialTheme="dark" initialPrimaryColor="blue">
         {children}
       </ThemeProvider>
     );

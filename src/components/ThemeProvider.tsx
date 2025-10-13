@@ -324,7 +324,7 @@ export const PASTEL_COLORS = {
 
 export function ThemeProvider({ 
   children,
-  initialTheme = 'light',
+  initialTheme = 'dark',
   initialPrimaryColor = 'blue'
 }: { 
   children: React.ReactNode;
