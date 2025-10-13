@@ -84,10 +84,10 @@ export default function ThemeSettings() {
         <h4 className="font-medium mb-3 text-gray-900 dark:text-white">Preview</h4>
         <div className="space-y-3">
           <div className={`p-3 rounded ${themeClasses.primary}`}> 
-            <div className="font-medium text-black dark:text-white">Sample Card</div>
-            <div className="text-sm text-black dark:text-white">This is how your content will look</div>
+            <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Sample Card</div>
+            <div className={`text-sm ${isDark ? 'text-white' : 'text-black'}`}>This is how your content will look</div>
           </div>
-          <button className={`px-4 py-2 rounded font-medium text-black dark:text-white ${themeClasses.button}`}>Sample Button</button>
+          <button className={`px-4 py-2 rounded font-medium ${isDark ? 'text-white' : 'text-black'} ${themeClasses.button}`}>Sample Button</button>
         </div>
       </div>
     </div>
