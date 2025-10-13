@@ -79,7 +79,7 @@ export default async function AnalyticsPage() {
   const analytics = await getAnalyticsData(user.id);
 
   return (
-    <div className="space-y-6 px-4 max-w-2xl mx-auto w-full">
+  <div className="space-y-6 px-4 max-w-3xl mx-auto w-full">
       <h1 className="text-2xl font-semibold text-center">Analytics</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="border rounded-lg p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
