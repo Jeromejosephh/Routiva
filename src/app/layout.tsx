@@ -40,14 +40,6 @@ export const metadata: Metadata = {
       }
     ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Routiva - Simple Habit Tracking App',
-    description: 'Transform your daily routines with Routiva - a simple, effective habit tracking app. Build consistent habits and achieve your goals.',
-    images: ['/Routivalogo.png?v=4'],
-    creator: '@routiva',
-    site: '@routiva',
-  },
   icons: {
     icon: [
       { url: '/favicon_io/favicon.ico?v=4', sizes: '32x32', type: 'image/x-icon' },
@@ -67,7 +59,32 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="relative min-h-screen">
+        {/* Background images for light/dark and desktop/mobile */}
+        <div className="fixed inset-0 -z-10">
+          {/* Desktop backgrounds */}
+          <img
+            src="/bg-desktop-light.png"
+            alt="Desktop Light Background"
+            className="hidden dark:hidden md:block w-full h-full object-cover"
+          />
+          <img
+            src="/bg-desktop-dark.png"
+            alt="Desktop Dark Background"
+            className="hidden dark:md:block w-full h-full object-cover"
+          />
+          {/* Mobile backgrounds */}
+          <img
+            src="/bg-mobile-light.png"
+            alt="Mobile Light Background"
+            className="block dark:hidden md:hidden w-full h-full object-cover"
+          />
+          <img
+            src="/bg-mobile-dark.png"
+            alt="Mobile Dark Background"
+            className="hidden dark:block md:hidden w-full h-full object-cover"
+          />
+        </div>
         {children}
         <Analytics />
       </body>
