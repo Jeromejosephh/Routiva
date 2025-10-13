@@ -81,15 +81,13 @@ export default function ThemeSettings() {
 
       {/* Live Preview */}
       <div className="border rounded-lg p-4 dark:border-gray-700 backdrop-blur-sm bg-white/60 dark:bg-gray-700/60">
-        <h4 className="font-medium mb-3">Preview</h4>
+        <h4 className="font-medium mb-3 text-gray-900 dark:text-white">Preview</h4>
         <div className="space-y-3">
           <div className={`p-3 rounded ${themeClasses.primary}`}>
-            <div className="font-medium">Sample Card</div>
-            <div className="text-sm opacity-80">This is how your content will look</div>
+            <div className="font-medium text-gray-900 dark:text-white">Sample Card</div>
+            <div className="text-sm text-gray-700 dark:text-gray-300">This is how your content will look</div>
           </div>
-          <button className={`px-4 py-2 rounded font-medium ${themeClasses.button}`}>
-            Sample Button
-          </button>
+          <button className={`px-4 py-2 rounded font-medium ${themeClasses.button}`}>Sample Button</button>
         </div>
       </div>
     </div>
