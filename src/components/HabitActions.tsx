@@ -106,18 +106,18 @@ export default function HabitActions({
         <MoreHorizontal className="h-4 w-4" />
       </summary>
       <div
-        className="fixed inset-0 flex items-center justify-center z-[100]"
+        className="absolute right-0 mt-2 z-[100]"
         style={{ pointerEvents: 'none' }}
       >
         <div
-          className="w-56 rounded-xl border border-white/20 bg-background/60 backdrop-blur-lg shadow-2xl flex flex-col gap-2 p-2"
+          className="w-56 rounded-xl border border-white/20 bg-white dark:bg-background/60 backdrop-blur-lg shadow-2xl flex flex-col gap-2 p-2"
           style={{ pointerEvents: 'auto' }}
         >
           <button
             type="button"
             onClick={rename}
             disabled={pending}
-            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
           >
             <Pencil className="h-4 w-4" /> Rename
           </button>
@@ -125,7 +125,7 @@ export default function HabitActions({
             type="button"
             onClick={toggleArchive}
             disabled={pending}
-            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
           >
             {isArchived ? (
               <ArchiveRestore className="h-4 w-4" />

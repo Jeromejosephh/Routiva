@@ -82,7 +82,7 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
             id="reminderDailyTime"
             name="reminderDailyTime"
             defaultValue={userSettings?.reminderDailyTime || "09:00"}
-            className="border rounded px-3 py-2"
+            className="border rounded px-3 py-2 text-black bg-white dark:text-white dark:bg-gray-700"
           />
           <p className="text-xs text-white/60 mt-1">Email reminders will be available in a future update</p>
         </div>

@@ -87,7 +87,7 @@ export default function ThemeSettings() {
             <div className="font-medium text-black dark:text-white">Sample Card</div>
             <div className="text-sm text-black dark:text-white">This is how your content will look</div>
           </div>
-          <button className={`px-4 py-2 rounded font-medium ${themeClasses.button}`}>Sample Button</button>
+          <button className={`px-4 py-2 rounded font-medium text-black dark:text-white ${themeClasses.button}`}>Sample Button</button>
         </div>
       </div>
     </div>

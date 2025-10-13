@@ -173,7 +173,7 @@ export default async function AnalyticsPage() {
             <>
               <p>
                 🏆 <strong>Best performing habit:</strong> {analytics.habitStats[0]?.name}
-                ( {Math.round(analytics.habitStats[0]?.completionRate * 100)}% success rate)
+                ({Math.round(analytics.habitStats[0]?.completionRate * 100)}% success rate)
               </p>
               
               {analytics.habitStats.find(h => h.currentStreak > 0) && (
