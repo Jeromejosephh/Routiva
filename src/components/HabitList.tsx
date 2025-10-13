@@ -85,7 +85,7 @@ export default function HabitList({ habits, groups, doneSet }: HabitListProps) {
               {groupHabits.map((habit) => (
                 <li key={habit.id} className={`border p-3 rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${groupThemeClasses.primary} ${groupThemeClasses.border}`}>
                   <div className="flex items-center justify-between">
-                    <span className={habit.isArchived ? "opacity-60 line-through" : ""}>
+                    <span className={habit.isArchived ? "opacity-60 line-through text-white" : "text-white"}>
                       {habit.name}
                     </span>
                     <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export default function HabitList({ habits, groups, doneSet }: HabitListProps) {
             {ungroupedHabits.map((habit) => (
               <li key={habit.id} className={`border p-3 rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${themeClasses.primary} ${themeClasses.border}`}>
                 <div className="flex items-center justify-between">
-                  <span className={habit.isArchived ? "opacity-60 line-through" : ""}>
+                  <span className={habit.isArchived ? "opacity-60 line-through text-white" : "text-white"}>
                     {habit.name}
                   </span>
                   <div className="flex items-center gap-2">

@@ -46,28 +46,28 @@ export default async function SettingsPage() {
         <h1 className="text-2xl font-semibold text-center">Settings</h1>
         
         {/* Theme Settings */}
-        <div className="border rounded-lg p-6 bg-gray-50 text-black dark:bg-gray-800 dark:text-white">
+        <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <ThemeSettings />
         </div>
 
-        <div className="border rounded-lg p-6 bg-gray-50 text-black dark:bg-gray-800 dark:text-white">
+        <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-black">Email:</span>
-            <span className="text-black">{userSettings?.email}</span>
+            <span className="text-white">Email:</span>
+            <span className="text-white">{userSettings?.email}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-black">Member since:</span>
-            <span className="text-black">{userSettings?.createdAt.toLocaleDateString()}</span>
+            <span className="text-white">Member since:</span>
+            <span className="text-white">{userSettings?.createdAt.toLocaleDateString()}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-black">Active habits:</span>
-            <span className="text-black">{habitCount}</span>
+            <span className="text-white">Active habits:</span>
+            <span className="text-white">{habitCount}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-black">Total completions:</span>
-            <span className="text-black">{totalLogs}</span>
+            <span className="text-white">Total completions:</span>
+            <span className="text-white">{totalLogs}</span>
           </div>
         </div>
       </div>
@@ -79,9 +79,9 @@ export default async function SettingsPage() {
       <DataManagementSection />
 
       {/* App Information */}
-      <div className="border rounded-lg p-6 bg-gray-50 text-black dark:bg-gray-800 dark:text-white">
+      <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">About Routiva</h2>
-        <div className="space-y-2 text-sm text-black">
+        <div className="space-y-2 text-sm text-white">
           <p>Version: 0.1.0 (MVP)</p>
           <p>A simple, effective habit tracking application.</p>
           <a
@@ -92,7 +92,7 @@ export default async function SettingsPage() {
           >
             Contact the developer at jeromejoseph.dev
           </a>
-          <p className="text-xs text-black mt-1">You can reach out for support, feedback, or questions.</p>
+          <p className="text-xs text-white mt-1">You can reach out for support, feedback, or questions.</p>
         </div>
       </div>
     </div>
