@@ -6,7 +6,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProviderWrapper>
       <div className="min-h-screen grid grid-rows-[56px_1fr]">
-        <nav className="flex items-center justify-between px-4 border-b">
+  <nav className="flex items-center justify-between px-4 border-b" style={{ background: '#000515' }}>
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="font-semibold">
               <img src="/Routivalogoname.png" alt="Routiva Logo" className="h-8 w-auto" style={{maxWidth:120}} />
