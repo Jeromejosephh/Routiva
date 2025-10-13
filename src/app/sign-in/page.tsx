@@ -25,7 +25,7 @@ export default function SignInPage() {
               alt="Routiva Logo" 
               width={64}
               height={64}
-              className="rounded-2xl shadow-lg object-cover"
+              className="rounded-[56px] shadow-lg object-cover"
               priority
             />
           </div>
