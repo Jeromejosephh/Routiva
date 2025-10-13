@@ -1,12 +1,14 @@
 // src/app/layout.tsx
+
 import type { Metadata } from "next";
+
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
     default: 'Routiva | Transform Your Routine',
-    template: '%s | Routiva'
+    template: 'Routiva | %s'
   },
   description: "Transform your daily routines with Routiva - a simple, effective habit tracking app that is completely FREE. Build consistent habits, track your progress, and achieve your goals with beautiful analytics and insights.",
   keywords: ["habit tracker", "productivity", "goals", "routine", "daily habits", "self improvement", "progress tracking"],

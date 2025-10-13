@@ -8,9 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "test": "echo 'Tests temporarily disabled due to ESM compatibility issues'",
-    "test:watch": "echo 'Tests temporarily disabled'",
-    "test:ci": "echo 'Tests temporarily disabled'",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ci": "vitest run",
     "postinstall": "prisma generate",
     "vercel-build": "prisma generate && next build"
   },

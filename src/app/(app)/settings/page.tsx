@@ -6,10 +6,10 @@ import DataManagementSection from "@/components/DataManagementSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Settings",
+  title: "Routiva | Settings",
   description: "Customize your Routiva experience - manage account preferences, themes, colors, timezone settings, and data export options.",
   openGraph: {
-    title: "Settings | Routiva",
+    title: "Routiva | Settings",
     description: "Personalize your habit tracking experience with custom themes, preferences, and account settings.",
   },
 };
@@ -46,28 +46,28 @@ export default async function SettingsPage() {
         <h1 className="text-2xl font-semibold text-center">Settings</h1>
         
         {/* Theme Settings */}
-        <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
+        <div className="border rounded-lg p-6 bg-gray-50 text-black dark:bg-gray-800 dark:text-white">
           <ThemeSettings />
         </div>
 
-        <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
+        <div className="border rounded-lg p-6 bg-gray-50 text-black dark:bg-gray-800 dark:text-white">
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-white/70">Email:</span>
-            <span>{userSettings?.email}</span>
+            <span className="text-black">Email:</span>
+            <span className="text-black">{userSettings?.email}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-white/70">Member since:</span>
-            <span>{userSettings?.createdAt.toLocaleDateString()}</span>
+            <span className="text-black">Member since:</span>
+            <span className="text-black">{userSettings?.createdAt.toLocaleDateString()}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-white/70">Active habits:</span>
-            <span>{habitCount}</span>
+            <span className="text-black">Active habits:</span>
+            <span className="text-black">{habitCount}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-white/70">Total completions:</span>
-            <span>{totalLogs}</span>
+            <span className="text-black">Total completions:</span>
+            <span className="text-black">{totalLogs}</span>
           </div>
         </div>
       </div>
@@ -79,20 +79,20 @@ export default async function SettingsPage() {
       <DataManagementSection />
 
       {/* App Information */}
-      <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
+      <div className="border rounded-lg p-6 bg-gray-50 text-black dark:bg-gray-800 dark:text-white">
         <h2 className="text-lg font-semibold mb-4">About Routiva</h2>
-        <div className="space-y-2 text-sm text-white/70">
+        <div className="space-y-2 text-sm text-black">
           <p>Version: 0.1.0 (MVP)</p>
           <p>A simple, effective habit tracking application.</p>
           <a
             href="https://jeromejoseph.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-400 underline hover:text-blue-600 transition-colors"
+            className="text-blue-600 underline hover:text-blue-800 transition-colors"
           >
             Contact the developer at jeromejoseph.dev
           </a>
-          <p className="text-xs text-white/60 mt-1">You can reach out for support, feedback, or questions.</p>
+          <p className="text-xs text-black mt-1">You can reach out for support, feedback, or questions.</p>
         </div>
       </div>
     </div>

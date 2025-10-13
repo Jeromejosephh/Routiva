@@ -19,10 +19,10 @@ export const PASTEL_COLORS = {
   blue: {
     name: 'Blue',
     light: {
-      primary: 'bg-blue-100 border-blue-200 text-white',
+  primary: 'bg-blue-100 border-blue-200 text-gray-900',
       secondary: 'bg-blue-50 border-blue-100 text-white',
       accent: 'bg-blue-500 text-white',
-      button: 'bg-blue-400 hover:bg-blue-500 active:bg-blue-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
+  button: 'bg-blue-400 hover:bg-blue-500 active:bg-blue-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
       text: 'text-white',
       border: 'border-blue-200',
     },
@@ -38,7 +38,7 @@ export const PASTEL_COLORS = {
   pink: {
     name: 'Pink',
     light: {
-      primary: 'bg-pink-100 border-pink-200 text-white',
+  primary: 'bg-pink-100 border-pink-200 text-gray-900',
       secondary: 'bg-pink-50 border-pink-100 text-white',
       accent: 'bg-pink-500 text-white',
       button: 'bg-pink-400 hover:bg-pink-500 active:bg-pink-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -57,7 +57,7 @@ export const PASTEL_COLORS = {
   purple: {
     name: 'Purple',
     light: {
-      primary: 'bg-purple-100 border-purple-200 text-white',
+  primary: 'bg-purple-100 border-purple-200 text-gray-900',
       secondary: 'bg-purple-50 border-purple-100 text-white',
       accent: 'bg-purple-500 text-white',
       button: 'bg-purple-400 hover:bg-purple-500 active:bg-purple-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -76,7 +76,7 @@ export const PASTEL_COLORS = {
   green: {
     name: 'Green',
     light: {
-      primary: 'bg-green-100 border-green-200 text-white',
+  primary: 'bg-green-100 border-green-200 text-gray-900',
       secondary: 'bg-green-50 border-green-100 text-white',
       accent: 'bg-green-500 text-white',
       button: 'bg-green-400 hover:bg-green-500 active:bg-green-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -95,7 +95,7 @@ export const PASTEL_COLORS = {
   orange: {
     name: 'Orange',
     light: {
-      primary: 'bg-orange-100 border-orange-200 text-white',
+  primary: 'bg-orange-100 border-orange-200 text-gray-900',
       secondary: 'bg-orange-50 border-orange-100 text-white',
       accent: 'bg-orange-500 text-white',
       button: 'bg-orange-400 hover:bg-orange-500 active:bg-orange-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -114,7 +114,7 @@ export const PASTEL_COLORS = {
   yellow: {
     name: 'Yellow',
     light: {
-      primary: 'bg-yellow-100 border-yellow-200 text-white',
+  primary: 'bg-yellow-100 border-yellow-200 text-gray-900',
       secondary: 'bg-yellow-50 border-yellow-100 text-white',
       accent: 'bg-yellow-500 text-white',
       button: 'bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -133,7 +133,7 @@ export const PASTEL_COLORS = {
   red: {
     name: 'Red',
     light: {
-      primary: 'bg-red-100 border-red-200 text-white',
+  primary: 'bg-red-100 border-red-200 text-gray-900',
       secondary: 'bg-red-50 border-red-100 text-white',
       accent: 'bg-red-500 text-white',
       button: 'bg-red-400 hover:bg-red-500 active:bg-red-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -152,7 +152,7 @@ export const PASTEL_COLORS = {
   teal: {
     name: 'Teal',
     light: {
-      primary: 'bg-teal-100 border-teal-200 text-white',
+  primary: 'bg-teal-100 border-teal-200 text-gray-900',
       secondary: 'bg-teal-50 border-teal-100 text-white',
       accent: 'bg-teal-500 text-white',
       button: 'bg-teal-400 hover:bg-teal-500 active:bg-teal-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -171,7 +171,7 @@ export const PASTEL_COLORS = {
   indigo: {
     name: 'Indigo',
     light: {
-      primary: 'bg-indigo-100 border-indigo-200 text-white',
+  primary: 'bg-indigo-100 border-indigo-200 text-gray-900',
       secondary: 'bg-indigo-50 border-indigo-100 text-white',
       accent: 'bg-indigo-500 text-white',
       button: 'bg-indigo-400 hover:bg-indigo-500 active:bg-indigo-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -190,7 +190,7 @@ export const PASTEL_COLORS = {
   cyan: {
     name: 'Cyan',
     light: {
-      primary: 'bg-cyan-100 border-cyan-200 text-white',
+  primary: 'bg-cyan-100 border-cyan-200 text-gray-900',
       secondary: 'bg-cyan-50 border-cyan-100 text-white',
       accent: 'bg-cyan-500 text-white',
       button: 'bg-cyan-400 hover:bg-cyan-500 active:bg-cyan-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -209,7 +209,7 @@ export const PASTEL_COLORS = {
   emerald: {
     name: 'Emerald',
     light: {
-      primary: 'bg-emerald-100 border-emerald-200 text-white',
+  primary: 'bg-emerald-100 border-emerald-200 text-gray-900',
       secondary: 'bg-emerald-50 border-emerald-100 text-white',
       accent: 'bg-emerald-500 text-white',
       button: 'bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -228,7 +228,7 @@ export const PASTEL_COLORS = {
   lime: {
     name: 'Lime',
     light: {
-      primary: 'bg-lime-100 border-lime-200 text-white',
+  primary: 'bg-lime-100 border-lime-200 text-gray-900',
       secondary: 'bg-lime-50 border-lime-100 text-white',
       accent: 'bg-lime-500 text-white',
       button: 'bg-lime-400 hover:bg-lime-500 active:bg-lime-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -247,7 +247,7 @@ export const PASTEL_COLORS = {
   amber: {
     name: 'Amber',
     light: {
-      primary: 'bg-amber-100 border-amber-200 text-white',
+  primary: 'bg-amber-100 border-amber-200 text-gray-900',
       secondary: 'bg-amber-50 border-amber-100 text-white',
       accent: 'bg-amber-500 text-white',
       button: 'bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -266,7 +266,7 @@ export const PASTEL_COLORS = {
   rose: {
     name: 'Rose',
     light: {
-      primary: 'bg-rose-100 border-rose-200 text-white',
+  primary: 'bg-rose-100 border-rose-200 text-gray-900',
       secondary: 'bg-rose-50 border-rose-100 text-white',
       accent: 'bg-rose-500 text-white',
       button: 'bg-rose-400 hover:bg-rose-500 active:bg-rose-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -285,7 +285,7 @@ export const PASTEL_COLORS = {
   violet: {
     name: 'Violet',
     light: {
-      primary: 'bg-violet-100 border-violet-200 text-white',
+  primary: 'bg-violet-100 border-violet-200 text-gray-900',
       secondary: 'bg-violet-50 border-violet-100 text-white',
       accent: 'bg-violet-500 text-white',
       button: 'bg-violet-400 hover:bg-violet-500 active:bg-violet-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
@@ -304,7 +304,7 @@ export const PASTEL_COLORS = {
   sky: {
     name: 'Sky',
     light: {
-      primary: 'bg-sky-100 border-sky-200 text-white',
+  primary: 'bg-sky-100 border-sky-200 text-gray-900',
       secondary: 'bg-sky-50 border-sky-100 text-white',
       accent: 'bg-sky-500 text-white',
       button: 'bg-sky-400 hover:bg-sky-500 active:bg-sky-600 text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]',
