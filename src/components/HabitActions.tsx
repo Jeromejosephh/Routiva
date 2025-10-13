@@ -110,7 +110,7 @@ export default function HabitActions({
         style={{ pointerEvents: 'none' }}
       >
         <div
-          className="w-56 rounded-xl border border-white/20 bg-white dark:bg-background/60 backdrop-blur-lg shadow-2xl flex flex-col gap-2 p-2"
+          className="w-56 rounded-xl border border-white/20 bg-white dark:bg-gray-800 shadow-2xl flex flex-col gap-2 p-2"
           style={{ pointerEvents: 'auto' }}
         >
           <button

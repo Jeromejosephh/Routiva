@@ -9,7 +9,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <nav className="flex items-center justify-between px-4 border-b">
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="font-semibold">
-              Routiva
+              <img src="/Routivalogoname.png" alt="Routiva Logo" className="h-8 w-auto" style={{maxWidth:120}} />
             </Link>
             <Link href="/habits" className="text-sm">
               Habits
