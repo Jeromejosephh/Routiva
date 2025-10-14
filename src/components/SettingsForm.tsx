@@ -82,15 +82,9 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
             id="reminderDailyTime"
             name="reminderDailyTime"
             defaultValue={userSettings?.reminderDailyTime || "09:00"}
-            className="border rounded px-3 py-2 text-black bg-white dark:text-white dark:bg-gray-700 pr-8"
-            style={{ position: 'relative' }}
+            className="border rounded px-3 py-2 text-white bg-white dark:text-white dark:bg-gray-700"
+            style={{ colorScheme: 'dark' }}
           />
-          <span style={{ position: 'absolute', right: '18px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white dark:text-white">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-          </span>
           <p className="text-xs text-white/60 mt-1">Email reminders will be available in a future update</p>
         </div>
 
