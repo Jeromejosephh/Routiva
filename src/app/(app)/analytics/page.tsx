@@ -7,6 +7,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Analytics",
   description: "Detailed habit analytics and insights - view completion rates, streaks, weekly activity, and comprehensive performance data to optimize your routine.",
+  alternates: {
+    canonical: '/analytics',
+  },
   openGraph: {
     title: "Analytics | Routiva",
     description: "Track your habit performance with detailed analytics, completion rates, and streak insights.",

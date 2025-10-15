@@ -10,6 +10,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Habits",
   description: "Manage all your habits - create new ones, organize into groups, edit existing habits, and customize your routine. Build better habits with Routiva.",
+  alternates: {
+    canonical: '/habits',
+  },
   openGraph: {
     title: "Habits | Routiva",
     description: "Create, organize, and manage your habits with groups, colors, and custom settings.",

@@ -6,6 +6,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Sign In",
   description: "Sign in to Routiva to start tracking your habits and building better daily routines. Secure magic link authentication.",
+  alternates: {
+    canonical: '/sign-in',
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: "Sign In | Routiva",
     description: "Access your habit tracking dashboard with secure sign-in.",

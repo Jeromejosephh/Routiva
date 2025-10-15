@@ -6,10 +6,13 @@ import DataManagementSection from "@/components/DataManagementSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Routiva | Settings",
+  title: "Settings",
   description: "Customize your Routiva experience - manage account preferences, themes, colors, timezone settings, and data export options.",
+  alternates: {
+    canonical: '/settings',
+  },
   openGraph: {
-    title: "Routiva | Settings",
+    title: "Settings | Routiva",
     description: "Personalize your habit tracking experience with custom themes, preferences, and account settings.",
   },
 };

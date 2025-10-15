@@ -8,6 +8,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Your habit tracking dashboard - view today's habits, track progress, and see your activity heatmap. Stay consistent with your daily routines.",
+  alternates: {
+    canonical: '/dashboard',
+  },
   openGraph: {
     title: "Dashboard | Routiva",
     description: "Track your daily habits and view your progress with Routiva's intuitive dashboard.",
