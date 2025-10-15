@@ -41,18 +41,17 @@ export default function Home() {
         </p>
         <div className="flex flex-col md:flex-row gap-4 justify-center mb-10">
           <Link href="/sign-in" className="px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition">Get Started</Link>
-          <Link href="/dashboard" className="px-6 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-blue-700 dark:text-white font-semibold shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition">Demo Dashboard</Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="p-6 rounded-xl bg-white dark:bg-gray-900 shadow">
+          <div className="p-6 rounded-xl bg-white dark:bg-gray-900 shadow ring-gradient-bb">
             <h2 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">Track Habits</h2>
             <p className="text-gray-600 dark:text-gray-300">Easily add, organize, and manage your daily habits. Stay consistent and motivated.</p>
           </div>
-          <div className="p-6 rounded-xl bg-white dark:bg-gray-900 shadow">
+          <div className="p-6 rounded-xl bg-white dark:bg-gray-900 shadow ring-gradient-bb">
             <h2 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">Beautiful Analytics</h2>
             <p className="text-gray-600 dark:text-gray-300">Visualize your progress with streaks, heatmaps, and completion rates. Celebrate your wins!</p>
           </div>
-          <div className="p-6 rounded-xl bg-white dark:bg-gray-900 shadow">
+          <div className="p-6 rounded-xl bg-white dark:bg-gray-900 shadow ring-gradient-bb">
             <h2 className="text-xl font-bold mb-2 text-blue-800 dark:text-blue-200">Privacy-First</h2>
             <p className="text-gray-600 dark:text-gray-300">Your data is secure and never sold. Routiva is free, with no ads or tracking.</p>
           </div>
@@ -60,7 +59,6 @@ export default function Home() {
         <div className="mb-8">
           <Image src="/bg-desktop-light.png" alt="App Screenshot" width={600} height={338} className="rounded-xl shadow-lg mx-auto" />
         </div>
-        <p className="text-md text-gray-500 dark:text-gray-400">Ready to build better habits? <Link href="/sign-in" className="text-blue-600 dark:text-blue-400 underline">Sign up now</Link> and start your journey!</p>
       </div>
     </main>
   );
