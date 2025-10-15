@@ -1,8 +1,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-const LandingCarousel = dynamic(() => import("@/components/LandingCarousel"), { ssr: false });
+import LandingCarousel from "@/components/LandingCarousel";
+"use client";
 
 export default function Home() {
   return (
