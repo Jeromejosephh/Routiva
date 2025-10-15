@@ -4,18 +4,18 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Routiva - Simple Habit Tracker",
-  description: "Transform your daily routines with Routiva - a completely FREE habit tracking app. Build consistent habits, track progress, and achieve your goals with beautiful analytics.",
+  title: "Sign In",
+  description: "Sign in to Routiva to access your habit tracking dashboard and continue building better daily routines.",
   alternates: {
-    canonical: '/sign-in',
+    canonical: '/',
   },
   robots: {
-    index: true,
+    index: false,
     follow: true,
   },
   openGraph: {
-    title: "Routiva - Simple Habit Tracker",
-    description: "Free habit tracking app with beautiful analytics. Start building better daily routines today.",
+    title: "Sign In | Routiva",
+    description: "Access your Routiva habit tracking dashboard.",
   },
 };
 
