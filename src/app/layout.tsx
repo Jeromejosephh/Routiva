@@ -59,29 +59,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="relative min-h-screen">
-        {/* Background images for light/dark and desktop/mobile */}
+        {/* Single background image for all devices */}
         <div className="fixed inset-0 -z-10">
-          {/* Desktop backgrounds */}
           <img
-            src="/bg-desktop-light.png"
-            alt="Desktop Light Background"
-            className="hidden dark:hidden md:block w-full h-full object-cover"
-          />
-          <img
-            src="/bg-desktop-dark.png"
-            alt="Desktop Dark Background"
-            className="hidden dark:md:block w-full h-full object-cover"
-          />
-          {/* Mobile backgrounds */}
-          <img
-            src="/bg-mobile-light.png"
-            alt="Mobile Light Background"
-            className="block dark:hidden md:hidden w-full h-full object-cover"
-          />
-          <img
-            src="/bg-mobile-dark.png"
-            alt="Mobile Dark Background"
-            className="hidden dark:block md:hidden w-full h-full object-cover"
+            src="/bg.jpg"
+            alt="Background"
+            className="w-full h-full object-cover"
           />
         </div>
         {children}
