@@ -4,7 +4,16 @@ import Image from "next/image";
 const images = [
   { src: "/bg-desktop-light.png", alt: "App Screenshot 1" },
   { src: "/bg-desktop-dark.png", alt: "App Screenshot 2" },
-  // Add more images here as needed
+  { src: "/landingpage1.png", alt: "Landing Page 1" },
+  { src: "/landingpage2.png", alt: "Landing Page 2" },
+  { src: "/landingpage3.png", alt: "Landing Page 3" },
+  { src: "/landingpage4.png", alt: "Landing Page 4" },
+  { src: "/landingpage5.png", alt: "Landing Page 5" },
+  { src: "/landingpage6.png", alt: "Landing Page 6" },
+  { src: "/landingpage7.png", alt: "Landing Page 7" },
+  { src: "/landingpage8.png", alt: "Landing Page 8" },
+  { src: "/landingpage9.png", alt: "Landing Page 9" },
+  { src: "/landingpage10.png", alt: "Landing Page 10" },
 ];
 
 export default function LandingCarousel() {
@@ -21,15 +30,25 @@ export default function LandingCarousel() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center cursor-pointer" onClick={handleClick} style={{ minHeight: 338 }}>
-      <Image
-        src={images[index].src}
-        alt={images[index].alt}
-        width={600}
-        height={338}
-        className="rounded-xl shadow-2xl transition-all duration-500"
-        priority
-      />
+    <div
+      className="relative flex flex-col items-center justify-center cursor-pointer"
+      onClick={handleClick}
+      style={{ minHeight: 338, width: 600 }}
+    >
+      <div className="relative w-full h-[338px]">
+        {images.map((img, i) => (
+          <Image
+            key={img.src}
+            src={img.src}
+            alt={img.alt}
+            width={600}
+            height={338}
+            priority={i === 0}
+            className={`absolute left-0 top-0 rounded-xl shadow-2xl transition-all duration-500 w-full h-full ${i === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+            style={{ transition: 'opacity 0.5s' }}
+          />
+        ))}
+      </div>
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
         {images.map((_, i) => (
           <span
