@@ -26,7 +26,8 @@ export async function DELETE() {
       });
 
       // Delete all habit groups
-      await tx.habitGroup.deleteMany({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (tx as any).habitGroup.deleteMany({
         where: {
           userId: user.id
         }

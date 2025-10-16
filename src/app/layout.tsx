@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: {
@@ -61,11 +62,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="relative min-h-screen">
         {/* Single background image for all devices */}
         <div className="fixed inset-0 -z-10">
-          <img
+          <Image
             src="/bg.jpg"
             alt="Background"
             className="w-full h-full object-cover"
-          />
+            width={1920} height={1080} />
         </div>
         {children}
         <Analytics />

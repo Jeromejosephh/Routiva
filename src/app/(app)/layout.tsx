@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Toaster from "@/components/Toaster";
 import ThemeProviderWrapper from "@/components/ThemeProviderWrapper";
+import Image from "next/image";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,7 +10,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   <nav className="flex items-center justify-between px-4 border-b" style={{ background: '#000515' }}>
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="font-semibold">
-              <img src="/Routivalogoname.png" alt="Routiva Logo" className="h-8 w-auto" style={{maxWidth:120}} />
+            <Image src="/Routivalogoname.png" alt="Routiva Logo" className="h-8 w-auto" style={{maxWidth:120}} width={120} height={32} />
             </Link>
             <Link href="/habits" className="text-sm">
               Habits
