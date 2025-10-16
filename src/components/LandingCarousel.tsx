@@ -2,16 +2,12 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const images = [
-  { src: "/landingpage1.png", alt: "Landing Page 1" },
-  { src: "/landingpage2.png", alt: "Landing Page 2" },
-  { src: "/landingpage3.png", alt: "Landing Page 3" },
-  { src: "/landingpage4.png", alt: "Landing Page 4" },
-  { src: "/landingpage5.png", alt: "Landing Page 5" },
-  { src: "/landingpage6.png", alt: "Landing Page 6" },
-  { src: "/landingpage7.png", alt: "Landing Page 7" },
-  { src: "/landingpage8.png", alt: "Landing Page 8" },
-  { src: "/landingpage9.png", alt: "Landing Page 9" },
-  { src: "/landingpage10.png", alt: "Landing Page 10" },
+  { src: "/landingpage1.jpg", alt: "Landing Page 1" },
+  { src: "/landingpage2.jpg", alt: "Landing Page 2" },
+  { src: "/landingpage3.jpg", alt: "Landing Page 3" },
+  { src: "/landingpage4.jpg", alt: "Landing Page 4" },
+  { src: "/landingpage5.jpg", alt: "Landing Page 5" },
+  { src: "/landingpage6.jpg", alt: "Landing Page 6" },
 ];
 
 export default function LandingCarousel() {
