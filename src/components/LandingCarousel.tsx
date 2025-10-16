@@ -30,7 +30,9 @@ export default function LandingCarousel() {
           if (relIndex > 4) return null;
           // Calculate translate and opacity
           const translateY = 64 + relIndex * 48; // shift all images down by 64px
-          const opacity = 1 - relIndex * 0.18; // fade out each layer
+          // Custom opacity per layer: 100%, 40%, 30%, 20%, 10%
+          const opacityMap = [1, 0.4, 0.3, 0.2, 0.1];
+          const opacity = opacityMap[relIndex] || 0;
           const z = 10 - relIndex;
           return (
             <Image
