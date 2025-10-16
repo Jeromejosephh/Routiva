@@ -29,19 +29,33 @@ export default function LandingCarousel() {
   return (
     <div className="relative flex flex-col items-center justify-center" style={{ minHeight: 338, width: 600 }}>
       <div className="relative w-full h-[338px]">
-        {images.map((img, i) => (
-          <Image
-            key={img.src}
-            src={img.src}
-            alt={img.alt}
-            width={600}
-            height={338}
-            priority={i === 0}
-            className={`absolute left-0 top-0 rounded-xl shadow-2xl transition-opacity duration-500 w-full h-full ${
-              i === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
-            }`}
-          />
-        ))}
+        {images.map((img, i) => {
+          // Calculate stacking order
+          const relIndex = (i - index + images.length) % images.length;
+          // Only show top 5 images for performance
+          if (relIndex > 4) return null;
+          // Calculate translate and opacity
+          const translateY = 64 + relIndex * 48; // shift all images down by 64px
+          const opacity = 1 - relIndex * 0.18; // fade out each layer
+          const z = 10 - relIndex;
+          return (
+            <Image
+              key={img.src}
+              src={img.src}
+              alt={img.alt}
+              width={600}
+              height={338}
+              priority={relIndex === 0}
+              style={{
+                transform: `translateY(${translateY}px)`,
+                opacity,
+                zIndex: z,
+                transition: 'opacity 0.5s, transform 0.5s',
+              }}
+              className={`absolute left-0 top-0 rounded-xl shadow-2xl w-full h-full`}
+            />
+          );
+        })}
       </div>
     </div>
   );
