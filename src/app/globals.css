@@ -11,15 +11,6 @@ body {
   font-family: Arial, Helvetica, sans-serif !important;
 }
 
-/*force Tailwind background classes to take precedence*/
-body.bg-gray-50 {
-  background-color: #f9fafb !important;
-}
-
-body.bg-gray-900 {
-  background-color: #000000 !important; /*onyx grey - deep, rich dark background*/
-}
-
 /*ensure dark mode works properly*/
 .dark {
   color-scheme: dark;

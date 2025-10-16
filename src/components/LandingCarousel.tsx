@@ -18,6 +18,7 @@ const images = [
 
 export default function LandingCarousel() {
   const [index, setIndex] = useState(0);
+  
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((i) => (i + 1) % images.length);
@@ -25,16 +26,8 @@ export default function LandingCarousel() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleClick = () => {
-    setIndex((i) => (i + 1) % images.length);
-  };
-
   return (
-    <div
-      className="relative flex flex-col items-center justify-center cursor-pointer"
-      onClick={handleClick}
-      style={{ minHeight: 338, width: 600 }}
-    >
+    <div className="relative flex flex-col items-center justify-center" style={{ minHeight: 338, width: 600 }}>
       <div className="relative w-full h-[338px]">
         {images.map((img, i) => (
           <Image
@@ -44,17 +37,9 @@ export default function LandingCarousel() {
             width={600}
             height={338}
             priority={i === 0}
-            className={`absolute left-0 top-0 rounded-xl shadow-2xl transition-all duration-500 w-full h-full ${i === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-            style={{ transition: 'opacity 0.5s' }}
-          />
-        ))}
-      </div>
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {images.map((_, i) => (
-          <span
-            key={i}
-            className={`w-3 h-3 rounded-full border border-blue-400 ${i === index ? 'bg-blue-600' : 'bg-white dark:bg-gray-800'}`}
-            style={{ display: 'inline-block' }}
+            className={`absolute left-0 top-0 rounded-xl shadow-2xl transition-opacity duration-500 w-full h-full ${
+              i === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            }`}
           />
         ))}
       </div>
