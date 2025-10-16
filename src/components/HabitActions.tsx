@@ -97,7 +97,7 @@ export default function HabitActions({
   };
 
   return (
-    <details ref={detailsRef} className="relative z-[10000]">
+  <details ref={detailsRef} className="relative z-[99999]">
       <summary
         className="flex h-9 w-9 items-center justify-center rounded border bg-background hover:bg-muted cursor-pointer list-none"
         aria-label="Actions"
@@ -106,12 +106,10 @@ export default function HabitActions({
         <MoreHorizontal className="h-4 w-4" />
       </summary>
       <div
-        className="absolute right-0 top-full mt-2 z-[10001] min-w-[180px]"
-        style={{ pointerEvents: 'none' }}
+        className="absolute right-0 top-full mt-2 z-[99999] min-w-[180px]"
       >
         <div
           className="rounded-xl border border-white/20 bg-white dark:bg-gray-800 shadow-2xl flex flex-col gap-2 p-2 w-full backdrop-blur-sm"
-          style={{ pointerEvents: 'auto' }}
         >
           <button
             type="button"

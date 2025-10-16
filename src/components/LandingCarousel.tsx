@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const images = [
-  { src: "/bg-desktop-light.png", alt: "App Screenshot 1" },
-  { src: "/bg-desktop-dark.png", alt: "App Screenshot 2" },
   { src: "/landingpage1.png", alt: "Landing Page 1" },
   { src: "/landingpage2.png", alt: "Landing Page 2" },
   { src: "/landingpage3.png", alt: "Landing Page 3" },

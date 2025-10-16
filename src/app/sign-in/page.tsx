@@ -1,6 +1,7 @@
 import AutoClear from "./AutoClear";
 import EmailForm from "./EmailForm";
 import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -73,10 +74,16 @@ export default function SignInPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 space-y-2">
           <p className="text-xs text-gray-500 dark:text-gray-400">
             By signing in, you agree to our terms and privacy policy
           </p>
+          <Link
+            href="/"
+            className="inline-block text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline transition-colors"
+          >
+            ← Back to Home
+          </Link>
         </div>
       </div>
     </div>
