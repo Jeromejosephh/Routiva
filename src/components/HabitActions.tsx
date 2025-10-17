@@ -106,7 +106,7 @@ export default function HabitActions({
         <MoreHorizontal className="h-4 w-4" />
       </summary>
       <div
-        className="absolute right-0 top-full mt-2 z-[99999] min-w-[180px]"
+        className="absolute right-full top-0 mr-2 z-[99999] min-w-[180px]"
       >
         <div
           className="rounded-xl border border-white/20 bg-white dark:bg-gray-800 shadow-2xl flex flex-col gap-2 p-2 w-full backdrop-blur-sm"
