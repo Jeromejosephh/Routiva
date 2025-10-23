@@ -31,13 +31,13 @@ export const metadata: Metadata = {
     description: 'Transform your daily routines with Routiva - a simple, effective habit tracking app. Build consistent habits, track your progress, and achieve your goals.',
     siteName: 'Routiva',
     images: [
-      {
-        url: '/Routivalogo.png?v=5',
-        width: 1200,
-        height: 630,
-        alt: 'Routiva - Habit Tracking App',
-        type: 'image/png',
-      }
+        {
+          url: '/RoutivabannerOG.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Routiva - Habit Tracking App',
+          type: 'image/jpeg',
+        }
     ],
   },
   icons: {
