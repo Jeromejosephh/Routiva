@@ -49,7 +49,7 @@ export function addBreadcrumb(message: string, data?: Record<string, unknown>) {
 /**
  * Wrap an async function with error tracking
  */
-export function withErrorTracking<T extends (...args: any[]) => Promise<any>>(
+export function withErrorTracking<T extends (...args: never[]) => Promise<unknown>>(
   fn: T,
   functionName: string
 ): T {
