@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { toast } from '@/lib/toast';
 import { useThemeClasses } from '@/components/ThemeProvider';
+import { captureException } from '@/lib/sentry';
 
 export default function AppError({
   error,
@@ -14,7 +15,11 @@ export default function AppError({
   const themeClasses = useThemeClasses();
   
   useEffect(() => {
-    console.error('App error:', error);
+    if (process.env.NODE_ENV === 'production') {
+      captureException(error, { digest: error.digest, component: 'AppErrorBoundary' });
+    } else {
+      console.error('App error:', error);
+    }
     toast('An error occurred. Please try again.');
   }, [error]);
 

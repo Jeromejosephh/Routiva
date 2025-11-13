@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useThemeClasses } from "@/components/ThemeProvider";
+import { captureException } from "@/lib/sentry";
 
 export default function Error({
   error,
@@ -13,8 +14,12 @@ export default function Error({
   const themeClasses = useThemeClasses();
   
   useEffect(() => {
-    // Log the error to console in development
-    console.error('Application error:', error);
+    // Log the error to Sentry in production, console in development
+    if (process.env.NODE_ENV === 'production') {
+      captureException(error, { digest: error.digest, component: 'RootErrorBoundary' });
+    } else {
+      console.error('Application error:', error);
+    }
   }, [error]);
 
   return (
