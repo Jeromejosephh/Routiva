@@ -1,8 +1,10 @@
 // src/components/HabitRow.tsx
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { toast } from "@/lib/toast";
+import { celebrateStreakMilestone } from "@/lib/confetti";
+import { computeCurrentStreak } from "@/lib/analytics";
 
 export default function HabitRow({
   habitId,
@@ -13,9 +15,42 @@ export default function HabitRow({
 }) {
   const [checked, setChecked] = useState<boolean>(initialChecked);
   const [pending, start] = useTransition();
+  const [currentStreak, setCurrentStreak] = useState<number>(0);
+
+  // Fetch current streak on mount
+  useEffect(() => {
+    const fetchStreak = async () => {
+      try {
+        const to = new Date();
+        to.setUTCHours(0, 0, 0, 0);
+        const from = new Date(to);
+        from.setUTCDate(to.getUTCDate() - 90);
+        const qs = `from=${from.toISOString().slice(0, 10)}&to=${to.toISOString().slice(0, 10)}`;
+
+        const res = await fetch(`/api/habits/${habitId}/logs?${qs}`, {
+          cache: "no-store",
+        });
+        
+        if (res.ok) {
+          const data: { logs: Array<{ date: string; status: string }> } = await res.json();
+          const normalized = data.logs.map((l) => ({
+            date: new Date(l.date),
+            status: l.status,
+          }));
+          const streak = computeCurrentStreak(normalized);
+          setCurrentStreak(streak);
+        }
+      } catch (error) {
+        console.error("Failed to fetch streak:", error);
+      }
+    };
+
+    fetchStreak();
+  }, [habitId]);
 
   const onToggle = (): void => {
     const next = !checked;
+    const wasChecked = checked;
     setChecked(next);
 
     start(async () => {
@@ -38,6 +73,19 @@ export default function HabitRow({
         if (!res.ok) {
           setChecked(!next);
           throw new Error(await safeText(res));
+        }
+
+        // Trigger confetti on completion (not on uncheck)
+        if (next && !wasChecked) {
+          // Calculate new streak (current + 1 if completing today extends it)
+          const newStreak = currentStreak + 1;
+          setCurrentStreak(newStreak);
+          
+          // Trigger appropriate confetti based on streak
+          celebrateStreakMilestone(newStreak);
+        } else if (!next) {
+          // Decrement streak if unchecking
+          setCurrentStreak(Math.max(0, currentStreak - 1));
         }
       } catch (e: unknown) {
         const msg = e instanceof Error ? e.message : "network error";
