@@ -35,3 +35,26 @@ body {
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
 }
+
+/* Micro-interactions: checkbox bounce and checkmark draw */
+@keyframes checkbox-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.checkbox-anim {
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+.checkbox-anim.is-checked {
+  animation: checkbox-bounce 220ms ease;
+}
+
+.checkmark {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 22;
+  transition: stroke-dashoffset 220ms ease;
+}
+.is-checked .checkmark {
+  stroke-dashoffset: 0;
+}

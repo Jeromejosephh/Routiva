@@ -100,13 +100,32 @@ export default function HabitRow({
       onClick={onToggle}
       disabled={pending}
       aria-pressed={checked}
-      className={`h-9 px-3 rounded border text-sm transition ${
+      aria-label={checked ? "Mark as not done" : "Mark as done"}
+      className={`h-9 px-3 rounded border text-sm transition flex items-center gap-2 ${
         checked
           ? "bg-emerald-600 text-white border-emerald-500"
-          : "bg-transparent hover:bg-zinc-900/40"
+          : "bg-transparent hover:bg-zinc-900/40 text-white"
       } ${pending ? "opacity-70" : ""}`}
     >
-      {checked ? "✓ Done" : "Mark done"}
+      <span
+        className={`checkbox-anim ${checked ? "is-checked" : ""} inline-flex items-center justify-center h-5 w-5 rounded-full border ${
+          checked ? "bg-white text-emerald-700 border-white" : "border-white/40"
+        }`}
+        aria-hidden
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path className="checkmark" d="M5 13l4 4L19 7" />
+        </svg>
+      </span>
+      <span>{checked ? "Done" : "Mark done"}</span>
     </button>
   );
 }
