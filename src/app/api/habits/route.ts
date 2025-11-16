@@ -33,6 +33,61 @@ export async function GET(req: NextRequest) {
 
     const user = await requireUser();
     
+    // Check if completion data is requested
+    const url = new URL(req.url);
+    const wantsCompletion = url.searchParams.get('completion') === 'true';
+    
+    if (wantsCompletion) {
+      // Calculate completion percentages
+      const habits = await prisma.habit.findMany({
+        where: { userId: user.id, isArchived: false },
+        include: { logs: true }
+      });
+      
+      if (habits.length === 0) {
+        return NextResponse.json({
+          dailyCompletion: 0,
+          weeklyCompletion: 0,
+          monthlyCompletion: 0,
+        });
+      }
+      
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0);
+      
+      const weekAgo = new Date(today);
+      weekAgo.setUTCDate(today.getUTCDate() - 7);
+      
+      const monthAgo = new Date(today);
+      monthAgo.setUTCDate(today.getUTCDate() - 30);
+      
+      // Daily completion
+      const todayLogs = habits.filter(h => 
+        h.logs.some(l => l.date.getTime() === today.getTime() && l.status === 'done')
+      );
+      const dailyCompletion = habits.length > 0 ? (todayLogs.length / habits.length) * 100 : 0;
+      
+      // Weekly completion
+      const weeklyTotal = habits.length * 7;
+      const weeklyCompleted = habits.reduce((sum, h) => 
+        sum + h.logs.filter(l => l.date >= weekAgo && l.status === 'done').length, 0
+      );
+      const weeklyCompletion = weeklyTotal > 0 ? (weeklyCompleted / weeklyTotal) * 100 : 0;
+      
+      // Monthly completion
+      const monthlyTotal = habits.length * 30;
+      const monthlyCompleted = habits.reduce((sum, h) => 
+        sum + h.logs.filter(l => l.date >= monthAgo && l.status === 'done').length, 0
+      );
+      const monthlyCompletion = monthlyTotal > 0 ? (monthlyCompleted / monthlyTotal) * 100 : 0;
+      
+      return NextResponse.json({
+        dailyCompletion,
+        weeklyCompletion,
+        monthlyCompletion,
+      });
+    }
+    
     const rows = await prisma.habit.findMany({
       where: { userId: user.id, isArchived: false },
       orderBy: { createdAt: 'desc' },

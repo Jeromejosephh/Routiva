@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
 import ActivityHeat30 from "@/components/ActivityHeat30";
+import CompletionRings from "@/components/CompletionRings";
 import { revalidatePath } from "next/cache";
 import type { Metadata } from "next";
 
@@ -105,6 +106,8 @@ export default async function DashboardPage() {
       </div>
 
       <ActivityHeat30 userId={user.id} />
+
+      <CompletionRings userId={user.id} />
 
       {isEmpty ? (
         <div className="rounded border p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">

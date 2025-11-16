@@ -58,3 +58,13 @@ body {
 .is-checked .checkmark {
   stroke-dashoffset: 0;
 }
+
+/* Progress ring animation */
+@keyframes progress-draw {
+  from {
+    stroke-dashoffset: var(--circumference, 283);
+  }
+  to {
+    stroke-dashoffset: var(--offset, 0);
+  }
+}
