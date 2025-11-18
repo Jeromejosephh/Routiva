@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import HabitRow from "@/components/HabitRow";
 import ActivityHeat30 from "@/components/ActivityHeat30";
 import CompletionRings from "@/components/CompletionRings";
+import OnboardingModal from "@/components/OnboardingModal";
 import { revalidatePath } from "next/cache";
 import type { Metadata } from "next";
 
@@ -86,6 +87,8 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      <OnboardingModal userName={user.name} />
+      
       <h1 className="text-xl font-semibold text-center">Dashboard</h1>
 
       {/* Page intro row with date and week blurb */}
