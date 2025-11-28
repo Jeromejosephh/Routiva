@@ -61,16 +61,17 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
       try {
         if (editingGroup) {
           const response = await fetch(`/api/groups/${editingGroup.id}`, {
-            method: "PUT",
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, color, icon }),
           });
 
           if (!response.ok) {
-            throw new Error(await response.text());
+            const errorText = await response.text();
+            throw new Error(errorText || "Failed to update group");
           }
           
-          toast("Group updated!");
+          toast({ message: "Group updated!", variant: "success" });
         } else {
           const response = await fetch("/api/groups", {
             method: "POST",
@@ -79,10 +80,11 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
           });
 
           if (!response.ok) {
-            throw new Error(await response.text());
+            const errorText = await response.text();
+            throw new Error(errorText || "Failed to create group");
           }
           
-          toast("Group created!");
+          toast({ message: "Group created!", variant: "success" });
         }
         setShowForm(false);
         setEditingGroup(null);
@@ -91,12 +93,14 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
         router.refresh();
       } catch (error) {
         console.error('Error saving group:', error);
-        setFormError("Failed to save group. Please try again.");
+        const errorMessage = error instanceof Error ? error.message : "Failed to save group";
+        setFormError(errorMessage);
+        toast({ message: errorMessage, variant: "error" });
       }
     });
   };  const handleDelete = (group: Group) => {
     if (group._count.habits > 0) {
-      toast("Cannot delete group with habits. Move habits to another group first.");
+      toast({ message: "Cannot delete group with habits. Move habits to another group first.", variant: "warning" });
       return;
     }
 
@@ -109,13 +113,15 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
         });
 
         if (!response.ok) {
-          throw new Error(await response.text());
+          const errorText = await response.text();
+          throw new Error(errorText || "Failed to delete group");
         }
 
-        toast("Group deleted!");
+        toast({ message: "Group deleted!", variant: "success" });
         router.refresh();
       } catch (error) {
-        toast(`Error: ${error instanceof Error ? error.message : "Something went wrong"}`);
+        const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+        toast({ message: `Error: ${errorMessage}`, variant: "error" });
       }
     });
   };

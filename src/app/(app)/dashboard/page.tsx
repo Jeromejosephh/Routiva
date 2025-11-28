@@ -4,6 +4,7 @@ import HabitRow from "@/components/HabitRow";
 import ActivityHeat30 from "@/components/ActivityHeat30";
 import CompletionRings from "@/components/CompletionRings";
 import OnboardingModal from "@/components/OnboardingModal";
+import DashboardHabitForm from "@/components/DashboardHabitForm";
 import { revalidatePath } from "next/cache";
 import type { Metadata } from "next";
 
@@ -115,19 +116,9 @@ export default async function DashboardPage() {
       {isEmpty ? (
         <div className="rounded border p-4 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
           <p className="mb-3 text-sm text-muted-foreground">
-            You don’t have any habits yet. Create your first one:
+            You don&apos;t have any habits yet. Create your first one:
           </p>
-          <form action={createHabit} className="flex gap-2 items-center">
-            <input
-              name="name"
-              placeholder="e.g. Read 10 pages"
-              className="border rounded px-3 py-2 w-full max-w-md"
-              required
-            />
-            <button type="submit" className="border rounded px-3 py-2 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-50 dark:hover:bg-gray-700">
-              Add
-            </button>
-          </form>
+          <DashboardHabitForm createHabit={createHabit} />
         </div>
       ) : (
         <ul className="space-y-2">

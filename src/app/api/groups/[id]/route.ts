@@ -9,6 +9,13 @@ const updateGroupSchema = z.object({
   icon: z.string().optional(),
 });
 
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  return PATCH(req, { params });
+}
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
