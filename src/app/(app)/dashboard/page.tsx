@@ -31,6 +31,10 @@ async function createHabit(formData: FormData) {
       throw new Error("Habit name is required");
     }
 
+    if (name.length > 60) {
+      throw new Error("Habit name must be 60 characters or less");
+    }
+
     const { sanitizeHabitName } = await import("@/lib/sanitize");
     const sanitizedName = sanitizeHabitName(name);
 

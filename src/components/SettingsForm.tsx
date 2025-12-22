@@ -39,14 +39,14 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
       
       <div className="space-y-4">
         <div>
-          <label htmlFor="timezone" className="block text-sm font-medium mb-1">
+          <label htmlFor="timezone" className="block text-sm font-medium mb-1 text-gray-900 dark:text-white">
             Timezone
           </label>
           <select
             id="timezone"
             name="timezone"
             defaultValue={userSettings?.timezone || "UTC"}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
           >
             <option value="UTC">UTC</option>
             <option value="America/New_York">Eastern Time</option>

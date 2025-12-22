@@ -1,7 +1,7 @@
 "use client";
 
 //dropdown menu for habit edit/archive/delete actions
-import { useRef, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/lib/toast";
 import {
@@ -31,8 +31,29 @@ export default function HabitActions({
 }) {
   const router = useRouter();
   const [pending, start] = useTransition();
-  const detailsRef = useRef<HTMLDetailsElement>(null);
-  const close = (): void => detailsRef.current?.removeAttribute("open");
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggle = () => setOpen((prev) => !prev);
+  const close = () => setOpen(false);
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, []);
 
   const patch = async (body: HabitPatchBody): Promise<void> => {
     const res = await fetch(`/api/habits/${habitId}`, {
@@ -97,51 +118,52 @@ export default function HabitActions({
   };
 
   return (
-  <details ref={detailsRef} className="relative z-[99999]">
-      <summary
-        className="flex h-9 w-9 items-center justify-center rounded border bg-background hover:bg-muted cursor-pointer list-none"
+    <div className="relative" ref={menuRef}>
+      <button
+        type="button"
+        onClick={toggle}
+        aria-expanded={open}
         aria-label="Actions"
-        role="button"
+        className="flex h-9 w-9 items-center justify-center rounded border bg-background hover:bg-muted cursor-pointer"
       >
         <MoreHorizontal className="h-4 w-4" />
-      </summary>
-      <div
-        className="absolute right-full top-0 mr-2 z-[99999] min-w-[180px]"
-      >
-        <div
-          className="rounded-xl border border-white/20 bg-white dark:bg-gray-800 shadow-2xl flex flex-col gap-2 p-2 w-full backdrop-blur-sm"
-        >
-          <button
-            type="button"
-            onClick={rename}
-            disabled={pending}
-            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
-          >
-            <Pencil className="h-4 w-4" /> Rename
-          </button>
-          <button
-            type="button"
-            onClick={toggleArchive}
-            disabled={pending}
-            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
-          >
-            {isArchived ? (
-              <ArchiveRestore className="h-4 w-4" />
-            ) : (
-              <Archive className="h-4 w-4" />
-            )}
-            {isArchived ? "Unarchive" : "Archive"}
-          </button>
-          <button
-            type="button"
-            onClick={del}
-            disabled={pending}
-            className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-red-600 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
-          >
-            <Trash2 className="h-4 w-4" /> Delete
-          </button>
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-full mt-2 z-50 min-w-[200px]">
+          <div className="rounded-xl border border-white/20 bg-white dark:bg-gray-800 shadow-2xl flex flex-col gap-2 p-2 w-full backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={rename}
+              disabled={pending}
+              className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+            >
+              <Pencil className="h-4 w-4" /> Rename
+            </button>
+            <button
+              type="button"
+              onClick={toggleArchive}
+              disabled={pending}
+              className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+            >
+              {isArchived ? (
+                <ArchiveRestore className="h-4 w-4" />
+              ) : (
+                <Archive className="h-4 w-4" />
+              )}
+              {isArchived ? "Unarchive" : "Archive"}
+            </button>
+            <button
+              type="button"
+              onClick={del}
+              disabled={pending}
+              className="flex w-full items-center gap-2 px-3 py-3 hover:bg-muted/50 text-left text-red-600 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg"
+            >
+              <Trash2 className="h-4 w-4" /> Delete
+            </button>
+          </div>
         </div>
-      </div>
-    </details>
+      )}
+    </div>
   );
 }

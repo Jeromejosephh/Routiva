@@ -43,6 +43,13 @@ async function getAnalyticsData(userId: string) {
     sum + habit.logs.filter(log => log.status === 'done').length, 0
   );
 
+  const completionWindowDays = 30;
+  const completionsInWindow = habits.reduce((sum, habit) =>
+    sum + habit.logs.filter(log => log.status === 'done' && log.date >= thirtyDaysAgo).length,
+    0
+  );
+  const totalPossibleInWindow = habits.length * completionWindowDays;
+
   const recentLogs = habits.flatMap(habit => 
     habit.logs.filter(log => log.date >= thirtyDaysAgo)
   );
@@ -70,7 +77,7 @@ async function getAnalyticsData(userId: string) {
     totalHabits,
     totalLogs,
     totalCompletions,
-    overallCompletionRate: totalLogs > 0 ? totalCompletions / totalLogs : 0,
+    overallCompletionRate: totalPossibleInWindow > 0 ? completionsInWindow / totalPossibleInWindow : 0,
     recentActivity: recentLogs.length,
     weeklyActivity: weeklyLogs.length,
     habitStats

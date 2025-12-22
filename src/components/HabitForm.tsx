@@ -22,6 +22,12 @@ export default function HabitForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = (formData: FormData) => {
+    const name = (formData.get("name") as string | null)?.trim() || "";
+    if (name.length > 60) {
+      toast({ message: "Habit name must be 60 characters or less", variant: "error" });
+      return;
+    }
+
     startTransition(async () => {
       try {
         await createHabit(formData);
@@ -43,6 +49,7 @@ export default function HabitForm({
         placeholder="New habit name"
         className="border rounded px-3 py-2 flex-1 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-white placeholder-gray-500 dark:placeholder-gray-400"
         required
+        maxLength={80}
         disabled={pending}
       />
       <select

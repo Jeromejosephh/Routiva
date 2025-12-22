@@ -6,7 +6,7 @@ import { z } from "zod";
 const createGroupSchema = z.object({
   name: z.string().trim().min(1, "Group name is required").max(50),
   color: z.string().min(1, "Color is required"),
-  icon: z.string().optional(),
+  icon: z.string().nullable().optional(),
 });
 
 export async function GET() {

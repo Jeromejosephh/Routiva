@@ -94,11 +94,12 @@ interface RingWithLabelProps {
 }
 
 function RingWithLabel({ percentage, label, size, color }: RingWithLabelProps) {
+  const safePercentage = Math.max(0, Math.min(100, percentage || 0));
   const strokeWidth = 8;
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const strokeDasharray = circumference;
-  const strokeDashoffset = circumference - (percentage / 100) * circumference;
+  const strokeDashoffset = circumference - (safePercentage / 100) * circumference;
   
   return (
     <div className="flex flex-col items-center gap-3">
@@ -132,6 +133,10 @@ function RingWithLabel({ percentage, label, size, color }: RingWithLabelProps) {
             className="transition-all duration-1000 ease-out"
             style={{
               animation: 'progress-draw 1s ease-out forwards',
+              // Pass values to CSS animation via custom properties
+              // so the ring draws only to the correct offset.
+              ['--offset' as string]: strokeDashoffset,
+              ['--circumference' as string]: strokeDasharray,
             }}
           />
         </svg>
@@ -139,7 +144,7 @@ function RingWithLabel({ percentage, label, size, color }: RingWithLabelProps) {
         {/* Percentage text in center */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-2xl font-bold" style={{ color }}>
-            {Math.round(percentage)}%
+            {Math.round(safePercentage)}%
           </span>
         </div>
       </div>

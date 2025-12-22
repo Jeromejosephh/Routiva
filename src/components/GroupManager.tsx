@@ -49,7 +49,7 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
   const handleSubmit = async (formData: FormData) => {
     const name = formData.get('name') as string;
     const color = selectedColor;
-    const icon = selectedIcon === NO_ICON_VALUE || selectedIcon === "" ? undefined : selectedIcon;
+    const icon = selectedIcon === NO_ICON_VALUE || selectedIcon === "" ? null : selectedIcon;
     
     if (!name?.trim()) {
       setFormError("Group name is required");
@@ -67,8 +67,9 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
           });
 
           if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || "Failed to update group");
+            const errorPayload = await response.json().catch(() => null);
+            const errorText = errorPayload?.error || (typeof errorPayload === "string" ? errorPayload : "Failed to update group");
+            throw new Error(errorText);
           }
           
           toast({ message: "Group updated!", variant: "success" });
@@ -80,8 +81,9 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
           });
 
           if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || "Failed to create group");
+            const errorPayload = await response.json().catch(() => null);
+            const errorText = errorPayload?.error || (typeof errorPayload === "string" ? errorPayload : "Failed to create group");
+            throw new Error(errorText);
           }
           
           toast({ message: "Group created!", variant: "success" });
@@ -150,7 +152,9 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
           <div key={group.id} className="flex items-center justify-between p-3 border rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60">
             <div className="flex items-center gap-3">
               <div className={`w-4 h-4 rounded ${COLORS.find(c => c.value === group.color)?.class || 'bg-gray-500'}`} />
-              <span className="text-lg">{group.icon}</span>
+              <span className="text-lg" aria-label="Group icon">
+                {group.icon ?? ""}
+              </span>
               <div>
                 <div className="font-medium">{group.name}</div>
                 <div className="text-sm text-white/60">{group._count.habits} habits</div>
@@ -173,7 +177,6 @@ export default function GroupManager({ groups }: { groups: Group[] }) {
               <button
                 onClick={() => handleDelete(group)}
                 className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-red-600 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98]"
-                disabled={group._count.habits > 0}
               >
                 <Trash2 size={14} />
               </button>

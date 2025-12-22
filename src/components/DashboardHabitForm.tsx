@@ -12,6 +12,12 @@ export default function DashboardHabitForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = (formData: FormData) => {
+    const name = (formData.get("name") as string | null)?.trim() || "";
+    if (name.length > 60) {
+      toast({ message: "Habit name must be 60 characters or less", variant: "error" });
+      return;
+    }
+
     startTransition(async () => {
       try {
         await createHabit(formData);
@@ -33,6 +39,7 @@ export default function DashboardHabitForm({
         placeholder="e.g. Read 10 pages"
         className="border rounded px-3 py-2 w-full max-w-md"
         required
+        maxLength={80}
         disabled={pending}
       />
       <button 

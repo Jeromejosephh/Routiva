@@ -355,7 +355,7 @@ export function ThemeProvider({
       
       // Remove all theme-related classes first
       root.classList.remove('dark');
-      document.body.classList.remove('bg-gray-50', 'bg-gray-900', 'text-gray-900', 'text-gray-100', 'dark');
+      document.body.classList.remove('bg-gray-50', 'bg-gray-900', 'text-gray-900', 'text-gray-100', 'text-white', 'dark');
       
       // Remove existing overlay if any
       const existingOverlay = document.getElementById('bg-overlay');
@@ -367,15 +367,15 @@ export function ThemeProvider({
       if (shouldUseDark) {
         root.classList.add('dark');
         document.body.classList.add('dark', 'text-gray-100');
+        document.body.style.backgroundColor = '#0f172a';
         document.body.style.backgroundImage = "url('/bg-dark.png')";
-        document.body.style.backgroundPosition = 'center center';
-        document.body.style.backgroundSize = 'cover';
       } else {
-        document.body.classList.add('text-white');
+        document.body.classList.add('text-gray-900');
+        document.body.style.backgroundColor = '#f9fafb';
         document.body.style.backgroundImage = "url('/bg-light.png')";
-        document.body.style.backgroundPosition = 'center center';
-        document.body.style.backgroundSize = 'cover';
       }
+      document.body.style.backgroundPosition = 'center center';
+      document.body.style.backgroundSize = 'cover';
       
       // Always add these classes and background styles
       document.body.classList.add('min-h-screen', 'transition-all', 'duration-300');
@@ -391,7 +391,7 @@ export function ThemeProvider({
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: ${shouldUseDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)'};
+        background-color: ${shouldUseDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.05)'};
         pointer-events: none;
         z-index: -1;
       `;

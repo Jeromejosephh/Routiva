@@ -6,7 +6,7 @@ import { z } from "zod";
 const updateGroupSchema = z.object({
   name: z.string().trim().min(1).max(50).optional(),
   color: z.string().optional(),
-  icon: z.string().optional(),
+  icon: z.string().nullable().optional(),
 });
 
 export async function PUT(
