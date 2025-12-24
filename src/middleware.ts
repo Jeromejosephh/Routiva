@@ -1,34 +1,9 @@
 //src/middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { rateLimit, rateLimitRequest } from "@/lib/rate-limit";
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const key = rateLimitRequest(req);
-
-  // Determine rate limit type based on route
-  const limitType = pathname.startsWith("/api/auth") ? "auth" : "api";
-  const { success } = await rateLimit(key, limitType);
-
-  if (!success) {
-    const isAuthRoute = limitType === "auth";
-    return new NextResponse(
-      JSON.stringify({
-        error: isAuthRoute
-          ? "Too many sign-in attempts. Please try again later."
-          : "Too many requests. Please try again later.",
-      }),
-      {
-        status: 429,
-        headers: {
-          "Content-Type": "application/json",
-          "Retry-After": "60",
-          "X-RateLimit-Reset": String(Date.now() + 60000),
-        },
-      }
-    );
-  }
 
   // Security headers
   const response = NextResponse.next();
@@ -64,7 +39,5 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     "/api/:path*",
-    "/sign-in",
-    "/auth/:path*"
   ],
 };

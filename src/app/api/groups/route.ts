@@ -13,8 +13,7 @@ export async function GET() {
   try {
     const user = await requireUser();
     
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const groups = await (prisma as any).habitGroup.findMany({
+    const groups = await prisma.habitGroup.findMany({
       where: { userId: user.id },
       include: {
         _count: {
@@ -42,8 +41,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check for duplicate name
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const existing = await (prisma as any).habitGroup.findFirst({
+    const existing = await prisma.habitGroup.findFirst({
       where: { userId: user.id, name: parsed.data.name }
     });
 
@@ -51,8 +49,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Group name already exists" }, { status: 400 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const group = await (prisma as any).habitGroup.create({
+    const group = await prisma.habitGroup.create({
       data: {
         userId: user.id,
         name: parsed.data.name,

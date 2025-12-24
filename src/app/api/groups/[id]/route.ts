@@ -31,8 +31,7 @@ export async function PATCH(
     }
 
     // Check ownership
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const group = await (prisma as any).habitGroup.findFirst({
+    const group = await prisma.habitGroup.findFirst({
       where: { id, userId: user.id }
     });
 
@@ -42,8 +41,7 @@ export async function PATCH(
 
     // Check for duplicate name if updating name
     if (parsed.data.name && parsed.data.name !== group.name) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const existing = await (prisma as any).habitGroup.findFirst({
+      const existing = await prisma.habitGroup.findFirst({
         where: { userId: user.id, name: parsed.data.name, id: { not: id } }
       });
 
@@ -52,8 +50,7 @@ export async function PATCH(
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const updated = await (prisma as any).habitGroup.update({
+    const updated = await prisma.habitGroup.update({
       where: { id },
       data: parsed.data,
     });
@@ -74,8 +71,7 @@ export async function DELETE(
     const user = await requireUser();
 
     // Check ownership and if group has habits
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const group = await (prisma as any).habitGroup.findFirst({
+    const group = await prisma.habitGroup.findFirst({
       where: { id, userId: user.id },
       include: { _count: { select: { habits: true } } }
     });
@@ -88,8 +84,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Cannot delete group with habits" }, { status: 400 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (prisma as any).habitGroup.delete({ where: { id } });
+    await prisma.habitGroup.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch (error) {

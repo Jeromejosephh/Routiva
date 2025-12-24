@@ -1,6 +1,3 @@
-export const runtime = "nodejs";
-export const revalidate = 60;
-
 import { prisma } from "@/lib/db";
 
 function ymdUTC(d: Date) {

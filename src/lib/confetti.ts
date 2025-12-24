@@ -3,7 +3,7 @@ import confetti from 'canvas-confetti';
 /**
  * Trigger confetti celebration for streak milestones
  */
-export function celebrateStreak(_streakCount: number) {
+export function celebrateStreak() {
   const duration = 3000;
   const animationEnd = Date.now() + duration;
   const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
@@ -50,7 +50,7 @@ export function celebrateCompletion() {
 /**
  * Firework-style confetti for major milestones (7, 30, 100, 365 days)
  */
-export function celebrateMajorMilestone(_milestone: number) {
+export function celebrateMajorMilestone() {
   const duration = 5000;
   const animationEnd = Date.now() + duration;
 
@@ -135,16 +135,16 @@ export function celebrateStreakMilestone(streakCount: number) {
   // Major milestones get special treatment
   if (streakCount === 365) {
     confettiCannon();
-    setTimeout(() => celebrateMajorMilestone(365), 500);
+    setTimeout(() => celebrateMajorMilestone(), 500);
   } else if (streakCount === 100 || streakCount === 200 || streakCount === 300) {
-    celebrateMajorMilestone(streakCount);
+    celebrateMajorMilestone();
   } else if (streakCount === 30 || streakCount === 60 || streakCount === 90) {
-    celebrateMajorMilestone(streakCount);
+    celebrateMajorMilestone();
   } else if (streakCount === 7 || streakCount === 14 || streakCount === 21) {
-    celebrateStreak(streakCount);
+    celebrateStreak();
   } else if (streakCount % 10 === 0 && streakCount >= 10) {
     // Every 10 days milestone
-    celebrateStreak(streakCount);
+    celebrateStreak();
   } else {
     // Regular completion
     celebrateCompletion();
