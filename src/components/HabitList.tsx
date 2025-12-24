@@ -80,9 +80,9 @@ export default function HabitList({ habits, groups, doneSet }: HabitListProps) {
                 <span className="text-lg">{group.icon}</span>
                 {group.name}
               </h3>
-              <ul className="space-y-2" style={{ position: 'relative', zIndex: 1 }}>
+              <ul className="space-y-2" style={{ position: 'relative' }}>
                 {groupHabits.map((habit, index) => (
-                  <li key={habit.id} className={`border p-3 rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${groupThemeClasses.primary} ${groupThemeClasses.border} relative`} style={{ zIndex: groupHabits.length - index }}>
+                  <li key={habit.id} className={`border p-3 rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${groupThemeClasses.primary} ${groupThemeClasses.border} relative`}>
                     <div className="flex items-center justify-between">
                       <span className={habit.isArchived ? "opacity-60 line-through text-white" : "text-white"}>
                         {habit.name}
@@ -112,9 +112,9 @@ export default function HabitList({ habits, groups, doneSet }: HabitListProps) {
       {ungroupedHabits.length > 0 && (
         <section className="mt-8">
           <h2 className="text-lg font-semibold mb-3 text-white/90">Other Habits</h2>
-          <ul className="space-y-2" style={{ position: 'relative', zIndex: 1 }}>
+          <ul className="space-y-2" style={{ position: 'relative' }}>
             {ungroupedHabits.map((habit, index) => (
-              <li key={habit.id} className={`border p-3 rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${themeClasses.primary} ${themeClasses.border} relative`} style={{ zIndex: ungroupedHabits.length - index }}>
+              <li key={habit.id} className={`border p-3 rounded backdrop-blur-sm bg-white/60 dark:bg-gray-700/60 ${themeClasses.primary} ${themeClasses.border} relative`}>
                 <div className="flex items-center justify-between">
                   <span className={habit.isArchived ? "opacity-60 line-through text-white" : "text-white"}>
                     {habit.name}
