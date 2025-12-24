@@ -1,11 +1,11 @@
 "use client";
 
 
-import { useTheme, PASTEL_COLORS, getThemeClasses, type PastelColor, type Theme } from "./ThemeProvider";
-import { Palette, Monitor, Moon, Sun } from "lucide-react";
+import { useTheme, PASTEL_COLORS, getThemeClasses, THEME_WALLPAPERS, type PastelColor, type Theme } from "./ThemeProvider";
+import { Palette, Monitor, Moon, Sun, Image as ImageIcon } from "lucide-react";
 
 export default function ThemeSettings() {
-  const { theme, primaryColor, isDark, setTheme, setPrimaryColor } = useTheme();
+  const { theme, primaryColor, isDark, setTheme, setPrimaryColor, wallpaperLight, wallpaperDark, setWallpaperLight, setWallpaperDark } = useTheme();
   const themeClasses = getThemeClasses(primaryColor, isDark);
 
   const themeOptions: { value: Theme; label: string; icon: React.ReactNode }[] = [
@@ -88,6 +88,70 @@ export default function ThemeSettings() {
             <div className={`text-sm ${isDark ? 'text-white' : 'text-black'}`}>This is how your content will look</div>
           </div>
           <button className={`px-4 py-2 rounded font-medium ${isDark ? 'text-white' : 'text-black'} ${themeClasses.button}`}>Sample Button</button>
+        </div>
+      </div>
+
+      {/* Wallpaper Selection */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <ImageIcon size={20} />
+          Wallpapers
+        </h3>
+
+        {/* Light wallpapers */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-3">Light mode</label>
+          <div className="grid grid-cols-4 gap-3">
+            {Object.entries(THEME_WALLPAPERS).map(([key, cfg]) => {
+              const selected = wallpaperLight === key;
+              return (
+                <button
+                  key={`light-${key}`}
+                  onClick={() => setWallpaperLight(key as keyof typeof THEME_WALLPAPERS)}
+                  className={`rounded-lg border p-2 transition-all ${selected ? 'ring-2 ring-blue-500 border-blue-400' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}`}
+                  aria-pressed={selected}
+                >
+                  <div
+                    className="w-full h-16 rounded-md"
+                    style={{
+                      backgroundImage: cfg.light.image,
+                      backgroundSize: cfg.light.size || 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  />
+                  <span className="mt-2 block text-xs text-center">{cfg.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Dark wallpapers */}
+        <div>
+          <label className="block text-sm font-medium mb-3">Dark mode</label>
+          <div className="grid grid-cols-4 gap-3">
+            {Object.entries(THEME_WALLPAPERS).map(([key, cfg]) => {
+              const selected = wallpaperDark === key;
+              return (
+                <button
+                  key={`dark-${key}`}
+                  onClick={() => setWallpaperDark(key as keyof typeof THEME_WALLPAPERS)}
+                  className={`rounded-lg border p-2 transition-all ${selected ? 'ring-2 ring-blue-500 border-blue-400' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}`}
+                  aria-pressed={selected}
+                >
+                  <div
+                    className="w-full h-16 rounded-md"
+                    style={{
+                      backgroundImage: cfg.dark.image,
+                      backgroundSize: cfg.dark.size || 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  />
+                  <span className="mt-2 block text-xs text-center">{cfg.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

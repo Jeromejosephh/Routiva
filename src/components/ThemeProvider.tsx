@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export type Theme = 'light' | 'dark' | 'system';
 export type PastelColor = 'blue' | 'green' | 'purple' | 'red' | 'orange' | 'yellow' | 'pink' | 'teal' | 'indigo' | 'cyan' | 'emerald' | 'lime' | 'amber' | 'rose' | 'violet' | 'sky';
+export type WallpaperKey = 'default' | 'mesh' | 'dots' | 'grid';
 
 interface ThemeContextType {
   theme: Theme;
@@ -11,6 +12,10 @@ interface ThemeContextType {
   isDark: boolean;
   setTheme: (theme: Theme) => void;
   setPrimaryColor: (color: PastelColor) => void;
+  wallpaperLight: WallpaperKey;
+  wallpaperDark: WallpaperKey;
+  setWallpaperLight: (key: WallpaperKey) => void;
+  setWallpaperDark: (key: WallpaperKey) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -322,6 +327,57 @@ export const PASTEL_COLORS = {
   },
 } as const;
 
+const WALLPAPERS: Record<WallpaperKey, {
+  label: string;
+  light: { image: string; size?: string };
+  dark: { image: string; size?: string };
+}> = {
+  default: {
+    label: 'Default',
+    light: { image: "url('/bg-light.png')", size: 'cover' },
+    dark: { image: "url('/bg-dark.png')", size: 'cover' },
+  },
+  mesh: {
+    label: 'Mesh',
+    light: {
+      image:
+        'radial-gradient(1200px 600px at 0% 0%, rgba(59,130,246,0.15), transparent 60%), radial-gradient(800px 400px at 100% 100%, rgba(16,185,129,0.15), transparent 60%)',
+      size: 'auto',
+    },
+    dark: {
+      image:
+        'radial-gradient(1200px 600px at 0% 0%, rgba(59,130,246,0.12), transparent 60%), radial-gradient(800px 400px at 100% 100%, rgba(16,185,129,0.12), transparent 60%)',
+      size: 'auto',
+    },
+  },
+  dots: {
+    label: 'Dots',
+    light: {
+      image:
+        'radial-gradient(rgba(0,0,0,0.06) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px)',
+      size: '12px 12px, 24px 24px',
+    },
+    dark: {
+      image:
+        'radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)',
+      size: '12px 12px, 24px 24px',
+    },
+  },
+  grid: {
+    label: 'Grid',
+    light: {
+      image:
+        'linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)',
+      size: '40px 40px',
+    },
+    dark: {
+      image:
+        'linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px)',
+      size: '40px 40px',
+    },
+  },
+};
+
 export function ThemeProvider({ 
   children,
   initialTheme = 'dark',
@@ -335,6 +391,14 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [primaryColor, setPrimaryColor] = useState<PastelColor>(initialPrimaryColor);
   const [isDark, setIsDark] = useState(false);
+  const [wallpaperLight, setWallpaperLight] = useState<WallpaperKey>(() => {
+    if (typeof window === 'undefined') return 'default';
+    return (localStorage.getItem('wallpaperLight') as WallpaperKey) || 'default';
+  });
+  const [wallpaperDark, setWallpaperDark] = useState<WallpaperKey>(() => {
+    if (typeof window === 'undefined') return 'default';
+    return (localStorage.getItem('wallpaperDark') as WallpaperKey) || 'default';
+  });
 
   // Ensure component is mounted before applying themes (prevents hydration mismatch)
   useEffect(() => {
@@ -368,14 +432,17 @@ export function ThemeProvider({
         root.classList.add('dark');
         document.body.classList.add('dark', 'text-gray-100');
         document.body.style.backgroundColor = '#0f172a';
-        document.body.style.backgroundImage = "url('/bg-dark.png')";
+        const wp = WALLPAPERS[wallpaperDark].dark;
+        document.body.style.backgroundImage = wp.image;
+        document.body.style.backgroundSize = wp.size || 'cover';
       } else {
         document.body.classList.add('text-gray-900');
         document.body.style.backgroundColor = '#f9fafb';
-        document.body.style.backgroundImage = "url('/bg-light.png')";
+        const wp = WALLPAPERS[wallpaperLight].light;
+        document.body.style.backgroundImage = wp.image;
+        document.body.style.backgroundSize = wp.size || 'cover';
       }
       document.body.style.backgroundPosition = 'center center';
-      document.body.style.backgroundSize = 'cover';
       
       // Always add these classes and background styles
       document.body.classList.add('min-h-screen', 'transition-all', 'duration-300');
@@ -409,7 +476,7 @@ export function ThemeProvider({
       mediaQuery.addEventListener('change', applyTheme);
       return () => mediaQuery.removeEventListener('change', applyTheme);
     }
-  }, [mounted, theme, primaryColor]);
+  }, [mounted, theme, primaryColor, wallpaperLight, wallpaperDark]);
 
   const updateUserPreferences = async (newTheme?: Theme, newColor?: PastelColor) => {
     try {
@@ -440,6 +507,16 @@ export function ThemeProvider({
     updateUserPreferences(undefined, newColor);
   };
 
+  const handleSetWallpaperLight = (key: WallpaperKey) => {
+    setWallpaperLight(key);
+    try { localStorage.setItem('wallpaperLight', key); } catch {}
+  };
+
+  const handleSetWallpaperDark = (key: WallpaperKey) => {
+    setWallpaperDark(key);
+    try { localStorage.setItem('wallpaperDark', key); } catch {}
+  };
+
   // Don't render until mounted to prevent hydration mismatch
   if (!mounted) {
     return <div style={{ visibility: 'hidden' }}>{children}</div>;
@@ -452,7 +529,11 @@ export function ThemeProvider({
         primaryColor, 
         isDark, 
         setTheme: handleSetTheme, 
-        setPrimaryColor: handleSetPrimaryColor 
+        setPrimaryColor: handleSetPrimaryColor,
+        wallpaperLight,
+        wallpaperDark,
+        setWallpaperLight: handleSetWallpaperLight,
+        setWallpaperDark: handleSetWallpaperDark,
       }}
     >
       {children}
@@ -471,6 +552,9 @@ export function useTheme() {
 export function getThemeClasses(primaryColor: PastelColor, isDark: boolean) {
   return PASTEL_COLORS[primaryColor][isDark ? 'dark' : 'light'];
 }
+
+// Expose wallpaper config for previews
+export const THEME_WALLPAPERS = WALLPAPERS;
 
 // Hook to get current theme classes
 export function useThemeClasses() {
