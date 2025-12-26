@@ -334,8 +334,8 @@ const WALLPAPERS: Record<WallpaperKey, {
 }> = {
   default: {
     label: 'Default',
-    light: { image: "url('/bg-light.png')", size: 'cover' },
-    dark: { image: "url('/bg-dark.png')", size: 'cover' },
+    light: { image: "url('/bg_light.png')", size: 'cover' },
+    dark: { image: "url('/bg_dark.png')", size: 'cover' },
   },
   mesh: {
     label: 'Mesh',
