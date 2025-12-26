@@ -1,24 +1,27 @@
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
+import ThemeSettings from "@/components/ThemeSettings";
 import SettingsForm from "@/components/SettingsForm";
 import DataManagementSection from "@/components/DataManagementSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Settings",
-  description: "Customize your Routiva experience - manage account preferences, themes, colors, timezone settings, and data export options.",
+  description:
+    "Customize your Routiva experience - manage account preferences, themes, colors, timezone settings, and data export options.",
   alternates: {
-    canonical: '/settings',
+    canonical: "/settings",
   },
   openGraph: {
     title: "Settings | Routiva",
-    description: "Personalize your habit tracking experience with custom themes, preferences, and account settings.",
+    description:
+      "Personalize your habit tracking experience with custom themes, preferences, and account settings.",
   },
 };
 
 export default async function SettingsPage() {
   const user = await requireUser();
-  
+
   //fetch user settings and account stats
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const userSettings = await (prisma as any).user.findUnique({
@@ -45,9 +48,14 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-6">
-        <h1 className="text-2xl font-semibold text-center">Settings</h1>
+      <h1 className="text-2xl font-semibold text-center">Settings</h1>
 
-        <div className="border rounded-lg p-6 backdrop-blur-sm bg-gray-100 dark:bg-gray-800/80">
+      {/* Theme Settings */}
+      <div className="border rounded-lg p-6 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
+        <ThemeSettings />
+      </div>
+
+      <div className="border rounded-lg p-6 backdrop-blur-sm bg-gray-100 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">Account Information</h2>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
@@ -56,7 +64,9 @@ export default async function SettingsPage() {
           </div>
           <div className="flex justify-between">
             <span className="text-white">Member since:</span>
-            <span className="text-white">{userSettings?.createdAt.toLocaleDateString()}</span>
+            <span className="text-white">
+              {userSettings?.createdAt.toLocaleDateString()}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="text-white">Active habits:</span>
@@ -89,7 +99,9 @@ export default async function SettingsPage() {
           >
             Contact the developer at jeromejoseph.dev
           </a>
-          <p className="text-xs text-white mt-1">You can reach out for support, feedback, or questions.</p>
+          <p className="text-xs text-white mt-1">
+            You can reach out for support, feedback, or questions.
+          </p>
         </div>
       </div>
     </div>
