@@ -9,21 +9,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen grid grid-rows-[56px_1fr] relative">
         {/* Background Images - Light Mode */}
         <div className="fixed inset-0 -z-10 dark:hidden">
-          {/* Mobile Light */}
           <Image
-            src="/bg-mobile-light.png"
+            src="/bg_light.png"
             alt="Background"
             fill
-            className="object-cover md:hidden"
-            quality={100}
-            priority
-          />
-          {/* Desktop Light */}
-          <Image
-            src="/bg-desktop-light.png"
-            alt="Background"
-            fill
-            className="object-cover hidden md:block"
+            className="object-cover"
             quality={100}
             priority
           />
@@ -31,21 +21,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Background Images - Dark Mode */}
         <div className="fixed inset-0 -z-10 hidden dark:block">
-          {/* Mobile Dark */}
           <Image
-            src="/bg-mobile-dark.png"
+            src="/bg_dark.png"
             alt="Background"
             fill
-            className="object-cover md:hidden"
-            quality={100}
-            priority
-          />
-          {/* Desktop Dark */}
-          <Image
-            src="/bg-desktop-dark.png"
-            alt="Background"
-            fill
-            className="object-cover hidden md:block"
+            className="object-cover"
             quality={100}
             priority
           />
