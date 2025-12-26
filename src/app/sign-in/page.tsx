@@ -22,7 +22,10 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4 text-white">
+    <div
+      className="min-h-screen flex items-center justify-center p-4 text-white"
+      style={{ backgroundColor: "#000000", color: "#ffffff" }}
+    >
       <AutoClear />
       <div className="w-full max-w-md">
         {/* Logo/Brand Section */}
@@ -46,7 +49,10 @@ export default function SignInPage() {
         </div>
 
         {/* Sign-in Card */}
-        <div className="bg-black border border-gray-700 rounded-2xl shadow-xl p-8 text-white">
+        <div
+          className="bg-black border border-gray-700 rounded-2xl shadow-xl p-8"
+          style={{ color: "#ffffff" }}
+        >
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-white mb-2">

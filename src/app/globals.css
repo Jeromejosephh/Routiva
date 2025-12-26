@@ -129,7 +129,7 @@ body {
 
 /* Global text colors for light/dark */
 :root {
-  --text-color: #000000;
+  --text-color: #ffffff;
 }
 .dark {
   --text-color: #ffffff;
