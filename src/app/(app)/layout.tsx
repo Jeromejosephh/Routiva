@@ -51,7 +51,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           />
         </div>
 
-        <nav className="flex items-center justify-between px-4 border-b relative z-10" style={{ background: '#000515' }}>
+        <nav className="sticky top-0 flex items-center justify-between px-4 border-b relative z-10" style={{ background: '#000515' }}>
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="font-semibold">
               <Image src="/Routivalogoname.png" alt="Routiva Logo" className="h-8 w-auto" style={{maxWidth:120}} width={120} height={32} />
