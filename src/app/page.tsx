@@ -5,13 +5,8 @@ import LandingCarousel from "@/components/LandingCarousel";
 export default function Home() {
   return (
     <div
-      className="min-h-screen w-full flex items-center justify-center px-8 py-12"
-      style={{
-        backgroundImage: 'url(/bg.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
+      className="landing-page min-h-screen w-full flex items-center justify-center px-8 py-12"
+      style={{ backgroundColor: '#ffffff' }}
     >
       <main className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-start bg-transparent">
         {/* Left side - Content */}

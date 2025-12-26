@@ -137,3 +137,9 @@ body {
 :where(body, body *) {
   color: var(--text-color) !important;
 }
+
+/* Landing page: force all text to white */
+.landing-page,
+.landing-page * {
+  color: #ffffff !important;
+}
