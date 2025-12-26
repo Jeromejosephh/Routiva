@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Toaster from "@/components/Toaster";
 import ThemeProviderWrapper from "@/components/ThemeProviderWrapper";
