@@ -1,16 +1,11 @@
-"use client";
-
 import Link from "next/link";
 import Toaster from "@/components/Toaster";
 import ThemeProviderWrapper from "@/components/ThemeProviderWrapper";
 import Image from "next/image";
-import { useThemeClasses } from "@/components/ThemeProvider";
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
-  const themeClasses = useThemeClasses();
-  
   return (
-    <div className={`min-h-screen grid grid-rows-[56px_1fr] relative isolate overflow-visible ${themeClasses.primary}`}>
+    <div className="min-h-screen grid grid-rows-[56px_1fr] relative isolate overflow-visible">
       <nav className="sticky top-0 flex items-center justify-between px-4 border-b relative z-10" style={{ background: '#000515' }}>
         <div className="flex items-center gap-4">
           <Link href="/dashboard" className="font-semibold">
