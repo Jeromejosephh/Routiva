@@ -21,7 +21,13 @@ export default function AuthErrorPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
-      style={{ backgroundColor: "#000000", color: "#ffffff" }}
+      style={{ 
+        backgroundImage: 'url(/Routivabackground.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        color: "#ffffff"
+      }}
     >
       <div className="w-full max-w-md">
         {/* Logo/Brand Section */}

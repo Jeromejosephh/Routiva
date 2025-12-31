@@ -15,7 +15,13 @@ export default function VerifyRequestPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
-      style={{ backgroundColor: "#000000", color: "#ffffff" }}
+      style={{ 
+        backgroundImage: 'url(/Routivabackground.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        color: "#ffffff"
+      }}
     >
       <div className="max-w-md w-full space-y-8">
         <div>

@@ -24,7 +24,13 @@ export default function SignInPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4 text-white"
-      style={{ backgroundColor: "#000000", color: "#ffffff" }}
+      style={{ 
+        backgroundImage: 'url(/Routivabackground.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        color: "#ffffff"
+      }}
     >
       <AutoClear />
       <div className="w-full max-w-md">
