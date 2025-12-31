@@ -25,7 +25,7 @@ export default function SignInPage() {
     <div
       className="min-h-screen flex items-center justify-center p-4 text-white"
       style={{ 
-        backgroundImage: 'url(/Routivabackground.png)',
+        backgroundImage: 'url(/Routivabg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

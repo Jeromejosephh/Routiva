@@ -7,7 +7,7 @@ export default function Home() {
     <div
       className="landing-page min-h-screen w-full flex items-center justify-center px-8 py-12"
       style={{ 
-        backgroundImage: 'url(/Routivabackground.png)',
+        backgroundImage: 'url(/Routivabg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'

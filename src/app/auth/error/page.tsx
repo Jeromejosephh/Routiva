@@ -22,7 +22,7 @@ export default function AuthErrorPage() {
     <div
       className="min-h-screen flex items-center justify-center p-4"
       style={{ 
-        backgroundImage: 'url(/Routivabackground.png)',
+        backgroundImage: 'url(/Routivabg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

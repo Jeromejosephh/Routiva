@@ -6,7 +6,7 @@ export default function SignOutPage() {
     <div
       className="min-h-screen flex items-center justify-center p-4 text-white"
       style={{ 
-        backgroundImage: 'url(/Routivabackground.png)',
+        backgroundImage: 'url(/Routivabg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -56,6 +56,14 @@ export default function SignOutPage() {
               >
                 Sign In Again
               </Link>
+              <div className="mt-3">
+                <Link
+                  href="/"
+                  className="inline-block px-8 py-3 rounded-lg border border-gray-600 text-white font-semibold hover:bg-gray-900 transition"
+                >
+                  Go Back
+                </Link>
+              </div>
             </div>
           </div>
         </div>

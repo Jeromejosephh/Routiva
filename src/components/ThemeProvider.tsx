@@ -378,6 +378,25 @@ const WALLPAPERS: Record<WallpaperKey, {
   },
 };
 
+const PRIMARY_BG: Record<PastelColor, { light: string; dark: string }> = {
+  blue: { light: '#3b82f6', dark: '#1e3a8a' },
+  pink: { light: '#ec4899', dark: '#9d174d' },
+  purple: { light: '#a855f7', dark: '#5b21b6' },
+  green: { light: '#22c55e', dark: '#166534' },
+  orange: { light: '#f97316', dark: '#9a3412' },
+  yellow: { light: '#eab308', dark: '#854d0e' },
+  red: { light: '#ef4444', dark: '#991b1b' },
+  teal: { light: '#14b8a6', dark: '#0f766e' },
+  indigo: { light: '#6366f1', dark: '#312e81' },
+  cyan: { light: '#06b6d4', dark: '#0e7490' },
+  emerald: { light: '#10b981', dark: '#065f46' },
+  lime: { light: '#84cc16', dark: '#3f6212' },
+  amber: { light: '#f59e0b', dark: '#92400e' },
+  rose: { light: '#f43f5e', dark: '#9f1239' },
+  violet: { light: '#8b5cf6', dark: '#4c1d95' },
+  sky: { light: '#38bdf8', dark: '#0ea5e9' },
+};
+
 export function ThemeProvider({ 
   children,
   initialTheme = 'dark',
@@ -410,46 +429,34 @@ export function ThemeProvider({
     
     const applyTheme = () => {
       const root = window.document.documentElement;
-      
-      // Determine if we should use dark mode
       const shouldUseDark = theme === 'dark' || 
         (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      
       setIsDark(shouldUseDark);
-      
-      // Remove all theme-related classes first
+
       root.classList.remove('dark');
       document.body.classList.remove('bg-gray-50', 'bg-gray-900', 'text-gray-900', 'text-gray-100', 'text-white', 'dark');
-      
-      // Remove existing overlay if any
+
       const existingOverlay = document.getElementById('bg-overlay');
-      if (existingOverlay) {
-        existingOverlay.remove();
-      }
-      
-      // Apply theme classes with consistent positioning
+      if (existingOverlay) existingOverlay.remove();
+
+      const palette = PRIMARY_BG[primaryColor];
+      const bgColor = shouldUseDark ? palette.dark : palette.light;
+
       if (shouldUseDark) {
         root.classList.add('dark');
         document.body.classList.add('dark', 'text-gray-100');
-        document.body.style.backgroundColor = '#0f172a';
-        const wp = WALLPAPERS[wallpaperDark].dark;
-        document.body.style.backgroundImage = wp.image;
-        document.body.style.backgroundSize = wp.size || 'cover';
       } else {
         document.body.classList.add('text-gray-900');
-        document.body.style.backgroundColor = '#f9fafb';
-        const wp = WALLPAPERS[wallpaperLight].light;
-        document.body.style.backgroundImage = wp.image;
-        document.body.style.backgroundSize = wp.size || 'cover';
       }
+
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.backgroundImage = 'none';
+      document.body.style.backgroundSize = 'cover';
       document.body.style.backgroundPosition = 'center center';
-      
-      // Always add these classes and background styles
       document.body.classList.add('min-h-screen', 'transition-all', 'duration-300');
       document.body.style.backgroundRepeat = 'no-repeat';
       document.body.style.backgroundAttachment = 'fixed';
-      
-      // Add overlay for 20% transparency
+
       const overlay = document.getElementById('bg-overlay') || document.createElement('div');
       overlay.id = 'bg-overlay';
       overlay.style.cssText = `

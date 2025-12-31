@@ -5,7 +5,15 @@ import Image from "next/image";
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen grid grid-rows-[56px_1fr] relative isolate overflow-visible">
+    <div
+      className="min-h-screen grid grid-rows-[56px_1fr] relative isolate overflow-visible"
+      style={{
+        backgroundImage: "url(/Routivabg.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <nav className="sticky top-0 flex items-center justify-between px-4 border-b relative z-10" style={{ background: '#000515' }}>
         <div className="flex items-center gap-4">
           <Link href="/dashboard" className="font-semibold">
@@ -22,7 +30,9 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
         <form action="/api/auth/signout" method="post">
-          <button className="text-sm border px-3 py-1 rounded transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-50 dark:hover:bg-gray-700">Sign out</button>
+          <button className="text-sm border border-gray-600 px-3 py-1 rounded bg-black text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-900">
+            Sign out
+          </button>
         </form>
       </nav>
 

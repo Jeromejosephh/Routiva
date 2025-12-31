@@ -47,7 +47,7 @@ export default function ThemeSettings() {
 
           {/* Primary Color Selection */}
           <div>
-            <label className="block text-sm font-medium mb-3">Primary Color</label>
+            <label className="block text-sm font-medium mb-3">Primary Colour</label>
             <div className="grid grid-cols-4 gap-3">
               {Object.entries(PASTEL_COLORS).map(([colorKey, colorConfig]) => {
                 const isSelected = primaryColor === colorKey;
