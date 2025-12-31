@@ -1,7 +1,23 @@
+"use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export default function SignOutPage() {
+  useEffect(() => {
+    // Sign out after page loads
+    const timer = setTimeout(() => {
+      signOut({ redirect: false }).then(() => {
+        // Redirect to home after sign out
+        window.location.href = "/";
+      });
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4 text-white"
@@ -70,12 +86,9 @@ export default function SignOutPage() {
 
         {/* Footer */}
         <div className="text-center mt-8 space-y-2">
-          <Link
-            href="/"
-            className="inline-block text-sm text-blue-400 hover:text-blue-300 underline transition-colors"
-          >
-            ← Back to Home
-          </Link>
+          <p className="text-xs text-white">
+            Redirecting in a moment...
+          </p>
         </div>
       </div>
     </div>

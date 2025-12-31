@@ -29,7 +29,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
             Settings
           </Link>
         </div>
-        <form action="/api/auth/signout" method="post">
+        <form action="/sign-out" method="get">
           <button className="text-sm border border-gray-600 px-3 py-1 rounded bg-black text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-900">
             Sign out
           </button>
