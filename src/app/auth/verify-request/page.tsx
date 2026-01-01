@@ -37,7 +37,7 @@ export default function VerifyRequestPage() {
           <p className="mt-4 text-center text-sm">
             <Link
               href="/sign-in"
-              className="font-medium text-blue-400 hover:text-blue-300"
+              className="font-medium text-blue-400 underline hover:text-blue-300"
             >
               ← Back to sign in
             </Link>

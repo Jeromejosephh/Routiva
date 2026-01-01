@@ -156,3 +156,28 @@ html {
 a {
   color: #93c5fd;
 }
+
+/* Ensure dropdown menus sit above cards and aren’t clipped */
+[role="menu"],
+[data-radix-popper-content-wrapper],
+[data-radix-dropdown-menu-content] {
+  z-index: 60 !important;
+  position: relative;
+}
+
+/* Dropdowns above cards (single source of truth) */
+[role="menu"],
+[data-radix-dropdown-menu-content],
+[data-radix-popper-content-wrapper] {
+  position: fixed !important;
+  z-index: 99999 !important;
+}
+
+/* Habit containers allow overflow */
+.habit-row,
+.habit-card,
+.habit-list,
+.card {
+  overflow: visible !important;
+  position: relative;
+}
