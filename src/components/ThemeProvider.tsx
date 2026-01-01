@@ -397,6 +397,29 @@ const PRIMARY_BG: Record<PastelColor, { light: string; dark: string }> = {
   sky: { light: '#38bdf8', dark: '#0ea5e9' },
 };
 
+const GROUP_BG: Record<PastelColor, string> = {
+  // Cool Group
+  blue: '#0F1C2E',
+  cyan: '#0F1C2E',
+  sky: '#0F1C2E',
+  teal: '#0F1C2E',
+  indigo: '#0F1C2E',
+  // Creative Group
+  purple: '#1B1630',
+  violet: '#1B1630',
+  pink: '#1B1630',
+  rose: '#1B1630',
+  // Growth Group
+  green: '#14261E',
+  emerald: '#14261E',
+  lime: '#14261E',
+  // Energy Group
+  orange: '#241A12',
+  amber: '#241A12',
+  yellow: '#241A12',
+  red: '#241A12',
+} as const;
+
 export function ThemeProvider({ 
   children,
   initialTheme = 'dark',
@@ -425,22 +448,29 @@ export function ThemeProvider({
   }, []);
 
   useEffect(() => {
-    if (!mounted) return; // Don't apply themes until mounted
+    if (!mounted) return;
     
     const applyTheme = () => {
       const root = window.document.documentElement;
-      const shouldUseDark = theme === 'dark' || 
+      const shouldUseDark =
+        theme === 'dark' ||
         (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
       setIsDark(shouldUseDark);
 
       root.classList.remove('dark');
-      document.body.classList.remove('bg-gray-50', 'bg-gray-900', 'text-gray-900', 'text-gray-100', 'text-white', 'dark');
+      document.body.classList.remove(
+        'bg-gray-50',
+        'bg-gray-900',
+        'text-gray-900',
+        'text-gray-100',
+        'text-white',
+        'dark'
+      );
 
       const existingOverlay = document.getElementById('bg-overlay');
       if (existingOverlay) existingOverlay.remove();
 
-      const palette = PRIMARY_BG[primaryColor];
-      const bgColor = shouldUseDark ? palette.dark : palette.light;
+      const bgColor = GROUP_BG[primaryColor];
 
       if (shouldUseDark) {
         root.classList.add('dark');
@@ -474,10 +504,8 @@ export function ThemeProvider({
       }
     };
 
-    // Apply theme immediately
     applyTheme();
 
-    // Listen for system theme changes if using system theme
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       mediaQuery.addEventListener('change', applyTheme);
