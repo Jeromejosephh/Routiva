@@ -7,16 +7,13 @@ import { signOut } from "next-auth/react";
 
 export default function SignOutPage() {
   useEffect(() => {
-    // Sign out after page loads
-    const timer = setTimeout(() => {
-      signOut({ redirect: false }).then(() => {
-        // Redirect to home after sign out
-        window.location.href = "/";
-      });
-    }, 1500);
-
-    return () => clearTimeout(timer);
+    // No automatic sign-out; this is now a confirmation page
+    return () => {};
   }, []);
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
   return (
     <div
@@ -66,15 +63,15 @@ export default function SignOutPage() {
             </div>
             
             <div className="text-center">
-              <Link
-                href="/sign-in"
+              <button
+                onClick={handleSignOut}
                 className="inline-block px-8 py-3 rounded-lg bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition"
               >
-                Sign In Again
-              </Link>
+                Sign Out
+              </button>
               <div className="mt-3">
                 <Link
-                  href="/"
+                  href="/dashboard"
                   className="inline-block px-8 py-3 rounded-lg border border-gray-600 text-white font-semibold hover:bg-gray-900 transition"
                 >
                   Go Back

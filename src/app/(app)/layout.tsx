@@ -7,12 +7,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="min-h-screen grid grid-rows-[56px_1fr] relative isolate overflow-visible"
-      style={{
-        backgroundImage: "url(/Routivabg.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
+      style={{ backgroundColor: "transparent" }}
     >
       <nav className="sticky top-0 flex items-center justify-between px-4 border-b relative z-10" style={{ background: '#000515' }}>
         <div className="flex items-center gap-4">
