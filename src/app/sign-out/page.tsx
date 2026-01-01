@@ -49,8 +49,8 @@ export default function SignOutPage() {
 
         {/* Sign-out Card */}
         <div
-          className="bg-black border border-gray-700 rounded-2xl shadow-xl p-8"
-          style={{ color: "#ffffff" }}
+          className="rounded-2xl shadow-xl p-8 backdrop-blur-md border border-white/20"
+          style={{ color: "#ffffff", backgroundColor: "rgba(0, 0, 0, 0.3)" }}
         >
           <div className="space-y-6">
             <div className="text-center">

@@ -111,24 +111,24 @@ export default function DataManagementSection() {
           {!showDeleteConfirm ? (
             <button 
               onClick={() => setShowDeleteConfirm(true)}
-              className="border border-red-300 text-red-600 px-4 py-2 rounded text-sm bg-red-50 hover:bg-red-100 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
+              className="border border-red-600 text-white px-4 py-2 rounded text-sm bg-red-600 hover:bg-red-700 transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
             >
               <Trash2 size={16} />
               Delete Account
             </button>
           ) : (
-            <div className="space-y-3 p-4 border border-red-300 rounded bg-white">
-              <p className="text-sm text-gray-900 font-medium">
+            <div className="space-y-3 p-4 border border-red-300 rounded bg-gray-900 dark:bg-gray-800">
+              <p className="text-sm text-white font-medium">
                 Are you absolutely sure? This will permanently delete your account, all habits, logs, and groups.
               </p>
-              <p className="text-sm text-gray-800">
+              <p className="text-sm text-white">
                 Type <strong>DELETE</strong> to confirm:
               </p>
               <input
                 type="text"
                 value={deleteConfirmText}
                 onChange={(e) => setDeleteConfirmText(e.target.value)}
-                className="w-full px-3 py-2 border border-red-300 rounded text-sm text-gray-900 bg-gray-50"
+                className="w-full px-3 py-2 border border-red-300 rounded text-sm text-white bg-gray-800"
                 placeholder="Type DELETE to confirm"
               />
               <div className="flex gap-2">
@@ -144,7 +144,7 @@ export default function DataManagementSection() {
                     setShowDeleteConfirm(false);
                     setDeleteConfirmText("");
                   }}
-                  className="border border-gray-300 px-4 py-2 rounded text-sm text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors"
+                  className="border border-gray-600 px-4 py-2 rounded text-sm text-white bg-gray-800 hover:bg-gray-700 transition-colors"
                 >
                   Cancel
                 </button>

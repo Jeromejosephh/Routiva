@@ -11,7 +11,7 @@ export default function ThemeSettings() {
   const themeOptions: { value: Theme; label: string; icon: React.ReactNode }[] = [
     { value: 'light', label: 'Light', icon: <Sun size={16} /> },
     { value: 'dark', label: 'Dark', icon: <Moon size={16} /> },
-    { value: 'system', label: 'System', icon: <Monitor size={16} /> },
+    { value: 'system', label: 'Default', icon: <Monitor size={16} /> },
   ];
 
   return (

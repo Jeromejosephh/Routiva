@@ -487,6 +487,14 @@ export function ThemeProvider({
       document.body.style.backgroundRepeat = 'no-repeat';
       document.body.style.backgroundAttachment = 'fixed';
 
+      // Add gradient overlay design
+      const gradientOverlay = `
+        linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%),
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.1) 0%, transparent 50%)
+      `;
+      document.body.style.backgroundImage = gradientOverlay;
+
       const overlay = document.getElementById('bg-overlay') || document.createElement('div');
       overlay.id = 'bg-overlay';
       overlay.style.cssText = `

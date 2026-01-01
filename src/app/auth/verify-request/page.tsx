@@ -24,19 +24,17 @@ export default function VerifyRequestPage() {
       }}
     >
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+        <div className="rounded-2xl shadow-xl p-8 backdrop-blur-md border border-white/20" style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
+          <h2 className="text-center text-3xl font-extrabold text-white">
             Check your email
           </h2>
           <p className="mt-2 text-center text-sm text-white/80">
             A sign in link has been sent to your email address.
           </p>
-        </div>
-        <div className="mt-4 text-center">
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-white/70 mt-4 text-center">
             The link will expire in 10 minutes.
           </p>
-          <p className="mt-4 text-sm">
+          <p className="mt-4 text-center text-sm">
             <Link
               href="/sign-in"
               className="font-medium text-blue-400 hover:text-blue-300"

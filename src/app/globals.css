@@ -118,10 +118,10 @@ body {
 
 /* Global border colors for light/dark */
 :root {
-  --border-color: #e5e7eb; /* light: gray-200 */
+  --border-color: #374151; /* gray-700 for light mode */
 }
 .dark {
-  --border-color: #1f2937; /* dark: gray-800 */
+  --border-color: #374151; /* gray-700 for dark mode */
 }
 .border {
   border-color: var(--border-color) !important;
@@ -145,10 +145,8 @@ body {
 }
 
 :root,
-html,
-body {
+html {
   color: #ffffff !important;
-  background-color: #000000 !important;
 }
 
 * {

@@ -89,7 +89,7 @@ export default async function SettingsPage() {
       <div className="border rounded-lg p-6 backdrop-blur-sm bg-gray-200 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">About Routiva</h2>
         <div className="space-y-2 text-sm text-white">
-          <p>Version: 0.1.0 (MVP)</p>
+          <p>Version: 1.0.0</p>
           <p>A simple, effective habit tracking application.</p>
           <a
             href="https://jeromejoseph.dev"
