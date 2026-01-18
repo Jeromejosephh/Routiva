@@ -14,18 +14,18 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           <Link href="/dashboard" className="font-semibold">
             <Image src="/Routivalogoname.png" alt="Routiva Logo" className="h-8 w-auto" style={{maxWidth:120}} width={120} height={32} />
           </Link>
-          <Link href="/habits" className="text-sm">
+          <Link href="/habits" className="text-xs sm:text-sm">
             Habits
           </Link>
-          <Link href="/analytics" className="text-sm">
+          <Link href="/analytics" className="text-xs sm:text-sm">
             Analytics
           </Link>
-          <Link href="/settings" className="text-sm">
+          <Link href="/settings" className="text-xs sm:text-sm">
             Settings
           </Link>
         </div>
         <form action="/sign-out" method="get">
-          <button className="text-sm border border-gray-600 px-3 py-1 rounded bg-black text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-900">
+          <button className="text-xs sm:text-sm border border-gray-600 px-3 py-1 rounded bg-black text-white transition-all duration-150 transform hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-900">
             Sign out
           </button>
         </form>
