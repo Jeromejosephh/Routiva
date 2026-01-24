@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon-48x48.png?v=6', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon.png?v=6', sizes: '48x48', type: 'image/png' },
       { url: '/Routivalogo.png?v=6', sizes: '192x192', type: 'image/png' },
       { url: '/Routivalogo.png?v=6', sizes: '512x512', type: 'image/png' },
     ],
