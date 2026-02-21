@@ -4,10 +4,8 @@ export function computeCompletionRate(logs: { status: string; date: Date }[]) {
   return done / logs.length;
 }
 
-//Compute current streak: consecutive 'done' entries up to the most recent date
 export function computeCurrentStreak(logs: { status: string; date: Date }[]) {
   if (!logs || logs.length === 0) return 0;
-  // normalize dates to UTC midnight and build a map
   const map = new Map<string, string>();
   for (const l of logs) {
     const d = new Date(l.date);
@@ -15,7 +13,6 @@ export function computeCurrentStreak(logs: { status: string; date: Date }[]) {
     map.set(d.toISOString(), l.status);
   }
 
-  // start from today UTC
   const cursor = new Date();
   cursor.setUTCHours(0,0,0,0);
   let streak = 0;

@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
-import { ThemeProvider } from "./ThemeProvider";
+import { ThemeProvider, type PastelColor } from "./ThemeProvider";
 
 export default async function ThemeProviderWrapper({ 
   children 
@@ -17,16 +17,14 @@ export default async function ThemeProviderWrapper({
       },
     });
 
-    // Get the full user with primaryColor using separate query
     const userWithColor = await prisma.user.findUnique({
       where: { id: user.id },
     });
 
     return (
-      <ThemeProvider 
+      <ThemeProvider
         initialTheme={userSettings?.theme as 'light' | 'dark' | 'system' || 'dark'}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        initialPrimaryColor={(userWithColor as any)?.primaryColor || 'blue'}
+        initialPrimaryColor={(userWithColor?.primaryColor as PastelColor) || 'blue'}
       >
         {children}
       </ThemeProvider>

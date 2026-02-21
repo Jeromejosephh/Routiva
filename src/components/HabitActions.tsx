@@ -1,6 +1,5 @@
 "use client";
 
-//dropdown menu for habit edit/archive/delete actions
 import { useEffect, useRef, useState, useTransition } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
@@ -16,9 +15,6 @@ import {
 type HabitPatchBody = {
   name?: string;
   isArchived?: boolean;
-  weeklyTarget?: number;
-  tags?: string[];
-  color?: string;
 };
 
 export default function HabitActions({
@@ -90,6 +86,8 @@ export default function HabitActions({
       window.removeEventListener("scroll", handleResizeScroll, true);
     };
   }, [open]);
+
+  const close = () => setOpen(false);
 
   const patch = async (body: HabitPatchBody): Promise<void> => {
     const res = await fetch(`/api/habits/${habitId}`, {
@@ -169,7 +167,7 @@ export default function HabitActions({
       {open &&
         createPortal(
           <div
-            className="fixed z-[99999] min-w-[220px]"
+            className="fixed z-99999 min-w-55"
             style={{ top: menuPos.top, left: menuPos.left }}
             ref={menuRef}
           >

@@ -9,7 +9,6 @@ interface LogEntry {
   metadata?: Record<string, unknown>;
 }
 
-//centralized logging with console output and external service support
 class Logger {
   private isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -67,14 +66,6 @@ class Logger {
         break;
     }
 
-    if (!this.isDevelopment && level === 'error') {
-      this.sendToExternalLogger(entry);
-    }
-  }
-
-  private sendToExternalLogger(entry: LogEntry) {
-    //TODO: add external logging service
-    console.error('External logging not configured:', entry.error);
   }
 
   debug(message: string, options?: { userId?: string; metadata?: Record<string, unknown>; [key: string]: unknown }) {

@@ -1,18 +1,17 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useThemeClasses } from "@/components/ThemeProvider";
 
 interface SettingsFormProps {
   userSettings: {
     timezone: string | null;
-    reminderDailyEnabled: boolean;
-    reminderDailyTime: string | null;
-    summaryWeeklyEnabled: boolean;
   } | null;
 }
 
 export default function SettingsForm({ userSettings }: SettingsFormProps) {
   const themeClasses = useThemeClasses();
+  const router = useRouter();
 
   async function handleSubmit(formData: FormData) {
     try {
@@ -24,9 +23,8 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
       if (!response.ok) {
         throw new Error('Failed to update settings');
       }
-      
-      // Show success message or refresh
-      window.location.reload();
+
+      router.refresh();
     } catch (error) {
       console.error('Failed to update settings:', error);
       alert('Failed to update settings. Please try again.');
@@ -36,7 +34,7 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
   return (
     <form action={handleSubmit} className="border rounded-lg p-6 backdrop-blur-sm bg-gray-200 dark:bg-gray-800/80">
       <h2 className="text-lg font-semibold mb-4">Preferences</h2>
-      
+
       <div className="space-y-4">
         <div>
           <label htmlFor="timezone" className="block text-sm font-medium mb-1 text-gray-900 dark:text-white">
@@ -60,49 +58,6 @@ export default function SettingsForm({ userSettings }: SettingsFormProps) {
             <option value="Australia/Sydney">Sydney</option>
             <option value="Pacific/Auckland">New Zealand</option>
           </select>
-        </div>
-
-        {/* Daily Reminders */}
-        <div>
-          <div className="flex items-center space-x-2 mb-2">
-            <input
-              type="checkbox"
-              id="reminderDailyEnabled"
-              name="reminderDailyEnabled"
-              defaultChecked={userSettings?.reminderDailyEnabled}
-              className="rounded"
-            />
-            <label htmlFor="reminderDailyEnabled" className="text-sm font-medium">
-              Enable daily reminders
-            </label>
-          </div>
-          
-          <input
-            type="time"
-            id="reminderDailyTime"
-            name="reminderDailyTime"
-            defaultValue={userSettings?.reminderDailyTime || "09:00"}
-            className="border rounded px-3 py-2 text-white bg-white dark:text-white dark:bg-gray-700"
-            style={{ colorScheme: 'dark' }}
-          />
-          <p className="text-xs text-white/60 mt-1">Email reminders will be available in a future update</p>
-        </div>
-
-        {/* Weekly Summary */}
-        <div>
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="summaryWeeklyEnabled"
-              name="summaryWeeklyEnabled"
-              defaultChecked={userSettings?.summaryWeeklyEnabled}
-              className="rounded"
-            />
-            <label htmlFor="summaryWeeklyEnabled" className="text-sm font-medium">
-              Enable weekly summary emails
-            </label>
-          </div>
-          <p className="text-xs text-white/60 mt-1">Weekly summaries will be available in a future update</p>
         </div>
       </div>
 

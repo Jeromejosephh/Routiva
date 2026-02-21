@@ -1,13 +1,12 @@
-// src/app/api/user/export/route.ts
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
     const user = await requireUser();
 
-    // Fetch all user data
     const userData = await prisma.user.findUnique({
       where: { id: user.id },
       select: {
@@ -24,7 +23,6 @@ export async function GET() {
       }
     });
 
-    // Fetch all habits with their logs
     const habits = await prisma.habit.findMany({
       where: { userId: user.id },
       include: {
@@ -41,7 +39,6 @@ export async function GET() {
       }
     });
 
-    // Fetch all groups
     const groups = await prisma.habitGroup.findMany({
       where: { userId: user.id },
       include: {
@@ -51,7 +48,6 @@ export async function GET() {
       }
     });
 
-    // Calculate some statistics
     const totalLogs = await prisma.habitLog.count({
       where: { habit: { userId: user.id } }
     });
@@ -92,7 +88,6 @@ export async function GET() {
       }
     };
 
-    // Create filename with timestamp
     const timestamp = new Date().toISOString().split('T')[0];
     const filename = `routiva-export-${timestamp}.json`;
 
@@ -105,7 +100,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('Export error:', error);
+    logger.error('Export error', { error: error instanceof Error ? error : new Error(String(error)) });
     return NextResponse.json(
       { error: 'Failed to export data' },
       { status: 500 }

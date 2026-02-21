@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 import { z } from "zod";
 
 const updateGroupSchema = z.object({
@@ -30,7 +31,6 @@ export async function PATCH(
       return NextResponse.json({ error: parsed.error.format() }, { status: 400 });
     }
 
-    // Check ownership
     const group = await prisma.habitGroup.findFirst({
       where: { id, userId: user.id }
     });
@@ -39,7 +39,6 @@ export async function PATCH(
       return NextResponse.json({ error: "Group not found" }, { status: 404 });
     }
 
-    // Check for duplicate name if updating name
     if (parsed.data.name && parsed.data.name !== group.name) {
       const existing = await prisma.habitGroup.findFirst({
         where: { userId: user.id, name: parsed.data.name, id: { not: id } }
@@ -57,7 +56,7 @@ export async function PATCH(
 
     return NextResponse.json(updated);
   } catch (error) {
-    console.error("Failed to update group:", error);
+    logger.error("Failed to update group", { error: error instanceof Error ? error : new Error(String(error)) });
     return NextResponse.json({ error: "Failed to update group" }, { status: 500 });
   }
 }
@@ -70,7 +69,6 @@ export async function DELETE(
     const { id } = await params;
     const user = await requireUser();
 
-    // Check ownership and if group has habits
     const group = await prisma.habitGroup.findFirst({
       where: { id, userId: user.id },
       include: { _count: { select: { habits: true } } }
@@ -88,7 +86,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Failed to delete group:", error);
+    logger.error("Failed to delete group", { error: error instanceof Error ? error : new Error(String(error)) });
     return NextResponse.json({ error: "Failed to delete group" }, { status: 500 });
   }
 }

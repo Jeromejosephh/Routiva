@@ -70,12 +70,12 @@ export default function OnboardingModal({ userName }: OnboardingModalProps) {
   const isLastStep = currentStep === steps.length - 1;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
         {/* Progress bar */}
         <div className="h-1 bg-gray-200 dark:bg-gray-700">
           <div
-            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500 ease-out"
+            className="h-full bg-linear-to-r from-blue-500 to-purple-500 transition-all duration-500 ease-out"
             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
         </div>
@@ -131,7 +131,7 @@ export default function OnboardingModal({ userName }: OnboardingModalProps) {
             </button>
             <button
               onClick={handleNext}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-150"
+              className="flex-1 px-6 py-3 bg-linear-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-150"
             >
               {isLastStep ? "Get Started" : "Next"}
             </button>

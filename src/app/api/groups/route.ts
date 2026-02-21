@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 import { z } from "zod";
 
 const createGroupSchema = z.object({
@@ -25,7 +26,7 @@ export async function GET() {
 
     return NextResponse.json(groups);
   } catch (error) {
-    console.error("Failed to get groups:", error);
+    logger.error("Failed to get groups", { error: error instanceof Error ? error : new Error(String(error)) });
     return NextResponse.json({ error: "Failed to get groups" }, { status: 500 });
   }
 }
@@ -40,7 +41,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: parsed.error.format() }, { status: 400 });
     }
 
-    // Check for duplicate name
     const existing = await prisma.habitGroup.findFirst({
       where: { userId: user.id, name: parsed.data.name }
     });
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(group);
   } catch (error) {
-    console.error("Failed to create group:", error);
+    logger.error("Failed to create group", { error: error instanceof Error ? error : new Error(String(error)) });
     return NextResponse.json({ error: "Failed to create group" }, { status: 500 });
   }
 }

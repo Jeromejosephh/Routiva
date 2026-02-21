@@ -15,7 +15,7 @@ export default function HabitForm({
   createHabit 
 }: { 
   groups: Group[];
-  createHabit: (formData: FormData) => void;
+  createHabit: (formData: FormData) => Promise<void>;
 }) {
   const themeClasses = useThemeClasses();
   const [pending, startTransition] = useTransition();

@@ -17,7 +17,6 @@ export default function HabitRow({
   const [pending, start] = useTransition();
   const [currentStreak, setCurrentStreak] = useState<number>(0);
 
-  // Fetch current streak on mount
   useEffect(() => {
     const fetchStreak = async () => {
       try {
@@ -75,16 +74,11 @@ export default function HabitRow({
           throw new Error(await safeText(res));
         }
 
-        // Trigger confetti on completion (not on uncheck)
         if (next && !wasChecked) {
-          // Calculate new streak (current + 1 if completing today extends it)
           const newStreak = currentStreak + 1;
           setCurrentStreak(newStreak);
-          
-          // Trigger appropriate confetti based on streak
           celebrateStreakMilestone(newStreak);
         } else if (!next) {
-          // Decrement streak if unchecking
           setCurrentStreak(Math.max(0, currentStreak - 1));
         }
       } catch (e: unknown) {

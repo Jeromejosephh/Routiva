@@ -22,17 +22,10 @@ export const metadata: Metadata = {
 export default async function SettingsPage() {
   const user = await requireUser();
 
-  //fetch user settings and account stats
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const userSettings = await (prisma as any).user.findUnique({
+  const userSettings = await prisma.user.findUnique({
     where: { id: user.id },
     select: {
       timezone: true,
-      theme: true,
-      primaryColor: true,
-      reminderDailyEnabled: true,
-      reminderDailyTime: true,
-      summaryWeeklyEnabled: true,
       email: true,
       createdAt: true,
     },
@@ -50,7 +43,6 @@ export default async function SettingsPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-center">Settings</h1>
 
-      {/* Theme Settings */}
       <div className="border rounded-lg p-6 backdrop-blur-sm bg-gray-200 dark:bg-gray-800/80">
         <ThemeSettings />
       </div>
@@ -79,13 +71,10 @@ export default async function SettingsPage() {
         </div>
       </div>
 
-      {/* user preference form with timezone and notification settings */}
       <SettingsForm userSettings={userSettings} />
 
-      {/* Data Management */}
       <DataManagementSection />
 
-      {/* App Information */}
       <div className="border rounded-lg p-6 backdrop-blur-sm bg-gray-200 dark:bg-gray-800/80">
         <h2 className="text-lg font-semibold mb-4">About Routiva</h2>
         <div className="space-y-2 text-sm text-white">

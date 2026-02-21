@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 import { z } from "zod";
 
 const updatePreferencesSchema = z.object({
@@ -28,7 +29,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json(updated);
   } catch (error) {
-    console.error("Failed to update user preferences:", error);
+    logger.error("Failed to update user preferences", { error: error instanceof Error ? error : new Error(String(error)) });
     return NextResponse.json({ error: "Failed to update preferences" }, { status: 500 });
   }
 }
