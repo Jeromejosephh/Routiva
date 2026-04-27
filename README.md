@@ -29,7 +29,14 @@ TailwindCSS + shadcn/ui → UI components and styling
 Vercel → Deployment and hosting
 ## 📸 Screenshots
 
-Yet to be added (dashboard, habits UI, analytics)
+<p>
+	<img src="public/landingpage1.jpg" alt="Home" width="260" />
+	<img src="public/landingpage2.jpg" alt="Home" width="260" />
+	<img src="public/landingpage3.jpg" alt="Home" width="260" />
+	<img src="public/landingpage4.jpg" alt="Home" width="260" />
+  <img src="public/landingpage5.jpg" alt="Home" width="260" />
+  <img src="public/landingpage6.jpg" alt="Home" width="260" />
+</p>
 
 ## 🛠️ Setup & Installation
 Prerequisites
