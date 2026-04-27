@@ -1,55 +1,91 @@
-# Routiva
+## 🚀 Routiva
 
-Routiva is a habit-tracking web app built with **Next.js (App Router)**, **TypeScript**, **Tailwind**, **Prisma**, **Neon (Postgres)**, and **NextAuth (Email via Resend)**.  
-It helps users create habits, check them off daily, and track progress with streaks and charts.
+A full-stack habit-tracking web app that helps users build consistency through daily tracking, streaks, and progress analytics.
 
----
+Tech: Next.js, TypeScript, TailwindCSS, Prisma, PostgreSQL, NextAuth
+Live: https://routiva.vercel.app
 
-## 🚀 Tech Stack
-- [Next.js](https://nextjs.org) (App Router)
-- TypeScript
-- TailwindCSS + shadcn/ui
-- Prisma ORM
-- Neon (Postgres DB)
-- NextAuth (Email login via Resend)
-- Vercel (Deployment)
+## 💡 Why Routiva?
 
----
+Many habit trackers are either overly complex or lack meaningful insights. Routiva focuses on simplicity and effectiveness:
 
-## 🔧 Getting Started
+Clean, intuitive UI for daily habit tracking
+Streak-based motivation and visual progress
+Secure authentication with email login
+Scalable full-stack architecture
+## ✨ Features
+Create, update, and track daily habits
+Streak tracking and progress analytics
+Secure email authentication (magic link login)
+Per-user data isolation and access control
+Input validation and production-ready safeguards
+Responsive UI built with modern design principles
+## 🧠 Architecture
+Next.js (App Router) → Full-stack framework (frontend + backend)
+Prisma ORM → Database access and schema management
+PostgreSQL (Neon) → Cloud-hosted relational database
+NextAuth → Authentication (email via Resend)
+TailwindCSS + shadcn/ui → UI components and styling
+Vercel → Deployment and hosting
+## 📸 Screenshots
 
-### 1. Clone & Install
-git clone <your-repo-url>  
-cd routiva  
-npm install  
+Yet to be added (dashboard, habits UI, analytics)
 
-### 2. Environment Variables
-Create a `.env` file at the project root (or copy `.env.example`):
+## 🛠️ Setup & Installation
+Prerequisites
+Node.js (v18+)
+npm or pnpm
+Installation
 
-# .env.example  
-DATABASE_URL=postgresql://...  
-NEXTAUTH_SECRET=your-secret  
-NEXTAUTH_URL=http://localhost:3000  
-RESEND_API_KEY=your-resend-key  
-EMAIL_FROM="Routiva <login@yourdomain.com>"  
+```bash
+git clone https://github.com/Jeromejosephh/routiva
 
-### 3. Database Setup
-npx prisma generate  
-npx prisma migrate dev  
+cd routiva
+npm install
+```
 
-### 4. Run Dev Server
-pnpm dev  
+⚙️ Environment Variables
 
-Visit [http://localhost:3000](http://localhost:3000).  
+Create a .env file:
 
----
+```env
+DATABASE_URL=postgresql://...
+NEXTAUTH_SECRET=your-secret
+NEXTAUTH_URL=http://localhost:3000
 
-## 🚢 Deployment
-1. Push to GitHub/GitLab  
-2. Connect repo to [Vercel](https://vercel.com/)  
-3. Add the same environment variables in the Vercel dashboard  
+RESEND_API_KEY=your-resend-key
+EMAIL_FROM="Routiva login@yourdomain.com
+"
+```
 
-(Optional) Add a custom domain and set:  
-NEXTAUTH_URL=https://yourdomain.com  
+🗄️ Database Setup
 
-Deploy 🎉
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
+
+🚀 Running the Application
+
+```bash
+pnpm dev
+```
+
+App runs at:
+http://localhost:3000
+
+🚢 Deployment
+Push repository to GitHub/GitLab
+Connect project to Vercel
+Add environment variables in Vercel dashboard
+
+(Optional) Set production URL:
+
+```env
+NEXTAUTH_URL=https://yourdomain.com
+
+```
+
+📄 License
+
+MIT
